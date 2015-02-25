@@ -1,4 +1,4 @@
 treasure
 ========
 
-A lisp dialect interpreter.
+A lisp dialect compiler.
