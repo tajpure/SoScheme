@@ -53,6 +53,9 @@ class Lexer(_source: String) {
     }
   }
   
+  def skipSpaces() {
+    
+  }
   
   @throws(classOf[ParserException])
   def tokenize() {
