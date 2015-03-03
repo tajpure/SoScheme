@@ -1,8 +1,8 @@
 package com.tajpure.scheme.compiler
 
-import com.tajpure.scheme.compiler.parser.ParserException
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.Str
+import com.tajpure.scheme.compiler.parser.ParserException
 import com.tajpure.scheme.compiler.util.FileUtils
 
 /**
@@ -37,36 +37,36 @@ class Lexer(path: String) {
     }
   }
   
-  def skipComments() {
+  def skipComments() : Boolean = {
     var found = false
-    if (source.startsWith(Constants.COMMENTS)) {
+    if (source.startsWith(Constants.COMMENTS, offset)) {
+      found = true
       while (offset < source.length && source.charAt(offset) != '\n') {
         skip(1)
       }
     }
+    found
   }
   
   def scanString() : Node = {
     val start : Int = offset
     val startRow : Int = row
     val startCol : Int = col
-    
     skip(Constants.STRING_BEGIN.length());
     
     def scanChar() {
      if (offset >= source.length() || source.charAt(offset) == '\n') {
          throw new ParserException("runaway string", startRow, startCol, offset);
      } 
-     
      else if (source.startsWith(Constants.STRING_END, offset)) {
          skip(Constants.STRING_END.length());
      } 
-     
      else {
        forward()
        scanChar()
      }
     }
+    
     scanChar()
     val end:Int = offset
     val content:String = source.substring(start + Constants.STRING_BEGIN.length(), end + Constants.STRING_END.length())
@@ -79,8 +79,9 @@ class Lexer(path: String) {
   
 //  def scanNumber() : Node = {
 //    
+//    new Number()
 //  }
-//  
+  
 //  def scanIent() : Node = {
 //    
 //  }
