@@ -1,44 +1,23 @@
 package com.tajpure.scheme.compiler
 
 import com.tajpure.scheme.compiler.parser.ParserException
+import com.tajpure.scheme.compiler.ast.Node
+import com.tajpure.scheme.compiler.ast.Str
+import com.tajpure.scheme.compiler.util.FileUtils
 
 /**
  * Split source file
  */
-class Lexer(_source: String) {
-  
-  // This keywords are all from R6RS(http://www.r6rs.org/final/html/r6rs/r6rs.html)
-  val keywords = Array("and", 
-                       "begin", 
-                       "call-with-current-continuation",
-                       "call-with-input-file",
-                       "call-with-output-file",
-                       "case",
-                       "cond",
-                       "define",
-                       "define-syntax",
-                       "delay",
-                       "do",
-                       "dynamic-wind",
-                       "else",
-                       "for-each",
-                       "if",
-                       "lambda", 
-                       "let", 
-                       "let*", 
-                       "let-syntax", 
-                       "letrec", 
-                       "letrec-syntax", 
-                       "map", 
-                       "or", 
-                       "syntax-rules")
+class Lexer(path: String) {
+
   var offset:Int = -1
   var row:Int = -1
   var col:Int = -1
-  val source:String = _source
+  val source:String = FileUtils.readFile(path)
+  val file:String = FileUtils.unifyPath(path)
   
   def forward() {
-    if(source.charAt(offset) != '\n') {
+    if (source.charAt(offset) != '\n') {
       col += 1
     } else {
       row += 1
@@ -48,17 +27,63 @@ class Lexer(_source: String) {
   }
   
   def skip(n:Int) {
-    for (i <- 1 to n) {
-      forward()
-    }
+    (1 to n).foreach(_ => forward())
   }
   
   def skipSpaces() {
-    
+    if (source.charAt(offset) == ' ') {
+      skip(1)
+      skipSpaces()
+    }
   }
   
+  def skipComments() {
+    var found = false
+    if (source.startsWith(Constants.COMMENTS)) {
+      while (offset < source.length && source.charAt(offset) != '\n') {
+        skip(1)
+      }
+    }
+  }
+  
+  def scanString() : Node = {
+    val start : Int = offset
+    val startRow : Int = row
+    val startCol : Int = col
+    skip(Constants.STRING_BEGIN.length());
+    
+    while (true) {
+      
+     if (offset >= source.length() || source.charAt(offset) == '\n') {
+         throw new ParserException("runaway string", startRow, startCol, offset);
+     } else if (source.startsWith(Constants.STRING_END, offset)) {
+         skip(Constants.STRING_END.length());
+     }
+    }
+    
+    val end:Int = offset
+    val content:String = source.substring(start + Constants.STRING_BEGIN.length(), end + Constants.STRING_END.length())
+    new Str(content, file, start, end, row, col)
+  }
+  
+  def isNumberOrChar(ch: Char) : Boolean = {
+    Character.isLetterOrDigit(ch) ||  ch == '.' || ch == '+' || ch == '-' 
+  }
+  
+//  def scanNumber() : Node = {
+//    
+//  }
+//  
+//  def scanIent() : Node = {
+//    
+//  }
+//  
+//  def scanKeyword() : Node = {
+//    
+//  }
+  
   @throws(classOf[ParserException])
-  def tokenize() {
+  def nextToken() = {
     
   }
 }
