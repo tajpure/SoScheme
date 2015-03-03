@@ -50,17 +50,24 @@ class Lexer(path: String) {
     val start : Int = offset
     val startRow : Int = row
     val startCol : Int = col
+    
     skip(Constants.STRING_BEGIN.length());
     
-    while (true) {
-      
+    def scanChar() {
      if (offset >= source.length() || source.charAt(offset) == '\n') {
          throw new ParserException("runaway string", startRow, startCol, offset);
-     } else if (source.startsWith(Constants.STRING_END, offset)) {
+     } 
+     
+     else if (source.startsWith(Constants.STRING_END, offset)) {
          skip(Constants.STRING_END.length());
+     } 
+     
+     else {
+       forward()
+       scanChar()
      }
     }
-    
+    scanChar()
     val end:Int = offset
     val content:String = source.substring(start + Constants.STRING_BEGIN.length(), end + Constants.STRING_END.length())
     new Str(content, file, start, end, row, col)
