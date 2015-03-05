@@ -74,7 +74,7 @@ class Lexer(path: String) {
   }
   
   def isNumberOrChar(ch: Char) : Boolean = {
-    Character.isLetterOrDigit(ch) ||  ch == '.' || ch == '+' || ch == '-' 
+    Character.isLetterOrDigit(ch) ||  ch == '.' || ch == '+' || ch == '-'
   }
   
 //  def scanNumber() : Node = {
