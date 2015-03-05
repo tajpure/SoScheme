@@ -4,17 +4,19 @@ import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.Str
 import com.tajpure.scheme.compiler.parser.ParserException
 import com.tajpure.scheme.compiler.util.FileUtils
+import com.tajpure.scheme.compiler.ast.IntNum
+import com.tajpure.scheme.compiler.ast.FloatNum
 
 /**
  * Split source file
  */
 class Lexer(path: String) {
 
-  var offset:Int = -1
-  var row:Int = -1
-  var col:Int = -1
-  val source:String = FileUtils.readFile(path)
-  val file:String = FileUtils.unifyPath(path)
+  var offset: Int = -1
+  var row: Int = -1
+  var col: Int = -1
+  val source: String = FileUtils.readFile(path)
+  val file: String = FileUtils.unifyPath(path)
   
   def forward() {
     if (source.charAt(offset) != '\n') {
@@ -49,9 +51,9 @@ class Lexer(path: String) {
   }
   
   def scanString() : Node = {
-    val start : Int = offset
-    val startRow : Int = row
-    val startCol : Int = col
+    val start: Int = offset
+    val startRow: Int = row
+    val startCol: Int = col
     skip(Constants.STRING_BEGIN.length());
     
     def scanChar() {
@@ -68,8 +70,8 @@ class Lexer(path: String) {
     }
     
     scanChar()
-    val end:Int = offset
-    val content:String = source.substring(start + Constants.STRING_BEGIN.length(), end + Constants.STRING_END.length())
+    val end: Int = offset
+    val content: String = source.substring(start + Constants.STRING_BEGIN.length(), end + Constants.STRING_END.length())
     new Str(content, file, start, end, row, col)
   }
   
@@ -77,10 +79,36 @@ class Lexer(path: String) {
     Character.isLetterOrDigit(ch) ||  ch == '.' || ch == '+' || ch == '-'
   }
   
-//  def scanNumber() : Node = {
-//    
-//    new Number()
-//  }
+  def scanNumber() : Node = {
+    val start: Int = offset
+    val startRow: Int = row
+    val startCol: Int = col
+    var isInt: Boolean = true 
+    
+    def scanNum() {
+      if (offset >= source.length() || source.charAt(offset) == '\n') {
+         throw new ParserException("runaway string", startRow, startCol, offset);
+      }
+      else if (isNumberOrChar(source.charAt(offset))) {
+         if (source.charAt(offset) == '.') {
+             isInt = false
+         }
+      }
+      else {
+        forward()
+        scanNum()
+      }
+    }
+    
+    scanNum()
+    val end: Int = offset
+    val content: String = source.substring(start, end)
+    if (isInt) {
+      new IntNum(content, file, start, end, startRow, startCol)
+    } else {
+      new FloatNum(content, file, start, end, startRow, startCol)
+    }
+  }
   
 //  def scanIent() : Node = {
 //    
