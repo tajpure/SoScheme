@@ -3,8 +3,8 @@ package com.tajpure.scheme.compiler
 object Constants {
 
   // delimiters and delimiters pairs
-  val PAREN_BEGIN = '('
-  val PAREN_END = ')'
+  val PAREN_BEGIN = "("
+  val PAREN_END = ")"
 
   val STRING_BEGIN = "\""
   val STRING_END = "\""

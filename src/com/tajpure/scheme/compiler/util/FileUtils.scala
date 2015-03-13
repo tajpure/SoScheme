@@ -9,6 +9,8 @@ object FileUtils {
   }
   
   def readFile(path: String) : String = {
-    scala.io.Source.fromFile(path).mkString
+    val content: String = scala.io.Source.fromFile(path).mkString
+    println(content)
+    content
   }
 }

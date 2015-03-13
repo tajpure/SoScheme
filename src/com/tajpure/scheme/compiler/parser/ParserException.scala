@@ -9,5 +9,5 @@ class ParserException(_message: String, _row: Int, _col: Int, _start: Int) exten
 
   def this(_message: String, node: Node) = this(_message, node.row, node.col, node.start)
 
-  override def toString = "row:" + (row + 1) + " col:" + (col + 1) + " parser error: " + getMessage()
+  override def toString = "parser error: " + getMessage() + " on row:" + (row + 1) + " col:" + (col + 1)
 }

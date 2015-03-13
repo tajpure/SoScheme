@@ -1,27 +1,34 @@
-package com.tajpure.scheme.compiler
+package com.tajpure.scheme.compiler.parser
 
-import com.tajpure.scheme.compiler.ast.Node
-import com.tajpure.scheme.compiler.ast.Str
-import com.tajpure.scheme.compiler.parser.ParserException
-import com.tajpure.scheme.compiler.util.FileUtils
-import com.tajpure.scheme.compiler.ast.IntNum
+import com.tajpure.scheme.compiler.Constants
+import com.tajpure.scheme.compiler.ast.Delimeter
 import com.tajpure.scheme.compiler.ast.FloatNum
+import com.tajpure.scheme.compiler.ast.IntNum
 import com.tajpure.scheme.compiler.ast.Keyword
 import com.tajpure.scheme.compiler.ast.Name
-import com.tajpure.scheme.compiler.ast.Delimeter
+import com.tajpure.scheme.compiler.ast.Node
+import com.tajpure.scheme.compiler.ast.Str
+import com.tajpure.scheme.compiler.util.FileUtils
+import com.tajpure.scheme.compiler.util.Log
 
 /**
  * Split source file
  */
-class Lexer(path: String) {
+class LexParser(_path: String) {
 
-  var offset: Int = -1
-  var row: Int = -1
-  var col: Int = -1
+  var offset: Int = 0
+  var row: Int = 0
+  var col: Int = 0
 
-  val source: String = FileUtils.readFile(path)
-  val file: String = FileUtils.unifyPath(path)
+  val source: String = FileUtils.readFile(_path)
+  val file: String = FileUtils.unifyPath(_path)
 
+  if (source == null) {
+    Log.error("Failed to read the file:" + file)
+  }
+  
+  Delimeter.addDelimiterPair(Constants.PAREN_BEGIN, Constants.PAREN_END)
+  
   def forward() {
     if (source.charAt(offset) != '\n') {
       col += 1
@@ -53,6 +60,9 @@ class Lexer(path: String) {
       while (offset < source.length && source.charAt(offset) != '\n') {
         skip(1)
       }
+      if (offset < source.length) {
+         forward();
+      }
     }
     found
   }
@@ -71,7 +81,7 @@ class Lexer(path: String) {
 
     def scanChar() {
       if (offset >= source.length() || source.charAt(offset) == '\n') {
-        throw new ParserException("runaway string", startRow, startCol, offset);
+        throw new ParserException("string format error:", startRow, startCol, offset);
       } else if (source.startsWith(Constants.STRING_END, offset)) {
         skip(Constants.STRING_END.length());
       } else {
@@ -98,15 +108,18 @@ class Lexer(path: String) {
 
     def scanNum() {
       if (offset >= source.length() || source.charAt(offset) == '\n') {
-        throw new ParserException("runaway string", startRow, startCol, offset);
+        throw new ParserException("number format error:", startRow, startCol, offset);
       } else if (isNumberOrChar(source.charAt(offset))) {
-        if (source.charAt(offset) == '.') {
-          isInt = false
-        }
-      } else {
+          if (source.charAt(offset) == '.') {
+            isInt = false
+          }
         forward()
         scanNum()
-      }
+      }/* else {
+        if (source.charAt(offset) != ' ') {
+          throw new ParserException("number format error: " + source.charAt(offset), startRow, startCol, offset);
+        }
+      }*/
     }
 
     scanNum()
@@ -147,34 +160,62 @@ class Lexer(path: String) {
   @throws(classOf[ParserException])
   def nextToken(): Node = {
 
-    skipSpacesAndComments()
-
     if (offset >= source.length()) {
       null
-    }
-
-    val cur = source.charAt(offset)
-    if (Delimeter.isDelimiter(cur)) {
-      val ret: Node = new Delimeter(Character.toString(cur), file, offset, offset + 1, row, col)
-      forward()
-      ret
-    }
-
-    if (source.startsWith(Constants.STRING_BEGIN, offset)) {
-      scanString()
-    }
-
-    if (Character.isDigit(source.charAt(offset)) ||
-      ((source.charAt(offset) == '+' || source.charAt(offset) == '-') 
-      && offset + 1 < source.length() && Character.isDigit(source.charAt(offset + 1)))) {
-      scanNumber()
-    }
+    } 
     
-    if (isIdentifierChar(source.charAt(offset))) {
-      scanNameOrKeyword()
+    else {
+      skipSpacesAndComments()
+
+      val cur = source.charAt(offset)
+      if (Delimeter.isDelimiter(cur)) {
+        val ret: Node = new Delimeter(Character.toString(cur), file, offset, offset + 1, row, col)
+        forward()
+        ret
+      } 
+      
+      else if (source.startsWith(Constants.STRING_BEGIN, offset)) {
+        scanString()
+      } 
+      
+      else if (Character.isDigit(source.charAt(offset)) ||
+        ((source.charAt(offset) == '+' || source.charAt(offset) == '-') 
+        && offset + 1 < source.length() && Character.isDigit(source.charAt(offset + 1)))) {
+        scanNumber()
+      } 
+      
+      else if (isIdentifierChar(source.charAt(offset))) {
+        scanNameOrKeyword()
+      }
+      
+      else {
+        throw new ParserException("unrecognized syntax: " + source.substring(offset, offset + 1),
+                  row, col, offset)
+      }
     }
-    
-    throw new ParserException("unrecognized syntax: " + source.substring(offset, offset + 1),
-                row, col, offset)
   }
+}
+
+object LexParser extends App {
+  val lexer: LexParser = new LexParser("D:/workspace/workspace11/SoScheme/test/hello.ss")
+  var tokens: List[Node] = List[Node]()
+  var n:Node = lexer.nextToken()
+  
+  def parse() {
+    if (n != null) {
+      tokens = n :: tokens
+      try {
+        n = lexer.nextToken()
+        parse()
+      } catch {
+        case e: ParserException => Log.error(e.toString())
+        case e1: Exception => Log.error(e1.toString())
+      }
+    }
+  }
+  
+  parse()
+  
+  Log.info("LexParser result:")
+  tokens.foreach { node => Log.info(node.toString()) }
 }
