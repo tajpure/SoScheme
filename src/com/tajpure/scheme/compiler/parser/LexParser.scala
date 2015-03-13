@@ -66,9 +66,18 @@ class LexParser(_path: String) {
     }
     found
   }
+  
+  def skipEnter(): Boolean = {
+    var found = false
+    if (source.charAt(offset) == '\r' || source.charAt(offset) == '\n') {
+      found = true
+      forward()
+    }
+    found
+  }
 
   def skipSpacesAndComments() {
-    if (skipSpaces() || skipComments()) {
+    if (skipSpaces() || skipComments() || skipEnter()) {
       skipSpacesAndComments()
     }
   }
@@ -92,7 +101,7 @@ class LexParser(_path: String) {
 
     scanChar()
     val end: Int = offset
-    val content: String = source.substring(start + Constants.STRING_BEGIN.length(), end + Constants.STRING_END.length())
+    val content: String = source.substring(start + Constants.STRING_BEGIN.length(), end - Constants.STRING_END.length())
     new Str(content, file, start, end, row, col)
   }
 
@@ -115,11 +124,7 @@ class LexParser(_path: String) {
           }
         forward()
         scanNum()
-      }/* else {
-        if (source.charAt(offset) != ' ') {
-          throw new ParserException("number format error: " + source.charAt(offset), startRow, startCol, offset);
-        }
-      }*/
+      }
     }
 
     scanNum()
@@ -203,13 +208,13 @@ object LexParser extends App {
   
   def parse() {
     if (n != null) {
-      tokens = n :: tokens
+      tokens  = tokens :+ n
       try {
         n = lexer.nextToken()
         parse()
       } catch {
-        case e: ParserException => Log.error(e.toString())
-        case e1: Exception => Log.error(e1.toString())
+        case pe: ParserException => Log.error(pe.toString())
+        case e: Exception => Log.error(e.toString())
       }
     }
   }

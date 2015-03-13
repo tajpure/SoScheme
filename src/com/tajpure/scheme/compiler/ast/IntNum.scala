@@ -26,4 +26,9 @@ class IntNum(_content: String, _file: String, _start: Int, _end: Int, _row: Int,
   def typeCheck(s: Scope): Value = {
     null
   }
+  
+  override
+  def toString(): String = {
+    content
+  }
 }

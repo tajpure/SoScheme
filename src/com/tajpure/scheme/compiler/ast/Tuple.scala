@@ -13,4 +13,11 @@ class Tuple(elements: List[Node], opne: Node, close: Node, _file: String, _start
   def typeCheck(s: Scope): Value = {
     null
   }
+  
+  override
+  def toString(): String = {
+    val sb: StringBuilder = new StringBuilder()
+    elements.foreach { node => sb.append(node.toString()) }
+    sb.toString()
+  }
 }

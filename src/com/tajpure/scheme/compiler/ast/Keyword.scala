@@ -14,4 +14,9 @@ class Keyword(_id: String, _file: String, _start: Int, _end: Int,
   def typeCheck(s: Scope): Value = {
     null
   }
+  
+  override
+  def toString(): String = {
+    id
+  }
 }
