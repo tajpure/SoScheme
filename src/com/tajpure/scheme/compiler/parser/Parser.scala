@@ -37,13 +37,11 @@ class Parser() {
             case Constants.LAMBDA => parseFun(tuple)
           }
         } else {
-          null
+          parseCall(tuple)
         }
       }
     }
   }
-  
-  
   
   def parseIf(tuple: Tuple): If = {
     null

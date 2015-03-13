@@ -1,5 +1,5 @@
 package com.tajpure.scheme.compiler.value
 
-class BoolValue {
+class BoolValue extends Value {
 
 }

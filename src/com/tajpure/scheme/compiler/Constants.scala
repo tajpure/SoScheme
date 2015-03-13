@@ -14,7 +14,7 @@ object Constants {
 
   // Quotation
   val _QUOTE = "quote"
-  val QUOTE = "'"
+  val QUOTE = '''
   val QUOTE_NEAR = "`"
 
   // Comments

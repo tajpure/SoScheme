@@ -74,7 +74,7 @@ class PreParser(_path: String) {
 }
 
 object PreParser extends App {
-  val preParser: PreParser = new PreParser("D:/workspace/workspace11/SoScheme/test/hello.ss")
+  val preParser: PreParser = new PreParser("D:/workspace/workspace11/SoScheme/test/location.ss")
   try {
     Log.info("preparser result: " + preParser.parse().toString())
   } catch {

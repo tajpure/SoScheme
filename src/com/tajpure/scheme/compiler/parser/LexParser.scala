@@ -10,6 +10,7 @@ import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.Str
 import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
+import com.tajpure.scheme.compiler.ast.Const
 
 /**
  * Split source file
@@ -45,7 +46,7 @@ class LexParser(_path: String) {
 
   def skipSpaces(): Boolean = {
     var found = false
-    if (source.charAt(offset) == ' ') {
+    if (offset < source.length && source.charAt(offset) == ' ') {
       found = true
       skip(1)
       skipSpaces()
@@ -69,7 +70,7 @@ class LexParser(_path: String) {
   
   def skipEnter(): Boolean = {
     var found = false
-    if (source.charAt(offset) == '\r' || source.charAt(offset) == '\n') {
+    if (offset < source.length && (source.charAt(offset) == '\r' || source.charAt(offset) == '\n')) {
       found = true
       forward()
     }
@@ -88,18 +89,18 @@ class LexParser(_path: String) {
     val startCol: Int = col
     skip(Constants.STRING_BEGIN.length());
 
-    def scanChar() {
+    def loop() {
       if (offset >= source.length() || source.charAt(offset) == '\n') {
         throw new ParserException("string format error:", startRow, startCol, offset);
       } else if (source.startsWith(Constants.STRING_END, offset)) {
         skip(Constants.STRING_END.length());
       } else {
         forward()
-        scanChar()
+        loop()
       }
     }
-
-    scanChar()
+    loop()
+    
     val end: Int = offset
     val content: String = source.substring(start + Constants.STRING_BEGIN.length(), end - Constants.STRING_END.length())
     new Str(content, file, start, end, row, col)
@@ -115,7 +116,7 @@ class LexParser(_path: String) {
     val startCol: Int = col
     var isInt: Boolean = true
 
-    def scanNum() {
+    def loop() {
       if (offset >= source.length() || source.charAt(offset) == '\n') {
         throw new ParserException("number format error:", startRow, startCol, offset);
       } else if (isNumberOrChar(source.charAt(offset))) {
@@ -123,11 +124,11 @@ class LexParser(_path: String) {
             isInt = false
           }
         forward()
-        scanNum()
+        loop()
       }
     }
-
-    scanNum()
+    loop()
+    
     val end: Int = offset
     val content: String = source.substring(start, end)
     if (isInt) {
@@ -135,6 +136,24 @@ class LexParser(_path: String) {
     } else {
       new FloatNum(content, file, start, end, startRow, startCol)
     }
+  }
+  
+  def scanConst(): Node = {
+    val start: Int = offset
+    val startRow: Int = row
+    val startCol: Int = col
+    
+    def loop() {
+      if (offset < source.length && source.charAt(offset) == Constants.QUOTE) {
+        forward()
+        loop()
+      }
+    }
+    loop()
+    
+    val end: Int = offset
+    val content: String = source.substring(start, end)
+    new Const(content, file, start, end, row, col)
   }
 
   def isIdentifierChar(ch: Char): Boolean = {
@@ -164,14 +183,14 @@ class LexParser(_path: String) {
 
   @throws(classOf[ParserException])
   def nextToken(): Node = {
+      
+    skipSpacesAndComments()
 
     if (offset >= source.length()) {
       null
     } 
     
     else {
-      skipSpacesAndComments()
-
       val cur = source.charAt(offset)
       if (Delimeter.isDelimiter(cur)) {
         val ret: Node = new Delimeter(Character.toString(cur), file, offset, offset + 1, row, col)
@@ -182,6 +201,10 @@ class LexParser(_path: String) {
       else if (source.startsWith(Constants.STRING_BEGIN, offset)) {
         scanString()
       } 
+      
+      else if (source.charAt(offset) == Constants.QUOTE) {
+        scanConst()
+      }
       
       else if (Character.isDigit(source.charAt(offset)) ||
         ((source.charAt(offset) == '+' || source.charAt(offset) == '-') 
