@@ -10,7 +10,7 @@ object FileUtils {
   
   def readFile(path: String) : String = {
     val content: String = scala.io.Source.fromFile(path).mkString
-    println(content)
+//    println(content)
     content
   }
 }

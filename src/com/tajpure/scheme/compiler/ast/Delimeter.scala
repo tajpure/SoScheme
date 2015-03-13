@@ -32,9 +32,10 @@ object Delimeter {
   def _match(open: Node, close: Node): Boolean = {
     if (!(open.isInstanceOf[Delimeter]) || !(close.isInstanceOf[Delimeter])) {
       false
+    } else {
+      val matched: String = delimMap.get(open.asInstanceOf[Delimeter].shape)
+      matched != null && matched.equals(close.asInstanceOf[Delimeter].shape)
     }
-    val matched: String = delimMap.get(open.asInstanceOf[Delimeter].shape)
-    matched != null && matched.equals(close.asInstanceOf[Delimeter].shape)
   }
 }
 

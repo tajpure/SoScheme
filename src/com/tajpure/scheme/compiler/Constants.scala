@@ -5,6 +5,9 @@ object Constants {
   // delimiters and delimiters pairs
   val PAREN_BEGIN = "("
   val PAREN_END = ")"
+  
+  val SQUARE_BEGIN = "["
+  val SQUARE_END = "]"
 
   val STRING_BEGIN = "\""
   val STRING_END = "\""
@@ -12,6 +15,7 @@ object Constants {
   // Quotation
   val _QUOTE = "quote"
   val QUOTE = "'"
+  val QUOTE_NEAR = "`"
 
   // Comments
   val COMMENTS = ";"
@@ -45,6 +49,9 @@ object Constants {
   val OR = "or"
   val SYNTAX_RULES = "syntax-rules"
 
-  val keyword = List(AND, BEGIN, CWCC, CWOF, CASE, COND, DEFINE, DEFINE_SYNTAX, DELAY, DO,
+  val KEYWORDS = List(AND, BEGIN, CWCC, CWOF, CASE, COND, DEFINE, DEFINE_SYNTAX, DELAY, DO,
     DYNAMIC_WIND, ELSE, FOR_EACH, IF, LAMBDA, LET, LET_STAR, LET_SYNTAX, LETREC, LETREC_SYNTAX, MAP, OR, SYNTAX_RULES)
+    
+  val IDENT_CHARS = List('!', '$', '%', '&', '*', '/', ':', '<', '=', '>', '?', '^', '_',
+                    '~', '+', '-', '@', '.', '#')
 }

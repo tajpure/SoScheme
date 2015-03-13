@@ -5,8 +5,6 @@ import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.Delimeter
 import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.ast.Name
-import com.tajpure.scheme.compiler.ast.Name
-import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.Constants
 import com.tajpure.scheme.compiler.util.Log
 
@@ -31,7 +29,7 @@ class PreParser(_path: String) {
         var elements: List[Node] = List[Node]()
         var next: Node = nextNode1(depth + 1)
         def loop() {
-          if (Delimeter._match(first, next)) {
+          if (!Delimeter._match(first, next)) {
             if (next == null) {
               throw new ParserException("unclosed delimeter till end of file: " + first.toString(), first)
             } else if (Delimeter.isClose(next)) {
@@ -39,6 +37,8 @@ class PreParser(_path: String) {
                   next.toString() + " does not close " + first.toString(), next)
             } else {
               elements = elements :+ next
+              next = nextNode1(depth + 1)
+              loop()
             }
           }
         }
@@ -63,6 +63,7 @@ class PreParser(_path: String) {
     def loop() {
       if (s != null) {
         elements = elements :+ s
+        last = s
         s = nextNode()
         loop()
       }
@@ -74,5 +75,10 @@ class PreParser(_path: String) {
 
 object PreParser extends App {
   val preParser: PreParser = new PreParser("D:/workspace/workspace11/SoScheme/test/hello.ss")
-  Log.info("preparser result: " + preParser.parse().toString())
+  try {
+    Log.info("preparser result: " + preParser.parse().toString())
+  } catch {
+    case pe: ParserException => Log.error(pe.toString())
+    case e: Exception => Log.error(e.toString())
+  }
 }

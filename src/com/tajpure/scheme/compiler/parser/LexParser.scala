@@ -138,7 +138,7 @@ class LexParser(_path: String) {
   }
 
   def isIdentifierChar(ch: Char): Boolean = {
-    Character.isLetterOrDigit(ch)
+    Character.isLetterOrDigit(ch) || Constants.IDENT_CHARS.contains(ch)
   }
 
   def scanNameOrKeyword(): Node = {
@@ -155,7 +155,7 @@ class LexParser(_path: String) {
     scanIdent()
 
     val content = source.substring(start, offset)
-    if (Constants.keyword.contains(content)) {
+    if (Constants.KEYWORDS.contains(content)) {
       new Keyword(content, file, start, offset, startRow, startCol)
     } else {
       new Name(content, file, start, offset, startRow, startCol)
