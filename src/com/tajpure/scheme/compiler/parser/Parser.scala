@@ -1,14 +1,15 @@
 package com.tajpure.scheme.compiler.parser
 
 import com.tajpure.scheme.compiler.Constants
+import com.tajpure.scheme.compiler.ast.Call
+import com.tajpure.scheme.compiler.ast.Define
 import com.tajpure.scheme.compiler.ast.If
 import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.Tuple
-import com.tajpure.scheme.compiler.ast.Define
-import com.tajpure.scheme.compiler.ast.Call
+import com.tajpure.scheme.compiler.ast.Func
 
-class Parser() {
+object Parser extends App {
   
   @throws(classOf[ParserException])
   def parse(_path: String): Node = {
@@ -31,11 +32,14 @@ class Parser() {
         
         if (keyNode.isInstanceOf[Name]) {
           keyNode.asInstanceOf[Name].id match {
-            case Constants.IF => parseIf(tuple)
             case Constants.DEFINE => parseDefine(tuple)
+            case Constants.IF => parseIf(tuple)
             case Constants.LET => parseAssign(tuple)
-            case Constants.LAMBDA => parseFun(tuple)
+            case Constants.LAMBDA => parseLambda(tuple)
+            case default => parseCall(tuple)
           }
+        } else if (keyNode.isInstanceOf[Tuple]) {
+          parseNode(keyNode)
         } else {
           parseCall(tuple)
         }
@@ -43,11 +47,19 @@ class Parser() {
     }
   }
   
-  def parseIf(tuple: Tuple): If = {
-    null
+  def parseDefine(tuple: Tuple): Define = {
+    var elements: List[Node] = tuple.elements
+    if (elements.size != 3) {
+       throw new ParserException("incorrect format of definition", tuple);
+    }
+    else {
+      val pattern: Node = parseNode(elements(1))
+      val value: Node = parseNode(elements(2))
+      new Define(pattern, value, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
+    }
   }
   
-  def parseDefine(tuple: Tuple): Define = {
+  def parseIf(tuple: Tuple): If = {
     null
   }
   
@@ -55,11 +67,25 @@ class Parser() {
     null
   }
   
-  def parseFun(tuple: Tuple): Define = {
-    null
+  def parseLambda(tuple: Tuple): Func = {
+    var elements: List[Node] = tuple.elements
+    val preNode: Node = elements(1)
+    if (elements.size != 3) {
+       throw new ParserException("incorrect format of function", tuple);
+    }
+    else if (!preNode.isInstanceOf[Tuple]) {
+       throw new ParserException("incorrect format of parameters:" + preNode.toString(), preNode);
+    }
+    else {
+      val params: List[Node] = preNode.asInstanceOf[Tuple].elements
+      val value: Node = parseNode(elements(2))
+      new Func(params, value, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
+    }
   }
   
   def parseCall(tuple: Tuple): Call = {
     null
   }
+  
+  println(parse("/home/taojx/sworkspace/SoScheme/test/hello.ss"))
 }

@@ -174,11 +174,11 @@ class LexParser(_path: String) {
     scanIdent()
 
     val content = source.substring(start, offset)
-    if (Constants.KEYWORDS.contains(content)) {
-      new Keyword(content, file, start, offset, startRow, startCol)
-    } else {
+//    if (Constants.KEYWORDS.contains(content)) {
+//      new Keyword(content, file, start, offset, startRow, startCol)
+//    } else {
       new Name(content, file, start, offset, startRow, startCol)
-    }
+//    }
   }
 
   @throws(classOf[ParserException])

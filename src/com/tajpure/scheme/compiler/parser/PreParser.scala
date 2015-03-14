@@ -74,8 +74,9 @@ class PreParser(_path: String) {
 }
 
 object PreParser extends App {
-  val preParser: PreParser = new PreParser("D:/workspace/workspace11/SoScheme/test/location.ss")
+  val preParser: PreParser = new PreParser("/home/taojx/sworkspace/SoScheme/test/hello.ss")
   try {
+//    Log.info("preparser result: " + preParser.parse().asInstanceOf[Tuple].elements.headOption.get.asInstanceOf[Tuple].elements.size)
     Log.info("preparser result: " + preParser.parse().toString())
   } catch {
     case pe: ParserException => Log.error(pe.toString())
