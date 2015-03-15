@@ -24,7 +24,8 @@ class PreParser(_path: String) {
     
     if (first == null) {
       null
-    } else {
+    } 
+    else {
       if (Delimeter.isOpen(first)) {
         var elements: List[Node] = List[Node]()
         var next: Node = nextNode1(depth + 1)
@@ -32,10 +33,12 @@ class PreParser(_path: String) {
           if (!Delimeter._match(first, next)) {
             if (next == null) {
               throw new ParserException("unclosed delimeter till end of file: " + first.toString(), first)
-            } else if (Delimeter.isClose(next)) {
+            } 
+            else if (Delimeter.isClose(next)) {
               throw new ParserException("unmatched closing delimeter: " +
                   next.toString() + " does not close " + first.toString(), next)
-            } else {
+            } 
+            else {
               elements = elements :+ next
               next = nextNode1(depth + 1)
               loop()
@@ -44,10 +47,12 @@ class PreParser(_path: String) {
         }
         loop()
         new Tuple(elements, first, next, first.file, first.start, next.end, first.row, first.col)
-      } else if (depth == 0 && Delimeter.isClose(first)) {
+      } 
+      else if (depth == 0 && Delimeter.isClose(first)) {
         throw new ParserException("unmatched closing delimeter: " + first.toString() +
             " does not close any open delimeter", first);
-      } else {
+      } 
+      else {
         first
       }
       

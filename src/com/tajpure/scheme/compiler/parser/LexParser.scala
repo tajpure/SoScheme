@@ -92,9 +92,11 @@ class LexParser(_path: String) {
     def loop() {
       if (offset >= source.length() || source.charAt(offset) == '\n') {
         throw new ParserException("string format error:", startRow, startCol, offset);
-      } else if (source.startsWith(Constants.STRING_END, offset)) {
+      } 
+      else if (source.startsWith(Constants.STRING_END, offset)) {
         skip(Constants.STRING_END.length());
-      } else {
+      } 
+      else {
         forward()
         loop()
       }
@@ -119,7 +121,8 @@ class LexParser(_path: String) {
     def loop() {
       if (offset >= source.length() || source.charAt(offset) == '\n') {
         throw new ParserException("number format error:", startRow, startCol, offset);
-      } else if (isNumberOrChar(source.charAt(offset))) {
+      } 
+      else if (isNumberOrChar(source.charAt(offset))) {
           if (source.charAt(offset) == '.') {
             isInt = false
           }
@@ -133,7 +136,8 @@ class LexParser(_path: String) {
     val content: String = source.substring(start, end)
     if (isInt) {
       new IntNum(content, file, start, end, startRow, startCol)
-    } else {
+    } 
+    else {
       new FloatNum(content, file, start, end, startRow, startCol)
     }
   }
@@ -197,25 +201,20 @@ class LexParser(_path: String) {
         forward()
         ret
       } 
-      
       else if (source.startsWith(Constants.STRING_BEGIN, offset)) {
         scanString()
       } 
-      
       else if (source.charAt(offset) == Constants.QUOTE) {
         scanConst()
       }
-      
       else if (Character.isDigit(source.charAt(offset)) ||
         ((source.charAt(offset) == '+' || source.charAt(offset) == '-') 
         && offset + 1 < source.length() && Character.isDigit(source.charAt(offset + 1)))) {
         scanNumber()
       } 
-      
       else if (isIdentifierChar(source.charAt(offset))) {
         scanNameOrKeyword()
       }
-      
       else {
         throw new ParserException("unrecognized syntax: " + source.substring(offset, offset + 1),
                   row, col, offset)

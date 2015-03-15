@@ -3,8 +3,11 @@ package com.tajpure.scheme.compiler.ast
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 
-class Define(pattern: Node, value: Node, _file: String, _start: Int, _end: Int,
+class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int,
              _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
+  
+  val pattern: Node = _pattern
+  val value: Node = _value
 
   def interp(s: Scope): Value = {
     null
@@ -16,7 +19,7 @@ class Define(pattern: Node, value: Node, _file: String, _start: Int, _end: Int,
   
   override
   def toString(): String = {
-    "define"
+    "define " + pattern.toString() + " " + value.toString()
   }
 
 }

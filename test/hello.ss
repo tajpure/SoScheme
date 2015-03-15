@@ -1,2 +1,3 @@
 ; This is the test file for So-Scheme
-(define x (lambda(a b) (+ a b)))
+(define x 1)
+(display x)

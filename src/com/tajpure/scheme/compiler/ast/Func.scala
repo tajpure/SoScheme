@@ -13,4 +13,9 @@ class Func(_params: List[Node], _propertyForm: Scope, _body: Node, _file: String
   def typeCheck(s: Scope): Value = {
     null
   }
+  
+  override
+  def toString: String = {
+    "function"
+  }
 }

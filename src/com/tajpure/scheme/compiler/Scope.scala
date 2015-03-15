@@ -2,14 +2,22 @@ package com.tajpure.scheme.compiler
 
 import scala.collection.mutable.HashMap
 import com.tajpure.scheme.compiler.value.Value
-import com.tajpure.scheme.compiler.value.Value
-import com.tajpure.scheme.compiler.value.Value
-import com.tajpure.scheme.compiler.value.Value
-import com.tajpure.scheme.compiler.value.Value
-import com.tajpure.scheme.compiler.value.Value
-import com.tajpure.scheme.compiler.value.Value
-import com.tajpure.scheme.compiler.value.Value
-import com.tajpure.scheme.compiler.value.Value
+import com.tajpure.scheme.compiler.ast.Node
+import com.tajpure.scheme.compiler.value.Type
+import com.tajpure.scheme.compiler.value.premitives.Sub
+import com.tajpure.scheme.compiler.value.premitives.Add
+import com.sun.org.apache.xpath.internal.operations.Lt
+import com.sun.org.apache.xpath.internal.operations.Gt
+import com.tajpure.scheme.compiler.value.premitives.Not
+import com.tajpure.scheme.compiler.value.premitives.And
+import com.tajpure.scheme.compiler.value.premitives.Mult
+import com.tajpure.scheme.compiler.value.premitives.Div
+import com.tajpure.scheme.compiler.value.premitives.Or
+import com.tajpure.scheme.compiler.value.premitives.Eq
+import com.tajpure.scheme.compiler.value.premitives.LTE
+import com.tajpure.scheme.compiler.value.premitives.GT
+import com.tajpure.scheme.compiler.value.premitives.GTE
+import com.tajpure.scheme.compiler.value.premitives.LT
 
 class Scope(_parent: Scope) {
 
@@ -114,5 +122,62 @@ class Scope(_parent: Scope) {
     } else {
       null
     }
+  }
+  
+  def put(name: String, key: String, value: Object): Unit = {
+    var item: HashMap[String, Object] = map.get(name).get
+    if (item == null) {
+      item = new HashMap[String, Object]()
+    }
+    item.put(key, value)
+    map.put(name, item)
+  }
+  
+  def putProperties(name: String, properties: HashMap[String, Object]): Unit = {
+    var item: HashMap[String, Object] = map.get(name).get
+    if (item == null) {
+      item = new HashMap[String, Object]()
+    }
+    item = item ++: properties
+    map.put(name, item)
+  }
+  
+  def putValue(name: String, value: Value): Unit = {
+    put(name, "value", value)
+  }
+  
+  def putType(name: String, value: Value): Unit = {
+    put(name, "type", value)
+  }
+  
+  def containsKey(key: String): Boolean = {
+    map.contains(key)
+  }
+}
+
+object Scope {
+  def buildInitScope: Scope = {
+    val init: Scope = new Scope()
+    init.putValue("+", new Add())
+    init.putValue("-", new Sub())
+    init.putValue("*", new Mult())
+    init.putValue("/", new Div())
+
+    init.putValue("<", new LT())
+    init.putValue("<=", new LTE())
+    init.putValue(">", new GT())
+    init.putValue(">=", new GTE())
+    init.putValue("=", new Eq())
+    init.putValue("and", new And())
+    init.putValue("or", new Or())
+    init.putValue("not", new Not())
+
+    init.putValue("#t", Type.BOOL)
+    init.putValue("#f", Type.BOOL)
+
+    init.putValue("Int", Type.INT)
+    init.putValue("Bool", Type.BOOL)
+    init.putValue("String", Type.STRING)
+    init
   }
 }

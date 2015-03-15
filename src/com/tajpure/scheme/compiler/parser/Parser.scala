@@ -1,6 +1,8 @@
 package com.tajpure.scheme.compiler.parser
 
 import com.tajpure.scheme.compiler.Constants
+import com.tajpure.scheme.compiler.Scope
+import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.ast.Call
 import com.tajpure.scheme.compiler.ast.Define
 import com.tajpure.scheme.compiler.ast.If
@@ -71,15 +73,26 @@ object Parser extends App {
     var elements: List[Node] = tuple.elements
     val preNode: Node = elements(1)
     if (elements.size != 3) {
-       throw new ParserException("incorrect format of function", tuple);
+       throw new ParserException("incorrect format of function", tuple)
     }
     else if (!preNode.isInstanceOf[Tuple]) {
-       throw new ParserException("incorrect format of parameters:" + preNode.toString(), preNode);
+       throw new ParserException("incorrect format of parameters:" + preNode.toString(), preNode)
     }
     else {
       val params: List[Node] = preNode.asInstanceOf[Tuple].elements
+      var paramsName: List[Name] = List[Name]()
+      params.foreach { node => 
+        if (node.isInstanceOf[Name]) {
+          paramsName = paramsName :+ node.asInstanceOf[Name]
+        } else {
+          throw new ParserException("can't pass as an argument:" + node.toString(), node)
+        }
+      }
+      
       val value: Node = parseNode(elements(2))
-      new Func(params, value, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
+      val properties: Scope = null
+      
+      new Func(paramsName, properties, value, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
     }
   }
   
