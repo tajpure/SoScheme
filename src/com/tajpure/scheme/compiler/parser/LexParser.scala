@@ -224,7 +224,8 @@ class LexParser(_path: String) {
 }
 
 object LexParser extends App {
-  val lexer: LexParser = new LexParser("D:/workspace/workspace11/SoScheme/test/hello.ss")
+//  val lexer: LexParser = new LexParser("D:/workspace/workspace11/SoScheme/test/hello.ss")
+  val lexer: LexParser = new LexParser("/home/taojx/sworkspace/SoScheme/test/location.ss")
   var tokens: List[Node] = List[Node]()
   var n:Node = lexer.nextToken()
   

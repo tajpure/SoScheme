@@ -3,27 +3,17 @@ package com.tajpure.scheme.compiler.ast
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 
-object Name {
-  
-  def genName(id: String): Node = {
-    new Name(id, null, 0, 0, 0, 0)
-  }
-}
-
-class Name(_id: String, _file: String, _start: Int, _end: Int,
+class Pair(_head: Node, _tail: Node, _file: String, _start: Int, _end: Int,
            _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
-  val id: String = _id
-
+  
+  val head: Node = _head
+  val tail: Node = _tail
+  
   def interp(s: Scope): Value = {
-    s.lookup(id)
+    null
   }
 
   def typeCheck(s: Scope): Value = {
     null
-  }
-  
-  override
-  def toString(): String = {
-    id
   }
 }

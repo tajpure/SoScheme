@@ -1,23 +1,24 @@
 package com.tajpure.scheme.compiler
 
 import scala.collection.mutable.HashMap
-import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.Type
-import com.tajpure.scheme.compiler.value.premitives.Sub
+import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.premitives.Add
-import com.sun.org.apache.xpath.internal.operations.Lt
-import com.sun.org.apache.xpath.internal.operations.Gt
-import com.tajpure.scheme.compiler.value.premitives.Not
 import com.tajpure.scheme.compiler.value.premitives.And
-import com.tajpure.scheme.compiler.value.premitives.Mult
 import com.tajpure.scheme.compiler.value.premitives.Div
-import com.tajpure.scheme.compiler.value.premitives.Or
 import com.tajpure.scheme.compiler.value.premitives.Eq
-import com.tajpure.scheme.compiler.value.premitives.LTE
 import com.tajpure.scheme.compiler.value.premitives.GT
 import com.tajpure.scheme.compiler.value.premitives.GTE
 import com.tajpure.scheme.compiler.value.premitives.LT
+import com.tajpure.scheme.compiler.value.premitives.LTE
+import com.tajpure.scheme.compiler.value.premitives.Mult
+import com.tajpure.scheme.compiler.value.premitives.Not
+import com.tajpure.scheme.compiler.value.premitives.Or
+import com.tajpure.scheme.compiler.value.premitives.Sub
+import com.tajpure.scheme.compiler.ast.Name
+import com.tajpure.scheme.compiler.ast.Tuple
+import com.tajpure.scheme.compiler.util.Log
 
 class Scope(_parent: Scope) {
 
@@ -56,7 +57,7 @@ class Scope(_parent: Scope) {
     }
   }
 
-  def loolUpLocal(name: String): Value = {
+  def lookUpLocal(name: String): Value = {
     val v: Object = lookupPropertyLocal(name, "value")
     if (v == null) {
       null
@@ -91,7 +92,7 @@ class Scope(_parent: Scope) {
 
   def lookupPropertyLocal(name: String, key: String): Object = {
     val item = map.get(name)
-    if (item != null) {
+    if (!item.isEmpty) {
       item.get(key)
     } else {
       null
@@ -125,9 +126,11 @@ class Scope(_parent: Scope) {
   }
   
   def put(name: String, key: String, value: Object): Unit = {
-    var item: HashMap[String, Object] = map.get(name).get
-    if (item == null) {
+    var item: HashMap[String, Object] = null
+    if (map.get(name).isEmpty) {
       item = new HashMap[String, Object]()
+    } else {
+      item = map.get(name).get
     }
     item.put(key, value)
     map.put(name, item)
@@ -153,10 +156,33 @@ class Scope(_parent: Scope) {
   def containsKey(key: String): Boolean = {
     map.contains(key)
   }
+  
+  def define(_pattern: Node, _value: Value): Unit = {
+    if (_pattern.isInstanceOf[Name]) {
+      val id: String = _pattern.asInstanceOf[Name].id
+      val value: Value = lookUpLocal(id)
+      if (value != null) {
+        Log.error(_pattern, "trying to redefine name: " + id)
+      }
+      else {
+        putValue(id, _value)
+      }
+    } 
+    else if (_pattern.isInstanceOf[Tuple]) {
+      
+    } 
+    else {
+      
+    }
+  }
+  
+  def assign(_pattern: Node, _value: Value): Unit = {
+    
+  }
 }
 
 object Scope {
-  def buildInitScope: Scope = {
+  def buildInitScope(): Scope = {
     val init: Scope = new Scope()
     init.putValue("+", new Add())
     init.putValue("-", new Sub())

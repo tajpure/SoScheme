@@ -23,13 +23,15 @@ object Parser extends App {
   def parseNode(preNode: Node): Node = {
     if (!preNode.isInstanceOf[Tuple]) {
       preNode
-    } else {
+    }
+    else {
       val tuple: Tuple = preNode.asInstanceOf[Tuple]
       var elements: List[Node] = tuple.elements
       
       if (elements.isEmpty) {
         throw new ParserException("syntax error: ", tuple)
-      } else {
+      } 
+      else {
         val keyNode: Node = elements(0)
         
         if (keyNode.isInstanceOf[Name]) {
@@ -40,9 +42,11 @@ object Parser extends App {
             case Constants.LAMBDA => parseLambda(tuple)
             case default => parseCall(tuple)
           }
-        } else if (keyNode.isInstanceOf[Tuple]) {
+        } 
+        else if (keyNode.isInstanceOf[Tuple]) {
           parseNode(keyNode)
-        } else {
+        } 
+        else {
           parseCall(tuple)
         }
       }
@@ -84,7 +88,8 @@ object Parser extends App {
       params.foreach { node => 
         if (node.isInstanceOf[Name]) {
           paramsName = paramsName :+ node.asInstanceOf[Name]
-        } else {
+        } 
+        else {
           throw new ParserException("can't pass as an argument:" + node.toString(), node)
         }
       }
@@ -100,5 +105,5 @@ object Parser extends App {
     null
   }
   
-  println(parse("/home/taojx/sworkspace/SoScheme/test/hello.ss"))
+  println(parse("/home/taojx/sworkspace/SoScheme/test/hello.ss").interp(Scope.buildInitScope()))
 }

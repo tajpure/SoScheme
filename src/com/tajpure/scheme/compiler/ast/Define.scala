@@ -10,7 +10,9 @@ class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
   val value: Node = _value
 
   def interp(s: Scope): Value = {
-    null
+    val vValue: Value = value.interp(s)
+    s.define(pattern, vValue)
+    pattern.interp(s)
   }
 
   def typeCheck(s: Scope): Value = {
