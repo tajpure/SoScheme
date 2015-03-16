@@ -16,4 +16,5 @@ class Number(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
   def typeCheck(s: Scope): Value = {
     null
   }
+  
 }

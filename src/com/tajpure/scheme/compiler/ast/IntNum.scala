@@ -2,6 +2,8 @@ package com.tajpure.scheme.compiler.ast
 
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
+import com.tajpure.scheme.compiler.value.IntValue
+import com.tajpure.scheme.compiler.value.Type
 
 class IntNum(_content: String, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -20,11 +22,11 @@ class IntNum(_content: String, _file: String, _start: Int, _end: Int, _row: Int,
   value = content.toInt
 
   def interp(s: Scope): Value = {
-    null
+    new IntValue(value)
   }
 
   def typeCheck(s: Scope): Value = {
-    null
+    Type.INT
   }
   
   override

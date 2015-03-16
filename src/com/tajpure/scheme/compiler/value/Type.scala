@@ -1,5 +1,10 @@
 package com.tajpure.scheme.compiler.value
 
-class Type {
-
+object Type {
+  
+  val BOOL: Value = new BoolType()
+  
+  val INT: Value = new IntType()
+  
+  val STRING: Value = new StringType()
 }

@@ -15,7 +15,7 @@ class Name(_id: String, _file: String, _start: Int, _end: Int,
   val id: String = _id
 
   def interp(s: Scope): Value = {
-    null
+    s.lookup(id)
   }
 
   def typeCheck(s: Scope): Value = {

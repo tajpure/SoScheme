@@ -26,5 +26,9 @@ abstract class Node(_file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   def typeCheck(node: Node, s: Scope) {
     node.interp(s)
   }
+  
+  def location(): String = {
+    file + ": row: " + (row + 1) + " col: " + (col + 1) 
+  }
 
 }
