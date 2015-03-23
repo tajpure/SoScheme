@@ -19,7 +19,7 @@ class IntNum(_content: String, _file: String, _start: Int, _end: Int, _row: Int,
     content = content.substring(1)
   }
 
-  value = content.toInt
+  value = content.toInt * sign
 
   def interp(s: Scope): Value = {
     new IntValue(value)
