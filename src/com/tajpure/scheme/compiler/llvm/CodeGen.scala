@@ -1,6 +1,8 @@
 package com.tajpure.scheme.compiler.llvm
 
+import org.jllvm.NativeLibrary
+
 object CodeGen extends App {
-  System.load("/home/taojx/sworkspace/SoScheme/lib/libjllvm.so")
+  NativeLibrary.load();
   println("loaded lib file...")
 }
