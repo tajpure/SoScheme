@@ -20,4 +20,5 @@ class FloatNum(_content: String, _file: String, _start: Int, _end: Int, _row: In
   def toString(): String = {
     content
   }
+  
 }

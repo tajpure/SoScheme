@@ -37,6 +37,7 @@ object Delimeter {
       matched != null && matched.equals(close.asInstanceOf[Delimeter].shape)
     }
   }
+  
 }
 
 class Delimeter(_shape: String, _file: String, _start: Int, _end: Int,
@@ -57,4 +58,5 @@ class Delimeter(_shape: String, _file: String, _start: Int, _end: Int,
   def toString(): String = {
     shape
   }
+  
 }

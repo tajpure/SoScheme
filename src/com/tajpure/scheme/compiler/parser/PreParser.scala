@@ -15,6 +15,7 @@ class PreParser(_source:String, _path: String) {
   }
 
   val file: String = FileUtils.unifyPath(_path)
+  
   val lexer = new LexParser(_source, _path)
 
   @throws(classOf[ParserException])
@@ -80,10 +81,13 @@ class PreParser(_source:String, _path: String) {
     loop()
     new Tuple(elements, Symbol.genSymbol(Constants.PAREN_BEGIN), Symbol.genSymbol(Constants.PAREN_END), file, first.start, last.end, 0, 0)
   }
+  
 }
 
 object PreParser extends App {
+  
   val preParser: PreParser = new PreParser("/home/taojx/sworkspace/SoScheme/test/hello.ss")
+  
   try {
 //    Log.info("preparser result: " + preParser.parse().asInstanceOf[Tuple].elements.headOption.get.asInstanceOf[Tuple].elements.size)
     Log.info("preparser result: " + preParser.parse().toString())
@@ -91,4 +95,5 @@ object PreParser extends App {
     case pe: ParserException => Log.error(pe.toString())
     case e: Exception => Log.error(e.toString())
   }
+  
 }

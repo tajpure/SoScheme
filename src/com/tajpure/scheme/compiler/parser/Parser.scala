@@ -28,6 +28,7 @@ object Parser extends App {
     parseNode(preNode)
   }
   
+  @throws(classOf[ParserException])
   def parseNode(preNode: Node): Node = {
     if (!preNode.isInstanceOf[Tuple]) {
       preNode
@@ -61,6 +62,7 @@ object Parser extends App {
     }
   }
   
+  @throws(classOf[ParserException])
   def parseDefine(tuple: Tuple): Define = {
     var elements: List[Node] = tuple.elements
     if (elements.size != 3) {
@@ -73,14 +75,17 @@ object Parser extends App {
     }
   }
   
+  @throws(classOf[ParserException])
   def parseIf(tuple: Tuple): If = {
     null
   }
   
+  @throws(classOf[ParserException])
   def parseAssign(tuple: Tuple): Define = {
     null
   }
   
+  @throws(classOf[ParserException])
   def parseLambda(tuple: Tuple): Func = {
     var elements: List[Node] = tuple.elements
     val preNode: Node = elements(1)
@@ -109,12 +114,20 @@ object Parser extends App {
     }
   }
   
+  @throws(classOf[ParserException])
   def parseCall(tuple: Tuple): Call = {
     val elements: List[Node] = tuple.elements
     val func: Node = parseNode(tuple.elements(0))
-    val argument: Argument = new Argument(elements)
+    val parsedArgs: List[Node] = parseList(elements)
+    val argument: Argument = new Argument(parsedArgs)
     new Call(func, argument, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
   }
   
+  @throws(classOf[ParserException])
+  def parseList(preNodes: List[Node]): List[Node] = {
+    preNodes.map { node => parseNode(node) }
+  }
+  
   println(parse("D:/workspace/workspace11/SoScheme/test/location.ss").interp(Scope.buildInitScope()))
+  
 }

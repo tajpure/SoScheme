@@ -179,9 +179,11 @@ class Scope(_parent: Scope) {
   def assign(_pattern: Node, _value: Value): Unit = {
     
   }
+  
 }
 
 object Scope {
+  
   def buildInitScope(): Scope = {
     val init: Scope = new Scope()
     init.putValue("+", new Add())
@@ -206,4 +208,5 @@ object Scope {
     init.putValue("String", Type.STRING)
     init
   }
+  
 }

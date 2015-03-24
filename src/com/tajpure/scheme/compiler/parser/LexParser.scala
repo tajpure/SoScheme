@@ -172,7 +172,7 @@ class LexParser(_source:String, _path: String) {
     Character.isLetterOrDigit(ch) || Constants.IDENT_CHARS.contains(ch)
   }
 
-  def scanNameOrKeyword(): Node = {
+  def scanSymbol(): Node = {
     val start: Int = offset
     val startRow: Int = row
     val startCol: Int = col
@@ -186,11 +186,7 @@ class LexParser(_source:String, _path: String) {
     scanIdent()
 
     val content = source.substring(start, offset)
-//    if (Constants.KEYWORDS.contains(content)) {
-//      new Keyword(content, file, start, offset, startRow, startCol)
-//    } else {
-      new Symbol(content, file, start, offset, startRow, startCol)
-//    }
+    new Symbol(content, file, start, offset, startRow, startCol)
   }
 
   @throws(classOf[ParserException])
@@ -221,7 +217,7 @@ class LexParser(_source:String, _path: String) {
         scanNumber()
       } 
       else if (isIdentifierChar(source.charAt(offset))) {
-        scanNameOrKeyword()
+        scanSymbol()
       }
       else {
         throw new ParserException("unrecognized syntax: " + source.substring(offset, offset + 1),
@@ -229,12 +225,16 @@ class LexParser(_source:String, _path: String) {
       }
     }
   }
+  
 }
 
 object LexParser extends App {
+  
 //  val lexer: LexParser = new LexParser("D:/workspace/workspace11/SoScheme/test/hello.ss")
   val lexer: LexParser = new LexParser("/home/taojx/sworkspace/SoScheme/test/location.ss")
+  
   var tokens: List[Node] = List[Node]()
+  
   var n:Node = lexer.nextToken()
   
   def loop() {
@@ -253,4 +253,5 @@ object LexParser extends App {
   
   Log.info("LexParser result:")
   tokens.foreach { node => Log.info(node.toString()) }
+  
 }

@@ -7,4 +7,5 @@ object Type {
   val INT: Value = new IntType()
   
   val STRING: Value = new StringType()
+  
 }
