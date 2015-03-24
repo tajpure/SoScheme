@@ -105,5 +105,5 @@ object Parser extends App {
     null
   }
   
-  println(parse("/home/taojx/sworkspace/SoScheme/test/hello.ss").interp(Scope.buildInitScope()))
+  println(parse("D:/workspace/workspace11/SoScheme/test/location.ss").interp(Scope.buildInitScope()))
 }
