@@ -1,10 +1,18 @@
 package com.tajpure.scheme.compiler
 
-class Interpreter(_source: String) {
+import com.tajpure.scheme.compiler.parser.Parser
 
-  val source: String = _source
+object Interpreter extends App {
 
-  def run(): Unit = {
-    println("So Scheme --Version 0.1")
+  println("""So Scheme for compiling scheme 
+to target code, depending on 
+scala and llvm -version 0.0.1
+  Copyright (C) 2014 tajpure""")
+  
+  def interp(_source: String): Unit = {
+    println(_source)
+    println("=> " + Parser.parse(_source, "").interp(Scope.buildInitScope()))
   }
+  
+  interp("(define x 1)")
 }

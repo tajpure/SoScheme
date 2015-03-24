@@ -16,7 +16,7 @@ import com.tajpure.scheme.compiler.value.premitives.Mult
 import com.tajpure.scheme.compiler.value.premitives.Not
 import com.tajpure.scheme.compiler.value.premitives.Or
 import com.tajpure.scheme.compiler.value.premitives.Sub
-import com.tajpure.scheme.compiler.ast.Name
+import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.util.Log
 
@@ -158,8 +158,8 @@ class Scope(_parent: Scope) {
   }
   
   def define(_pattern: Node, _value: Value): Unit = {
-    if (_pattern.isInstanceOf[Name]) {
-      val id: String = _pattern.asInstanceOf[Name].id
+    if (_pattern.isInstanceOf[Symbol]) {
+      val id: String = _pattern.asInstanceOf[Symbol].id
       val value: Value = lookUpLocal(id)
       if (value != null) {
         Log.error(_pattern, "trying to redefine name: " + id)

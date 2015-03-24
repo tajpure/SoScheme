@@ -1,27 +1,35 @@
 package com.tajpure.scheme.compiler.parser
 
 import com.tajpure.scheme.compiler.Constants
+import com.tajpure.scheme.compiler.ast.Const
 import com.tajpure.scheme.compiler.ast.Delimeter
 import com.tajpure.scheme.compiler.ast.FloatNum
 import com.tajpure.scheme.compiler.ast.IntNum
 import com.tajpure.scheme.compiler.ast.Keyword
-import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.Str
+import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
-import com.tajpure.scheme.compiler.ast.Const
 
 /**
  * Split source file
  */
-class LexParser(_path: String) {
+class LexParser(_source:String, _path: String) {
 
+  def this(_path: String) {
+    this(null, _path)
+  }
+  
   var offset: Int = 0
   var row: Int = 0
   var col: Int = 0
 
-  val source: String = FileUtils.readFile(_path)
+  val source: String = _source match {
+    case null => FileUtils.readFile(_path)
+    case default => _source
+  }
+  
   val file: String = FileUtils.unifyPath(_path)
 
   if (source == null) {
@@ -181,7 +189,7 @@ class LexParser(_path: String) {
 //    if (Constants.KEYWORDS.contains(content)) {
 //      new Keyword(content, file, start, offset, startRow, startCol)
 //    } else {
-      new Name(content, file, start, offset, startRow, startCol)
+      new Symbol(content, file, start, offset, startRow, startCol)
 //    }
   }
 
@@ -229,20 +237,19 @@ object LexParser extends App {
   var tokens: List[Node] = List[Node]()
   var n:Node = lexer.nextToken()
   
-  def parse() {
+  def loop() {
     if (n != null) {
       tokens  = tokens :+ n
       try {
         n = lexer.nextToken()
-        parse()
+        loop()
       } catch {
         case pe: ParserException => Log.error(pe.toString())
         case e: Exception => Log.error(e.toString())
       }
     }
   }
-  
-  parse()
+  loop()
   
   Log.info("LexParser result:")
   tokens.foreach { node => Log.info(node.toString()) }
