@@ -1,6 +1,7 @@
 package com.tajpure.scheme.compiler
 
 import scala.collection.mutable.HashMap
+import scala.collection.Set
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.Type
 import com.tajpure.scheme.compiler.value.Value
@@ -124,7 +125,7 @@ class Scope(_parent: Scope) {
       null
     }
   }
-  
+
   def put(name: String, key: String, value: Object): Unit = {
     var item: HashMap[String, Object] = null
     if (map.get(name).isEmpty) {
@@ -135,7 +136,7 @@ class Scope(_parent: Scope) {
     item.put(key, value)
     map.put(name, item)
   }
-  
+
   def putProperties(name: String, properties: HashMap[String, Object]): Unit = {
     var item: HashMap[String, Object] = map.get(name).get
     if (item == null) {
@@ -144,46 +145,47 @@ class Scope(_parent: Scope) {
     item = item ++: properties
     map.put(name, item)
   }
-  
+
   def putValue(name: String, value: Value): Unit = {
     put(name, "value", value)
   }
-  
+
   def putType(name: String, value: Value): Unit = {
     put(name, "type", value)
   }
-  
+
+  def keySet(): Set[String] = {
+    map.keySet
+  }
+
   def containsKey(key: String): Boolean = {
     map.contains(key)
   }
-  
+
   def define(_pattern: Node, _value: Value): Unit = {
     if (_pattern.isInstanceOf[Symbol]) {
       val id: String = _pattern.asInstanceOf[Symbol].id
       val value: Value = lookUpLocal(id)
       if (value != null) {
         Log.error(_pattern, "trying to redefine name: " + id)
-      }
-      else {
+      } else {
         putValue(id, _value)
       }
-    } 
-    else if (_pattern.isInstanceOf[Tuple]) {
-      
-    } 
-    else {
-      
+    } else if (_pattern.isInstanceOf[Tuple]) {
+
+    } else {
+
     }
   }
-  
+
   def assign(_pattern: Node, _value: Value): Unit = {
-    
+
   }
-  
+
 }
 
 object Scope {
-  
+
   def buildInitScope(): Scope = {
     val init: Scope = new Scope()
     init.putValue("+", new Add())
@@ -207,6 +209,42 @@ object Scope {
     init.putValue("Bool", Type.BOOL)
     init.putValue("String", Type.STRING)
     init
+  }
+
+  def mergeDefault(properties: Scope, s: Scope): Unit = {
+    properties.keySet().foreach {
+      key =>
+        val defaultValue: Object = properties.lookupPropertyLocal(key, "default")
+        if (defaultValue == null) {
+        }
+        else if (defaultValue.isInstanceOf[Value]) {
+          val existing: Value = s.lookup(key)
+          if (existing == null) {
+            s.putValue(key, defaultValue.asInstanceOf[Value])
+          }
+        }
+        else {
+          Log.error("default value is not a value")
+        }
+    }
+  }
+
+  def evalProperties(unevaled: Scope, s: Scope): Scope = {
+    val evaled: Scope = new Scope()
+    unevaled.keySet().map {
+      field =>
+        val props: HashMap[String, Object] = unevaled.lookupAllProps(field)
+        props.foreach {
+          case (k, v) =>
+            if (v.isInstanceOf[Node]) {
+              val value: Value = v.asInstanceOf[Node].interp(s)
+              evaled.put(field, k, value)
+            } else {
+              Log.error("property is not a node, parser bug:" + v)
+            }
+        }
+    }
+    evaled
   }
   
 }

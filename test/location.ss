@@ -1,4 +1,4 @@
 (define location?
-  (lambda (x)
+  (lambda (x y z)
   ; test 
   (or (register? x) (frame-var? x) (uvar? x))))

@@ -9,6 +9,6 @@ class Closure(_func: Func, _properties: Scope, _env: Scope) extends Value {
   
   val properties: Scope = _properties
   
-  val enc: Scope = _env
+  val env: Scope = _env
   
 }

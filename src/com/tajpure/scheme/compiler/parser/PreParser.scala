@@ -26,7 +26,6 @@ class PreParser(_source:String, _path: String) {
   @throws(classOf[ParserException])
   def nextNode1(depth: Int): Node = {
     val first: Node = lexer.nextToken()
-    
     if (first == null) {
       null
     } 
@@ -60,7 +59,6 @@ class PreParser(_source:String, _path: String) {
       else {
         first
       }
-      
     }
   }
   
@@ -89,7 +87,6 @@ object PreParser extends App {
   val preParser: PreParser = new PreParser("/home/taojx/sworkspace/SoScheme/test/hello.ss")
   
   try {
-//    Log.info("preparser result: " + preParser.parse().asInstanceOf[Tuple].elements.headOption.get.asInstanceOf[Tuple].elements.size)
     Log.info("preparser result: " + preParser.parse().toString())
   } catch {
     case pe: ParserException => Log.error(pe.toString())
