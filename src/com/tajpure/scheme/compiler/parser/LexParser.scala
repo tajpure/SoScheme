@@ -22,7 +22,9 @@ class LexParser(_source:String, _path: String) {
   }
   
   var offset: Int = 0
+  
   var row: Int = 0
+  
   var col: Int = 0
 
   val source: String = _source match {
@@ -231,7 +233,7 @@ class LexParser(_source:String, _path: String) {
 object LexParser extends App {
   
 //  val lexer: LexParser = new LexParser("D:/workspace/workspace11/SoScheme/test/hello.ss")
-  val lexer: LexParser = new LexParser("/home/taojx/sworkspace/SoScheme/test/location.ss")
+  val lexer: LexParser = new LexParser("/home/taojx/sworkspace/SoScheme/test/location.scm")
   
   var tokens: List[Node] = List[Node]()
   

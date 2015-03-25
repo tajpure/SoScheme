@@ -84,7 +84,7 @@ class PreParser(_source:String, _path: String) {
 
 object PreParser extends App {
   
-  val preParser: PreParser = new PreParser("/home/taojx/sworkspace/SoScheme/test/hello.ss")
+  val preParser: PreParser = new PreParser("/home/taojx/sworkspace/SoScheme/test/hello.scm")
   
   try {
     Log.info("preparser result: " + preParser.parse().toString())
