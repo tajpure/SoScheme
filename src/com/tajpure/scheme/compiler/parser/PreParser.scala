@@ -31,7 +31,7 @@ class PreParser(_source:String, _path: String) {
       null
     } else if (first.isInstanceOf[Quote]) {
       val const: Quote = first.asInstanceOf[Quote]
-      const.setNode(nextNode1(depth))
+      const.setConstNode(nextNode1(depth + 1))
       const
     }
     else {

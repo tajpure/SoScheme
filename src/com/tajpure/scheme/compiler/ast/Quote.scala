@@ -11,7 +11,7 @@ class Quote (_value: String, _file: String, _start: Int, _end: Int, _row: Int, _
   
   var constNode: Node = null 
 
-  def setNode(node: Node): Unit = {
+  def setConstNode(node: Node): Unit = {
     this.constNode = node  
   }
   
