@@ -7,6 +7,7 @@ import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
+import com.tajpure.scheme.compiler.ast.Quote
 
 class PreParser(_source:String, _path: String) {
   
@@ -28,7 +29,11 @@ class PreParser(_source:String, _path: String) {
     val first: Node = lexer.nextToken()
     if (first == null) {
       null
-    } 
+    } else if (first.isInstanceOf[Quote]) {
+      val const: Quote = first.asInstanceOf[Quote]
+      const.setNode(nextNode1(depth))
+      const
+    }
     else {
       if (Delimeter.isOpen(first)) {
         var elements: List[Node] = List[Node]()

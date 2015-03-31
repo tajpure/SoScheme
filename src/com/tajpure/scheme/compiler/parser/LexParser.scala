@@ -1,7 +1,6 @@
 package com.tajpure.scheme.compiler.parser
 
 import com.tajpure.scheme.compiler.Constants
-import com.tajpure.scheme.compiler.ast.Const
 import com.tajpure.scheme.compiler.ast.Delimeter
 import com.tajpure.scheme.compiler.ast.FloatNum
 import com.tajpure.scheme.compiler.ast.IntNum
@@ -11,6 +10,7 @@ import com.tajpure.scheme.compiler.ast.Str
 import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
+import com.tajpure.scheme.compiler.ast.Quote
 
 /**
  * Split source file
@@ -167,7 +167,7 @@ class LexParser(_source:String, _path: String) {
     
     val end: Int = offset
     val content: String = source.substring(start, end)
-    new Const(content, file, start, end, row, col)
+    new Quote(content, file, start, end, row, col)
   }
 
   def isIdentifierChar(ch: Char): Boolean = {
