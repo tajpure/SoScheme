@@ -7,6 +7,7 @@ import com.tajpure.scheme.compiler.ast.Node
 class And extends PrimFunc("and" , 2) {
   
   def apply(args: List[Value], location: Node): Value = {
+//    args.foldLeft(true)( (result, arg) => result && arg.
     null
   }
   

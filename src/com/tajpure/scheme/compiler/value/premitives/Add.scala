@@ -4,6 +4,7 @@ import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.IntValue
+import com.tajpure.scheme.compiler.value.FloatValue
 import com.tajpure.scheme.compiler.util.Log
 
 class Add extends PrimFunc("+" , 2) {
@@ -14,6 +15,12 @@ class Add extends PrimFunc("+" , 2) {
     
     if (val1.isInstanceOf[IntValue] && val2.isInstanceOf[IntValue]) {
       new IntValue(val1.asInstanceOf[IntValue].value + val2.asInstanceOf[IntValue].value)
+    } else if (val1.isInstanceOf[FloatValue] && val2.isInstanceOf[IntValue]) {
+      new FloatValue(val1.asInstanceOf[IntValue].value + val2.asInstanceOf[IntValue].value)
+    } else if (val1.isInstanceOf[IntValue] && val2.isInstanceOf[FloatValue]) {
+      new FloatValue(val1.asInstanceOf[IntValue].value + val2.asInstanceOf[IntValue].value)
+    } else if (val1.isInstanceOf[FloatValue] && val2.isInstanceOf[FloatValue]) {
+      new FloatValue(val1.asInstanceOf[IntValue].value + val2.asInstanceOf[IntValue].value)
     } else {
       Log.error(location, "+ args error")
       Value.VOID
