@@ -3,6 +3,8 @@ package com.tajpure.scheme.compiler.ast
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.Closure
+import com.tajpure.scheme.compiler.value.PrimFunc
+import com.tajpure.scheme.compiler.util.Log
 
 class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -22,15 +24,29 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
         Scope.mergeDefault(closure.properties, funcScope)
       }
       
-      if (1 == 0) {
-        
+      params.zipWithIndex.foreach { case (param, i) => 
+        val value: Value = args.positional(i).interp(s)
+        funcScope.putValue(params(i).id, value)
       }
+      
+      closure.func.body.interp(funcScope);
+    } else if (opValue.isInstanceOf[PrimFunc]) {
+      val primFunc = opValue.asInstanceOf[PrimFunc]
+      val args: List[Value] = Node.interpList(this.args.positional, s)
+      primFunc.apply(args, this)
+    } else {
+      Log.error(this.op, "this is not a function.")
+      Value.VOID
     }
-    null
   }
 
   def typeCheck(s: Scope): Value = {
     null
+  }
+  
+  override
+  def toString(): String = {
+    op + " " + args
   }
   
 }

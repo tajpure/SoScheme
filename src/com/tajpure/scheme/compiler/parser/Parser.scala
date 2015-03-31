@@ -46,22 +46,28 @@ object Parser extends App {
             case Constants.IF     => parseIf(tuple)
             case Constants.LET    => parseAssign(tuple)
             case Constants.LAMBDA => parseLambda(tuple)
+            case Constants.SEQ_KEYWORD => parseBlock(tuple)
             case default          => parseCall(tuple)
           }
-        } else if (curNode.isInstanceOf[Tuple]) {
-          parseNode(curNode)
         } else {
           parseCall(tuple)
         }
       }
     }
   }
+  
+  @throws(classOf[ParserException])
+  def parseBlock(tuple: Tuple): Block = {
+    val elements: List[Node] = tuple.elements
+    val statements = parseList(elements.slice(1, elements.size))
+    new Block(statements, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
+  }
 
   @throws(classOf[ParserException])
   def parseDefine(tuple: Tuple): Define = {
     val elements: List[Node] = tuple.elements
     if (elements.size != 3) {
-      throw new ParserException("incorrect format of definition", tuple);
+      throw new ParserException("incorrect format of definition", tuple)
     } else {
       val pattern: Node = parseNode(elements(1))
       val value: Node = parseNode(elements(2))
@@ -107,14 +113,13 @@ object Parser extends App {
 
     val properties: Scope = null
     new Func(paramsName, properties, body, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
-
   }
 
   @throws(classOf[ParserException])
   def parseCall(tuple: Tuple): Call = {
     val elements: List[Node] = tuple.elements
     val func: Node = parseNode(tuple.elements(0))
-    val parsedArgs: List[Node] = parseList(elements)
+    val parsedArgs: List[Node] = parseList(elements.slice(1, elements.size))
     val argument: Argument = new Argument(parsedArgs)
     new Call(func, argument, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
   }
@@ -124,6 +129,6 @@ object Parser extends App {
     preNodes.map { node => parseNode(node) }
   }
 
-  println(parse("D:/workspace/workspace11/SoScheme/test/hello.ss").interp(Scope.buildInitScope()))
+  parse("D:/workspace/workspace11/SoScheme/test/hello.scm").interp(Scope.buildInitScope())
 
 }

@@ -32,3 +32,11 @@ abstract class Node(_file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   }
 
 }
+
+object Node {
+  
+  def interpList(nodes: List[Node], s: Scope): List[Value] = {
+    nodes.map { node => node.interp(s) }
+  }
+  
+}

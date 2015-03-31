@@ -1,6 +1,6 @@
 package com.tajpure.scheme.compiler.value
 
-class StringValue(_value: String) extends Value {
+class ConstValue(_value: String) extends Value {
 
   val value: String = _value
   
@@ -8,4 +8,5 @@ class StringValue(_value: String) extends Value {
   def toString(): String = {
     value
   }
+  
 }

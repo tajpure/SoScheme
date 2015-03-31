@@ -1,7 +1,6 @@
 package com.tajpure.scheme.compiler.parser
 
 import com.tajpure.scheme.compiler.Constants
-import com.tajpure.scheme.compiler.ast.Const
 import com.tajpure.scheme.compiler.ast.Delimeter
 import com.tajpure.scheme.compiler.ast.FloatNum
 import com.tajpure.scheme.compiler.ast.IntNum
@@ -11,6 +10,7 @@ import com.tajpure.scheme.compiler.ast.Str
 import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
+import com.tajpure.scheme.compiler.ast.Quote
 
 /**
  * Split source file
@@ -51,7 +51,7 @@ class LexParser(_source:String, _path: String) {
   }
 
   def skip(n: Int) {
-    (1 to n).foreach(_ => forward())
+    (1 to n).foreach( _ => forward())
   }
 
   def skipSpaces(): Boolean = {
@@ -167,7 +167,7 @@ class LexParser(_source:String, _path: String) {
     
     val end: Int = offset
     val content: String = source.substring(start, end)
-    new Const(content, file, start, end, row, col)
+    new Quote(content, file, start, end, row, col)
   }
 
   def isIdentifierChar(ch: Char): Boolean = {
@@ -179,13 +179,13 @@ class LexParser(_source:String, _path: String) {
     val startRow: Int = row
     val startCol: Int = col
 
-    def scanIdent() {
+    def loop() {
       if (offset < source.length && isIdentifierChar(source.charAt(offset))) {
         forward()
-        scanIdent()
+        loop()
       }
     }
-    scanIdent()
+    loop()
 
     val content = source.substring(start, offset)
     new Symbol(content, file, start, offset, startRow, startCol)
@@ -199,7 +199,6 @@ class LexParser(_source:String, _path: String) {
     if (offset >= source.length()) {
       null
     } 
-    
     else {
       val cur = source.charAt(offset)
       if (Delimeter.isDelimiter(cur)) {
@@ -232,8 +231,8 @@ class LexParser(_source:String, _path: String) {
 
 object LexParser extends App {
   
-//  val lexer: LexParser = new LexParser("D:/workspace/workspace11/SoScheme/test/hello.ss")
-  val lexer: LexParser = new LexParser("/home/taojx/sworkspace/SoScheme/test/location.scm")
+  val lexer: LexParser = new LexParser("D:/workspace/workspace11/SoScheme/test/hello.scm")
+//  val lexer: LexParser = new LexParser("/home/taojx/sworkspace/SoScheme/test/location.scm")
   
   var tokens: List[Node] = List[Node]()
   

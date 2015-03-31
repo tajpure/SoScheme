@@ -20,6 +20,7 @@ import com.tajpure.scheme.compiler.value.premitives.Sub
 import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.util.Log
+import com.tajpure.scheme.compiler.value.premitives.Display
 
 class Scope(_parent: Scope) {
 
@@ -58,7 +59,7 @@ class Scope(_parent: Scope) {
     }
   }
 
-  def lookUpLocal(name: String): Value = {
+  def lookupLocal(name: String): Value = {
     val v: Object = lookupPropertyLocal(name, "value")
     if (v == null) {
       null
@@ -102,10 +103,10 @@ class Scope(_parent: Scope) {
 
   def lookupProperty(name: String, key: String): Object = {
     val v: Object = lookupPropertyLocal(name, key)
-    if (v == null) {
-      null
-    } else if (v.isInstanceOf[Value]) {
-      v.asInstanceOf[Value]
+    if (v != null) {
+      v
+    } else if (parent != null) {
+      parent.lookupProperty(name, key)
     } else {
       null
     }
@@ -165,7 +166,7 @@ class Scope(_parent: Scope) {
   def define(_pattern: Node, _value: Value): Unit = {
     if (_pattern.isInstanceOf[Symbol]) {
       val id: String = _pattern.asInstanceOf[Symbol].id
-      val value: Value = lookUpLocal(id)
+      val value: Value = lookupLocal(id)
       if (value != null) {
         Log.error(_pattern, "trying to redefine name: " + id)
       } else {
@@ -181,11 +182,22 @@ class Scope(_parent: Scope) {
   def assign(_pattern: Node, _value: Value): Unit = {
 
   }
+  
+  override
+  def toString(): String = {
+    map.keySet.foldLeft("")(
+        (content: String, key: String) => {
+          map.get(key).foldLeft(content + Constants.PAREN_BEGIN + key){
+            case (content, kv) => 
+               content + " " + kv + Constants.PAREN_END + " "
+          }
+        })
+  }
 
 }
 
-object Scope {
-
+object Scope extends App {
+  
   def buildInitScope(): Scope = {
     val init: Scope = new Scope()
     init.putValue("+", new Add())
@@ -201,6 +213,7 @@ object Scope {
     init.putValue("and", new And())
     init.putValue("or", new Or())
     init.putValue("not", new Not())
+    init.putValue("display", new Display())
 
     init.putValue("#t", Type.BOOL)
     init.putValue("#f", Type.BOOL)

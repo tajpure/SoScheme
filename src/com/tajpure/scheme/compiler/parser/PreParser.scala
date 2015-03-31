@@ -1,12 +1,13 @@
 package com.tajpure.scheme.compiler.parser
 
-import com.tajpure.scheme.compiler.util.FileUtils
-import com.tajpure.scheme.compiler.ast.Node
-import com.tajpure.scheme.compiler.ast.Delimeter
-import com.tajpure.scheme.compiler.ast.Tuple
-import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.Constants
+import com.tajpure.scheme.compiler.ast.Delimeter
+import com.tajpure.scheme.compiler.ast.Node
+import com.tajpure.scheme.compiler.ast.Symbol
+import com.tajpure.scheme.compiler.ast.Tuple
+import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
+import com.tajpure.scheme.compiler.ast.Quote
 
 class PreParser(_source:String, _path: String) {
   
@@ -28,7 +29,11 @@ class PreParser(_source:String, _path: String) {
     val first: Node = lexer.nextToken()
     if (first == null) {
       null
-    } 
+    } else if (first.isInstanceOf[Quote]) {
+      val const: Quote = first.asInstanceOf[Quote]
+      const.setConstNode(nextNode1(depth + 1))
+      const
+    }
     else {
       if (Delimeter.isOpen(first)) {
         var elements: List[Node] = List[Node]()
@@ -68,6 +73,8 @@ class PreParser(_source:String, _path: String) {
     var s: Node = nextNode()
     val first: Node = s
     var last: Node = null
+    elements = elements :+ Symbol.genSymbol(Constants.SEQ_KEYWORD)
+    
     def loop() {
       if (s != null) {
         elements = elements :+ s
@@ -77,6 +84,7 @@ class PreParser(_source:String, _path: String) {
       }
     }
     loop()
+    
     new Tuple(elements, Symbol.genSymbol(Constants.PAREN_BEGIN), Symbol.genSymbol(Constants.PAREN_END), file, first.start, last.end, 0, 0)
   }
   
