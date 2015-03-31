@@ -4,4 +4,9 @@ import com.tajpure.scheme.compiler.value.PrimFunc
 
 class GTE extends PrimFunc {
 
+  override
+  def toString: String = {
+    ">="
+  }
+  
 }

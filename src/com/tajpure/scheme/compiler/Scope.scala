@@ -58,7 +58,7 @@ class Scope(_parent: Scope) {
     }
   }
 
-  def lookUpLocal(name: String): Value = {
+  def lookupLocal(name: String): Value = {
     val v: Object = lookupPropertyLocal(name, "value")
     if (v == null) {
       null
@@ -165,7 +165,7 @@ class Scope(_parent: Scope) {
   def define(_pattern: Node, _value: Value): Unit = {
     if (_pattern.isInstanceOf[Symbol]) {
       val id: String = _pattern.asInstanceOf[Symbol].id
-      val value: Value = lookUpLocal(id)
+      val value: Value = lookupLocal(id)
       if (value != null) {
         Log.error(_pattern, "trying to redefine name: " + id)
       } else {
@@ -181,11 +181,22 @@ class Scope(_parent: Scope) {
   def assign(_pattern: Node, _value: Value): Unit = {
 
   }
+  
+  override
+  def toString(): String = {
+    map.keySet.foldLeft("")(
+        (content: String, key: String) => {
+          map.get(key).foldLeft(content + Constants.PAREN_BEGIN + key){
+            case (content, kv) => 
+               content + " " + kv + Constants.PAREN_END + " "
+          }
+        })
+  }
 
 }
 
-object Scope {
-
+object Scope extends App {
+  
   def buildInitScope(): Scope = {
     val init: Scope = new Scope()
     init.putValue("+", new Add())

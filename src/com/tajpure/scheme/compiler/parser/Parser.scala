@@ -107,7 +107,6 @@ object Parser extends App {
 
     val properties: Scope = null
     new Func(paramsName, properties, body, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
-
   }
 
   @throws(classOf[ParserException])
@@ -124,6 +123,6 @@ object Parser extends App {
     preNodes.map { node => parseNode(node) }
   }
 
-  println(parse("D:/workspace/workspace11/SoScheme/test/hello.ss").interp(Scope.buildInitScope()))
+  println(parse("D:/workspace/workspace11/SoScheme/test/hello.scm").interp(Scope.buildInitScope()))
 
 }

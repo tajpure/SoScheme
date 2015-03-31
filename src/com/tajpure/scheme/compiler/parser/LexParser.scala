@@ -179,13 +179,13 @@ class LexParser(_source:String, _path: String) {
     val startRow: Int = row
     val startCol: Int = col
 
-    def scanIdent() {
+    def loop() {
       if (offset < source.length && isIdentifierChar(source.charAt(offset))) {
         forward()
-        scanIdent()
+        loop()
       }
     }
-    scanIdent()
+    loop()
 
     val content = source.substring(start, offset)
     new Symbol(content, file, start, offset, startRow, startCol)
@@ -199,7 +199,6 @@ class LexParser(_source:String, _path: String) {
     if (offset >= source.length()) {
       null
     } 
-    
     else {
       val cur = source.charAt(offset)
       if (Delimeter.isDelimiter(cur)) {
@@ -232,8 +231,8 @@ class LexParser(_source:String, _path: String) {
 
 object LexParser extends App {
   
-//  val lexer: LexParser = new LexParser("D:/workspace/workspace11/SoScheme/test/hello.ss")
-  val lexer: LexParser = new LexParser("/home/taojx/sworkspace/SoScheme/test/location.scm")
+  val lexer: LexParser = new LexParser("D:/workspace/workspace11/SoScheme/test/hello.scm")
+//  val lexer: LexParser = new LexParser("/home/taojx/sworkspace/SoScheme/test/location.scm")
   
   var tokens: List[Node] = List[Node]()
   

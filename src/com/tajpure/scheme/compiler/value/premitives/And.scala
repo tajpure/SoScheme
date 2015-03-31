@@ -4,4 +4,9 @@ import com.tajpure.scheme.compiler.value.PrimFunc
 
 class And extends PrimFunc {
 
+  override
+  def toString: String = {
+    "and"
+  }
+  
 }

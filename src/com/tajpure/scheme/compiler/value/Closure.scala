@@ -11,4 +11,9 @@ class Closure(_func: Func, _properties: Scope, _env: Scope) extends Value {
   
   val env: Scope = _env
   
+  override
+  def toString(): String = {
+    func.toString()
+  }
+  
 }
