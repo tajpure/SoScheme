@@ -22,6 +22,10 @@ class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
     Value.VOID
   }
   
+  def codegen(s: Scope): Value = {
+    null
+  }
+  
   override
   def toString(): String = {
     "define " + pattern.toString() + " " + value.toString()

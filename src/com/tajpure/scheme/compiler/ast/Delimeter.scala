@@ -5,6 +5,31 @@ import com.tajpure.scheme.compiler.value.Value
 import scala.collection.mutable.HashSet
 import java.util.HashMap
 
+class Delimeter(_shape: String, _file: String, _start: Int, _end: Int,
+                _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
+
+  val shape = _shape
+
+  def interp(s: Scope): Value = {
+    null
+  }
+
+  override
+  def typeCheck(s: Scope): Value = {
+    null
+  }
+  
+  def codegen(s: Scope): Value = {
+    null
+  }
+  
+  override
+  def toString(): String = {
+    shape
+  }
+  
+}
+
 object Delimeter {
   
   val delims: HashSet[String] = new HashSet[String]
@@ -36,27 +61,6 @@ object Delimeter {
       val matched: String = delimMap.get(open.asInstanceOf[Delimeter].shape)
       matched != null && matched.equals(close.asInstanceOf[Delimeter].shape)
     }
-  }
-  
-}
-
-class Delimeter(_shape: String, _file: String, _start: Int, _end: Int,
-                _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
-
-  val shape = _shape
-
-  def interp(s: Scope): Value = {
-    null
-  }
-
-  override
-  def typeCheck(s: Scope): Value = {
-    null
-  }
-  
-  override
-  def toString(): String = {
-    shape
   }
   
 }

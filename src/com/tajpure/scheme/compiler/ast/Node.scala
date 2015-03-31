@@ -27,6 +27,8 @@ abstract class Node(_file: String, _start: Int, _end: Int, _row: Int, _col: Int)
     node.interp(s)
   }
   
+  def codegen(s: Scope): Value;
+  
   def location(): String = {
     file + ": row: " + (row + 1) + " col: " + (col + 1) 
   }

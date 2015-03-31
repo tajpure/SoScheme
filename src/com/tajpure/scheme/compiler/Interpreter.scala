@@ -8,6 +8,6 @@ object Interpreter extends App {
     Parser.parse(_source, "").interp(Scope.buildInitScope())
   }
   
-  interp("(display '(display 12313 \"ss\"))")
+  interp("(display (+ 1.0 2))")
   
 }

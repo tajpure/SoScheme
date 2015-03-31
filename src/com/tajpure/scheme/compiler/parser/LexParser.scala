@@ -231,12 +231,12 @@ class LexParser(_source:String, _path: String) {
 
 object LexParser extends App {
   
-  val lexer: LexParser = new LexParser("D:/workspace/workspace11/SoScheme/test/hello.scm")
-//  val lexer: LexParser = new LexParser("/home/taojx/sworkspace/SoScheme/test/location.scm")
+//  val lexer: LexParser = new LexParser("D:/workspace/workspace11/SoScheme/test/hello.scm")
+  val lexer: LexParser = new LexParser("/home/taojx/sworkspace/SoScheme/test/location.scm")
   
   var tokens: List[Node] = List[Node]()
   
-  var n:Node = lexer.nextToken()
+  var n: Node = lexer.nextToken()
   
   def loop() {
     if (n != null) {

@@ -24,6 +24,10 @@ class Block(_statements: List[Node], _file: String, _start: Int, _end: Int, _row
     }.last
   }
   
+  def codegen(s: Scope): Value = {
+    null
+  }
+  
   override
   def toString(): String = {
     statements.foldLeft("")((content: String, node: Node) => content + node.toString())
