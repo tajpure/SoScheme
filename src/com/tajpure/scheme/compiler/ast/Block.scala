@@ -9,7 +9,11 @@ class Block(_statements: List[Node], _file: String, _start: Int, _end: Int, _row
   val statements: List[Node] = _statements
   
   def interp(s: Scope): Value = {
-    null
+    val newS: Scope = new Scope(s);
+    statements.map {
+      node =>
+        node.interp(newS)
+    }.last
   }
 
   def typeCheck(s: Scope): Value = {
