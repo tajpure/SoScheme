@@ -30,4 +30,7 @@ class Block(_statements: List[Node], _file: String, _start: Int, _end: Int, _row
 object Block extends App {
   val statements: List[Int] = List(1,23,3,45,6)
   println(statements.foldLeft("")((content: String, node: Int) => content + node.toString()))
+  var i = 1
+  statements.map { r => i = r }
+  println(i)
 }

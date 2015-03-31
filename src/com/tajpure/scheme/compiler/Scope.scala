@@ -20,6 +20,7 @@ import com.tajpure.scheme.compiler.value.premitives.Sub
 import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.util.Log
+import com.tajpure.scheme.compiler.value.premitives.Display
 
 class Scope(_parent: Scope) {
 
@@ -102,10 +103,10 @@ class Scope(_parent: Scope) {
 
   def lookupProperty(name: String, key: String): Object = {
     val v: Object = lookupPropertyLocal(name, key)
-    if (v == null) {
-      null
-    } else if (v.isInstanceOf[Value]) {
-      v.asInstanceOf[Value]
+    if (v != null) {
+      v
+    } else if (parent != null) {
+      parent.lookupProperty(name, key)
     } else {
       null
     }
@@ -212,6 +213,7 @@ object Scope extends App {
     init.putValue("and", new And())
     init.putValue("or", new Or())
     init.putValue("not", new Not())
+    init.putValue("display", new Display())
 
     init.putValue("#t", Type.BOOL)
     init.putValue("#f", Type.BOOL)

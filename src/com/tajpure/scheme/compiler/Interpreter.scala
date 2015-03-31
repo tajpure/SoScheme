@@ -6,9 +6,9 @@ object Interpreter extends App {
   
   def interp(_source: String): Unit = {
     println(_source)
-    println("=> " + Parser.parse(_source, "").interp(Scope.buildInitScope()))
+    println("return => " + Parser.parse(_source, "").interp(Scope.buildInitScope()))
   }
   
-  interp("(define x 1)")
+  interp("(display '12313)")
   
 }

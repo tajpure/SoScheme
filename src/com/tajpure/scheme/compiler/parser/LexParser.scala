@@ -51,7 +51,7 @@ class LexParser(_source:String, _path: String) {
   }
 
   def skip(n: Int) {
-    (1 to n).foreach(_ => forward())
+    (1 to n).foreach( _ => forward())
   }
 
   def skipSpaces(): Boolean = {
