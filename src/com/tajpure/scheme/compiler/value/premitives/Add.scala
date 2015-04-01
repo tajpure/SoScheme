@@ -12,24 +12,24 @@ class Add extends PrimFunc("+" , -1) {
   
   def apply(args: List[Value], location: Node): Value = {
     if (args.size < 2 || (arity != -1 && arity == args.size)) {
-      throw new CompilerException("Args don't match the 'Add' function", location)
+      throw new CompilerException("Args don't match the '+' function", location)
     }
     
-    args.foldLeft(new IntValue(0).asInstanceOf[Value])((sum, arg) => {
-        if (arg.isInstanceOf[IntValue] && sum.isInstanceOf[IntValue]) {
-        new IntValue(arg.asInstanceOf[IntValue].value + sum.asInstanceOf[IntValue].value)
+    args.foldLeft(new IntValue(0).asInstanceOf[Value])((result, arg) => {
+        if (result.isInstanceOf[IntValue] && arg.isInstanceOf[IntValue]) {
+        new IntValue(result.asInstanceOf[IntValue].value + arg.asInstanceOf[IntValue].value)
         } 
-        else if (arg.isInstanceOf[FloatValue] && sum.isInstanceOf[IntValue]) {
-          new FloatValue(arg.asInstanceOf[FloatValue].value + sum.asInstanceOf[IntValue].value)
+        else if (result.isInstanceOf[IntValue] && arg.isInstanceOf[FloatValue]) {
+          new FloatValue(result.asInstanceOf[IntValue].value + arg.asInstanceOf[FloatValue].value)
         } 
-        else if (arg.isInstanceOf[IntValue] && sum.isInstanceOf[FloatValue]) {
-          new FloatValue(arg.asInstanceOf[IntValue].value + sum.asInstanceOf[FloatValue].value)
+        else if (result.isInstanceOf[FloatValue]  && arg.isInstanceOf[IntValue]) {
+          new FloatValue(result.asInstanceOf[FloatValue].value + arg.asInstanceOf[IntValue].value)
         } 
-        else if (arg.isInstanceOf[FloatValue] && sum.isInstanceOf[FloatValue]) {
-          new FloatValue(arg.asInstanceOf[FloatValue].value + sum.asInstanceOf[FloatValue].value)
+        else if (result.isInstanceOf[FloatValue] && arg.isInstanceOf[FloatValue]) {
+          new FloatValue(result.asInstanceOf[FloatValue].value + arg.asInstanceOf[FloatValue].value)
         } 
         else {
-          Log.error(location, "Args type error")
+          Log.error(location, "Args type error in function '+'")
           Value.VOID
         }
     })

@@ -6,7 +6,12 @@ class BoolValue(_value: Boolean) extends Value {
   
   override
   def toString: String = {
-    value.toString()
+    if (value) {
+      "#t"
+    }
+    else {
+      "#f"
+    }
   }
   
 }

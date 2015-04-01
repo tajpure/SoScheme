@@ -12,6 +12,7 @@ import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.exception.ParserException
 import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
+import com.tajpure.scheme.compiler.ast.Bool
 
 /**
  * Split source file
@@ -171,6 +172,19 @@ class LexParser(_source:String, _path: String) {
     new Quote(content, file, start, end, row, col)
   }
 
+  
+  def scanBool(): Node = {
+    val start: Int = offset
+    val startRow: Int = row
+    val startCol: Int = col
+    
+    skip(2)
+    
+    val end: Int = offset
+    val content: String = source.substring(start, end)
+    new Bool(content, file, start, end, row, col)
+  }
+  
   def isIdentifierChar(ch: Char): Boolean = {
     Character.isLetterOrDigit(ch) || Constants.IDENT_CHARS.contains(ch)
   }
@@ -220,6 +234,9 @@ class LexParser(_source:String, _path: String) {
       } 
       else if (isIdentifierChar(source.charAt(offset))) {
         scanSymbol()
+      }
+      else if (source.startsWith("#")) {
+        scanBool()
       }
       else {
         throw new ParserException("unrecognized syntax: " + source.substring(offset, offset + 1),
