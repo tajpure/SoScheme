@@ -28,7 +28,7 @@ class IntNum(_content: String, _file: String, _start: Int, _end: Int, _row: Int,
     new IntValue(value)
   }
 
-  def typeCheck(s: Scope): Value = {
+  def typecheck(s: Scope): Value = {
     Type.INT
   }
   

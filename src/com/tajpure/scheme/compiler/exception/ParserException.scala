@@ -1,4 +1,4 @@
-package com.tajpure.scheme.compiler.parser
+package com.tajpure.scheme.compiler.exception
 
 import com.tajpure.scheme.compiler.ast.Node
 

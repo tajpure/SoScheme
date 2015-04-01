@@ -6,11 +6,12 @@ import com.tajpure.scheme.compiler.ast.FloatNum
 import com.tajpure.scheme.compiler.ast.IntNum
 import com.tajpure.scheme.compiler.ast.Keyword
 import com.tajpure.scheme.compiler.ast.Node
+import com.tajpure.scheme.compiler.ast.Quote
 import com.tajpure.scheme.compiler.ast.Str
 import com.tajpure.scheme.compiler.ast.Symbol
+import com.tajpure.scheme.compiler.exception.ParserException
 import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
-import com.tajpure.scheme.compiler.ast.Quote
 
 /**
  * Split source file
@@ -152,7 +153,7 @@ class LexParser(_source:String, _path: String) {
     }
   }
   
-  def scanConst(): Node = {
+  def scanQuote(): Node = {
     val start: Int = offset
     val startRow: Int = row
     val startCol: Int = col
@@ -210,7 +211,7 @@ class LexParser(_source:String, _path: String) {
         scanString()
       } 
       else if (source.charAt(offset) == Constants.QUOTE) {
-        scanConst()
+        scanQuote()
       }
       else if (Character.isDigit(source.charAt(offset)) ||
         ((source.charAt(offset) == '+' || source.charAt(offset) == '-') 

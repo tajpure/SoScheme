@@ -13,7 +13,7 @@ class Str(_value: String, _file: String, _start: Int, _end: Int, _row: Int, _col
     new StringValue(value)
   }
 
-  def typeCheck(s: Scope): Value = {
+  def typecheck(s: Scope): Value = {
     null
   }
   

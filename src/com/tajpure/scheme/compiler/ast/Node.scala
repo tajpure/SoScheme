@@ -21,9 +21,9 @@ abstract class Node(_file: String, _start: Int, _end: Int, _row: Int, _col: Int)
     node.interp(s)
   }
 
-  def typeCheck(s: Scope): Value;
+  def typecheck(s: Scope): Value;
 
-  def typeCheck(node: Node, s: Scope) {
+  def typecheck(node: Node, s: Scope) {
     node.interp(s)
   }
   
@@ -39,6 +39,10 @@ object Node {
   
   def interpList(nodes: List[Node], s: Scope): List[Value] = {
     nodes.map { node => node.interp(s) }
+  }
+  
+  def codegenList(nodes: List[Node], s: Scope): List[Value] = {
+    nodes.map { node => node.codegen(s) }
   }
   
 }

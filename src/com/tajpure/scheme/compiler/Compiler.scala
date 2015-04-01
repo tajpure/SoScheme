@@ -9,7 +9,7 @@ class Compiler(_source: String) {
   def compile(): Unit = {
     val scope: Scope = Scope.buildInitScope()
     val root = Parser.parse(_source, "")
-    root.typeCheck(scope)
+    root.typecheck(scope)
     root.codegen(scope)
   }
   

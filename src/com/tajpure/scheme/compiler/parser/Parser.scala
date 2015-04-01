@@ -12,6 +12,7 @@ import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.ast.Argument
 import com.tajpure.scheme.compiler.ast.Block
+import com.tajpure.scheme.compiler.exception.ParserException
 
 object Parser extends App {
 
@@ -129,6 +130,6 @@ object Parser extends App {
     preNodes.map { node => parseNode(node) }
   }
 
-  parse("D:/workspace/workspace11/SoScheme/test/hello.scm").interp(Scope.buildInitScope())
+  parse("D:/workspace/workspace11/SoScheme/test/helloworld.scm").interp(Scope.buildInitScope())
 
 }

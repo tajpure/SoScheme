@@ -16,11 +16,11 @@ class Block(_statements: List[Node], _file: String, _start: Int, _end: Int, _row
     }.last
   }
 
-  def typeCheck(s: Scope): Value = {
+  def typecheck(s: Scope): Value = {
     val curScope: Scope = new Scope(s);
     statements.map {
       node =>
-        node.typeCheck(curScope)
+        node.typecheck(curScope)
     }.last
   }
   

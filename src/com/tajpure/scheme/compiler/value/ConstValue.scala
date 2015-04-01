@@ -1,12 +1,12 @@
 package com.tajpure.scheme.compiler.value
 
-class ConstValue(_value: String) extends Value {
+class ConstValue(_value: Object) extends Value {
 
-  val value: String = _value
+  val value: Object = _value
   
   override
   def toString(): String = {
-    value
+    value.toString()
   }
   
 }

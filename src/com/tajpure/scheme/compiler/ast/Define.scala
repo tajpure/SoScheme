@@ -16,8 +16,8 @@ class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
     Value.VOID
   }
 
-  def typeCheck(s: Scope): Value = {
-    val vValue: Value = value.typeCheck(s)
+  def typecheck(s: Scope): Value = {
+    val vValue: Value = value.typecheck(s)
     s.define(pattern, vValue)
     Value.VOID
   }

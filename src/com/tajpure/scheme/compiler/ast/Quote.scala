@@ -9,17 +9,17 @@ class Quote (_value: String, _file: String, _start: Int, _end: Int, _row: Int, _
 
   val value = _value
   
-  var constNode: Node = null 
+  var quoteNode: Node = null 
 
-  def setConstNode(node: Node): Unit = {
-    this.constNode = node  
+  def setQuoteNode(node: Node): Unit = {
+    this.quoteNode = node  
   }
   
   def interp(s: Scope): Value = {
-    new ConstValue(constNode.toString())
+    new ConstValue(quoteNode.toString())
   }
 
-  def typeCheck(s: Scope): Value = {
+  def typecheck(s: Scope): Value = {
     null
   }
   
@@ -29,7 +29,7 @@ class Quote (_value: String, _file: String, _start: Int, _end: Int, _row: Int, _
   
   override
   def toString(): String = {
-    value + constNode
+    value + quoteNode
   }
   
 }

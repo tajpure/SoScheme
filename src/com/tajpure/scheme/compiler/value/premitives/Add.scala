@@ -6,6 +6,7 @@ import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.value.FloatValue
 import com.tajpure.scheme.compiler.util.Log
+import com.tajpure.scheme.compiler.exception.CompilerException
 
 class Add extends PrimFunc("+" , -1) {
   
@@ -21,6 +22,11 @@ class Add extends PrimFunc("+" , -1) {
 //        throw new Exception()
 //      }
 //    })
+    
+    if (args.size < 2) {
+      throw new CompilerException("args don't match the 'Add' function", location)
+    }
+    
     val val1: Value = args(0)
     val val2: Value = args(1)
     

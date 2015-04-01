@@ -8,6 +8,7 @@ import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.ast.Quote
+import com.tajpure.scheme.compiler.exception.ParserException
 
 class PreParser(_source:String, _path: String) {
   
@@ -30,9 +31,9 @@ class PreParser(_source:String, _path: String) {
     if (first == null) {
       null
     } else if (first.isInstanceOf[Quote]) {
-      val const: Quote = first.asInstanceOf[Quote]
-      const.setConstNode(nextNode1(depth + 1))
-      const
+      val quote: Quote = first.asInstanceOf[Quote]
+      quote.setQuoteNode(nextNode1(depth + 1))
+      quote
     }
     else {
       if (Delimeter.isOpen(first)) {

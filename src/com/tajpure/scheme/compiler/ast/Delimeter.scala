@@ -15,7 +15,7 @@ class Delimeter(_shape: String, _file: String, _start: Int, _end: Int,
   }
 
   override
-  def typeCheck(s: Scope): Value = {
+  def typecheck(s: Scope): Value = {
     null
   }
   

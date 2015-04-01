@@ -14,7 +14,7 @@ class Pair(_head: Node, _tail: Node, _file: String, _start: Int, _end: Int,
     null
   }
 
-  def typeCheck(s: Scope): Value = {
+  def typecheck(s: Scope): Value = {
     null
   }
   

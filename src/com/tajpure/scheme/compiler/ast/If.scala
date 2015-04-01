@@ -10,7 +10,7 @@ class If(_test: Node, _then: Node, _orelse: Node, _file: String, _start: Int, _e
     null
   }
 
-  def typeCheck(s: Scope): Value = {
+  def typecheck(s: Scope): Value = {
     null
   }
   

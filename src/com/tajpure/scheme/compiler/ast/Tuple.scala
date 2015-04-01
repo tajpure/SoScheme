@@ -12,7 +12,7 @@ class Tuple(_elements: List[Node], open: Node, close: Node, _file: String, _star
     null
   }
 
-  def typeCheck(s: Scope): Value = {
+  def typecheck(s: Scope): Value = {
     null
   }
   

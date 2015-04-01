@@ -15,7 +15,7 @@ class FloatNum(_content: String, _file: String, _start: Int, _end: Int, _row: In
     new FloatValue(value)
   }
 
-  def typeCheck(s: Scope): Value = {
+  def typecheck(s: Scope): Value = {
     null
   }
   
