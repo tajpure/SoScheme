@@ -4,7 +4,7 @@ import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.ast.Node
 
-class Or extends PrimFunc("or" , 2) {
+class Or extends PrimFunc("or" , -1) {
   
   def apply(args: List[Value], location: Node): Value = {
     null

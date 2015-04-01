@@ -4,7 +4,7 @@ import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.ast.Node
 
-class And extends PrimFunc("and" , 2) {
+class And extends PrimFunc("and" , -1) {
   
   def apply(args: List[Value], location: Node): Value = {
 //    args.foldLeft(true)( (result, arg) => result && arg.

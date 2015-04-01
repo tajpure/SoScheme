@@ -11,37 +11,28 @@ import com.tajpure.scheme.compiler.exception.CompilerException
 class Add extends PrimFunc("+" , -1) {
   
   def apply(args: List[Value], location: Node): Value = {
-//    var hasFloat = false
-//    val sum = args.foldLeft(0)( (sum, value) => {
-//      if (value.isInstanceOf[IntValue]) {
-//        sum + value.asInstanceOf[IntValue].value
-//      } else if (value.isInstanceOf[FloatValue]) {
-//        hasFloat = true
-//        sum + value.asInstanceOf[FloatValue].value
-//      } else {
-//        throw new Exception()
-//      }
-//    })
-    
-    if (args.size < 2) {
-      throw new CompilerException("args don't match the 'Add' function", location)
+    if (args.size < 2 || (arity != -1 && arity == args.size)) {
+      throw new CompilerException("Args don't match the 'Add' function", location)
     }
     
-    val val1: Value = args(0)
-    val val2: Value = args(1)
-    
-    if (val1.isInstanceOf[IntValue] && val2.isInstanceOf[IntValue]) {
-      new IntValue(val1.asInstanceOf[IntValue].value + val2.asInstanceOf[IntValue].value)
-    } else if (val1.isInstanceOf[FloatValue] && val2.isInstanceOf[IntValue]) {
-      new FloatValue(val1.asInstanceOf[FloatValue].value + val2.asInstanceOf[IntValue].value)
-    } else if (val1.isInstanceOf[IntValue] && val2.isInstanceOf[FloatValue]) {
-      new FloatValue(val1.asInstanceOf[IntValue].value + val2.asInstanceOf[FloatValue].value)
-    } else if (val1.isInstanceOf[FloatValue] && val2.isInstanceOf[FloatValue]) {
-      new FloatValue(val1.asInstanceOf[FloatValue].value + val2.asInstanceOf[FloatValue].value)
-    } else {
-      Log.error(location, "+ args error")
-      Value.VOID
-    }
+    args.foldLeft(new IntValue(0).asInstanceOf[Value])((sum, arg) => {
+        if (arg.isInstanceOf[IntValue] && sum.isInstanceOf[IntValue]) {
+        new IntValue(arg.asInstanceOf[IntValue].value + sum.asInstanceOf[IntValue].value)
+        } 
+        else if (arg.isInstanceOf[FloatValue] && sum.isInstanceOf[IntValue]) {
+          new FloatValue(arg.asInstanceOf[FloatValue].value + sum.asInstanceOf[IntValue].value)
+        } 
+        else if (arg.isInstanceOf[IntValue] && sum.isInstanceOf[FloatValue]) {
+          new FloatValue(arg.asInstanceOf[IntValue].value + sum.asInstanceOf[FloatValue].value)
+        } 
+        else if (arg.isInstanceOf[FloatValue] && sum.isInstanceOf[FloatValue]) {
+          new FloatValue(arg.asInstanceOf[FloatValue].value + sum.asInstanceOf[FloatValue].value)
+        } 
+        else {
+          Log.error(location, "Args type error")
+          Value.VOID
+        }
+    })
   }
   
   def typecheck(args: List[Value], location: Node): Value= {

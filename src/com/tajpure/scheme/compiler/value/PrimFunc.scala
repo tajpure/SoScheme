@@ -6,6 +6,7 @@ abstract class PrimFunc(_name: String, _arity: Int) extends Value {
   
   val name: String = _name
   
+  // -1 stand for  n
   val arity: Int = _arity
 
   def apply(args: List[Value], location: Node): Value;
