@@ -43,11 +43,11 @@ object Parser extends App {
         if (curNode.isInstanceOf[Symbol]) {
           curNode.asInstanceOf[Symbol].id match {
             case Constants.DEFINE => parseDefine(tuple)
-            case Constants.IF     => parseIf(tuple)
-            case Constants.LET    => parseAssign(tuple)
+            case Constants.IF => parseIf(tuple)
+            case Constants.LET => parseAssign(tuple)
             case Constants.LAMBDA => parseLambda(tuple)
             case Constants.SEQ_KEYWORD => parseBlock(tuple)
-            case default          => parseCall(tuple)
+            case default => parseCall(tuple)
           }
         } else {
           parseCall(tuple)
