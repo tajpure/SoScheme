@@ -16,6 +16,10 @@ class Tuple(_elements: List[Node], open: Node, close: Node, _file: String, _star
     null
   }
   
+  def codegen(s: Scope): Value = {
+    null
+  }
+  
   override
   def toString(): String = {
     val sb: StringBuilder = new StringBuilder(open.toString())

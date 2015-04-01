@@ -44,6 +44,10 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
     null
   }
   
+  def codegen(s: Scope): Value = {
+    null
+  }
+  
   override
   def toString(): String = {
     op + " " + args

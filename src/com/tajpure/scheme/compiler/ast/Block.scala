@@ -9,15 +9,23 @@ class Block(_statements: List[Node], _file: String, _start: Int, _end: Int, _row
   val statements: List[Node] = _statements
   
   def interp(s: Scope): Value = {
-    val curScope: Scope = new Scope(s)
-    val values = statements.map { node => node.interp(curScope) }
-    values(values.size - 1)
+    val curScope: Scope = new Scope(s);
+    statements.map {
+      node =>
+        node.interp(curScope)
+    }.last
   }
 
   def typeCheck(s: Scope): Value = {
-    val curScope: Scope = new Scope(s)
-    val values = statements.map { node => node.typeCheck(curScope) }
-    values(values.size - 1)
+    val curScope: Scope = new Scope(s);
+    statements.map {
+      node =>
+        node.typeCheck(curScope)
+    }.last
+  }
+  
+  def codegen(s: Scope): Value = {
+    null
   }
   
   override

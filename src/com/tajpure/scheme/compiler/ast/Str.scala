@@ -17,6 +17,10 @@ class Str(_value: String, _file: String, _start: Int, _end: Int, _row: Int, _col
     null
   }
   
+  def codegen(s: Scope): Value = {
+    null
+  }
+  
   override
   def toString(): String = {
     "\"" + value + "\""

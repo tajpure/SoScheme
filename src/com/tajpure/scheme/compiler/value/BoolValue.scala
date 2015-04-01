@@ -1,10 +1,12 @@
 package com.tajpure.scheme.compiler.value
 
-class BoolValue extends Value {
+class BoolValue(_value: Boolean) extends Value {
 
+  val value: Boolean = _value
+  
   override
   def toString: String = {
-    "Bool"
+    value.toString()
   }
   
 }
