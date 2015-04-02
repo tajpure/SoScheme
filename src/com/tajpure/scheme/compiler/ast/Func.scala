@@ -26,7 +26,7 @@ class Func(_params: List[Symbol], _propertyForm: Scope, _body: Node, _file: Stri
     null
   }
   
-  def codegen(s: Scope): Value = {
+  def codegen(s: Scope): org.jllvm.value.Value = {
     null
   }
   

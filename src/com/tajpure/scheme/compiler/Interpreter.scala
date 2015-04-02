@@ -8,6 +8,10 @@ object Interpreter extends App {
     Parser.parse(_source, "").interp(Scope.buildInitScope())
   }
   
-  interp("(display (and #f #t))")
+  def interp0(_path: String): Unit = {
+    Parser.parse(_path).interp(Scope.buildInitScope())
+  }
+  
+  interp("(define double (lambda (x) (* x 2))) (display (double 44))")
   
 }

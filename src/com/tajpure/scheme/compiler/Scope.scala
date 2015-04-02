@@ -21,14 +21,19 @@ import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.value.premitives.Display
+import com.tajpure.scheme.compiler.llvm.CodeGen
 
-class Scope(_parent: Scope) {
+class Scope(_parent: Scope, _codegen: CodeGen) {
 
   val map = new HashMap[String, HashMap[String, Object]]
 
   val parent: Scope = _parent
+  
+  val codegen: CodeGen = _codegen
 
-  def this() = this(null)
+  def this() = this(null, null)
+  
+  def this(_parent: Scope) = this(_parent, null)
 
   def copy(): Scope = {
     val ret: Scope = new Scope
@@ -223,7 +228,33 @@ object Scope extends App {
     init.putValue("String", Type.STRING)
     init
   }
+  
+  def buildInitCompilerScope(codegen: CodeGen): Scope = {
+    val init: Scope = new Scope(null, codegen)
+    init.putValue("+", new Add())
+    init.putValue("-", new Sub())
+    init.putValue("*", new Mult())
+    init.putValue("/", new Div())
 
+    init.putValue("<", new LT())
+    init.putValue("<=", new LTE())
+    init.putValue(">", new GT())
+    init.putValue(">=", new GTE())
+    init.putValue("=", new Eq())
+    init.putValue("and", new And())
+    init.putValue("or", new Or())
+    init.putValue("not", new Not())
+    init.putValue("display", new Display())
+
+    init.putValue("#t", Type.BOOL)
+    init.putValue("#f", Type.BOOL)
+
+    init.putValue("Int", Type.INT)
+    init.putValue("Bool", Type.BOOL)
+    init.putValue("String", Type.STRING)
+    init
+  }
+  
   def mergeDefault(properties: Scope, s: Scope): Unit = {
     properties.keySet().foreach {
       key =>

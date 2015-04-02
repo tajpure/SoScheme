@@ -47,7 +47,7 @@ object Parser extends App {
             case Constants.IF => parseIf(tuple)
             case Constants.LET => parseAssign(tuple)
             case Constants.LAMBDA => parseLambda(tuple)
-            case Constants.SEQ_KEYWORD => parseBlock(tuple)
+            case Constants.SEQ => parseBlock(tuple)
             case default => parseCall(tuple)
           }
         } else {

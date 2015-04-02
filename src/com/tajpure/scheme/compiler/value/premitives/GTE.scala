@@ -28,6 +28,10 @@ class GTE extends PrimFunc(">=" , 2) {
   def typecheck(args: List[Value], location: Node): Value= {
     null
   }
+  
+  def codegen(args: List[Value], location: Node): Value = {
+    null
+  }
 
   override
   def toString: String = {

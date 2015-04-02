@@ -74,7 +74,7 @@ class PreParser(_source:String, _path: String) {
     var s: Node = nextNode()
     val first: Node = s
     var last: Node = null
-    elements = elements :+ Symbol.genSymbol(Constants.SEQ_KEYWORD)
+    elements = elements :+ Symbol.genSymbol(Constants.SEQ)
     
     def loop() {
       if (s != null) {

@@ -28,6 +28,10 @@ class Eq extends PrimFunc("=" , -1) {
   def typecheck(args: List[Value], location: Node): Value= {
     null
   }
+  
+  def codegen(args: List[Value], location: Node): Value = {
+    null
+  }
 
   override
   def toString: String = {

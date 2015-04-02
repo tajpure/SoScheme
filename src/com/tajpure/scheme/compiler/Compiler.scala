@@ -1,16 +1,19 @@
 package com.tajpure.scheme.compiler
 
 import com.tajpure.scheme.compiler.parser.Parser
+import com.tajpure.scheme.compiler.llvm.CodeGen
+import com.tajpure.scheme.compiler.util.FileUtils
 
-class Compiler(_source: String) {
+class Compiler(_file: String) {
   
-  val source: String  = _source
+  val file: String  = _file
   
   def compile(): Unit = {
-    val scope: Scope = Scope.buildInitScope()
-    val root = Parser.parse(_source, "")
+    val scope: Scope = Scope.buildInitCompilerScope(new CodeGen(file))
+    val root = Parser.parse(_file, "")
     root.typecheck(scope)
     root.codegen(scope)
+    scope.codegen.module.printToFile(FileUtils.targetPath(_file))
   }
   
 }

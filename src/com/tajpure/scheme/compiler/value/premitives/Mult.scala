@@ -8,16 +8,19 @@ import com.tajpure.scheme.compiler.value.FloatValue
 import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.exception.CompilerException
 
-class Mult extends PrimFunc("*" , 2) {
-  
+class Mult extends PrimFunc("*", -1) {
+
   def apply(args: List[Value], location: Node): Value = {
-    if (args.size < 2 || (arity != -1 && arity == args.size)) {
-      throw new CompilerException("Args don't match the '*' function", location)
-    }
-    
-    args.foldLeft(new IntValue(1).asInstanceOf[Value])((result, arg) => {
+    if (args.size == 0) {
+      throw new CompilerException("Exception: incorrect arguments count in call '*'", location)
+    } 
+    else if (args.size == 1) {
+      args(0)
+    } 
+    else {
+      args.foldLeft(new IntValue(1).asInstanceOf[Value])((result, arg) => {
         if (result.isInstanceOf[IntValue] && arg.isInstanceOf[IntValue]) {
-        new IntValue(result.asInstanceOf[IntValue].value * arg.asInstanceOf[IntValue].value)
+          new IntValue(result.asInstanceOf[IntValue].value * arg.asInstanceOf[IntValue].value)
         } 
         else if (result.isInstanceOf[IntValue] && arg.isInstanceOf[FloatValue]) {
           new FloatValue(result.asInstanceOf[IntValue].value * arg.asInstanceOf[FloatValue].value)
@@ -29,19 +32,23 @@ class Mult extends PrimFunc("*" , 2) {
           new FloatValue(result.asInstanceOf[FloatValue].value * arg.asInstanceOf[FloatValue].value)
         } 
         else {
-          Log.error(location, "Args type error in function '*'")
+          Log.error(location, "Exception: incorrect arguments in call '*'")
           Value.VOID
         }
-    })
+      })
+    }
+  }
+
+  def typecheck(args: List[Value], location: Node): Value = {
+    null
   }
   
-  def typecheck(args: List[Value], location: Node): Value= {
+  def codegen(args: List[Value], location: Node): Value = {
     null
   }
 
-  override
-  def toString: String = {
+  override def toString: String = {
     "*"
   }
-  
+
 }

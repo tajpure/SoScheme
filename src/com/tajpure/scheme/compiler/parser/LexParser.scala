@@ -31,6 +31,7 @@ class LexParser(_source:String, _path: String) {
 
   val source: String = _source match {
     case null => FileUtils.readFile(_path)
+    case "" => FileUtils.readFile(_path)
     case default => _source
   }
   
@@ -132,7 +133,7 @@ class LexParser(_source:String, _path: String) {
 
     def loop() {
       if (offset >= source.length() || source.charAt(offset) == '\n') {
-        throw new ParserException("number format error:", startRow, startCol, offset);
+        throw new ParserException("Exception: number format error:", startRow, startCol, offset);
       } 
       else if (isNumberOrChar(source.charAt(offset))) {
           if (source.charAt(offset) == '.') {
@@ -170,19 +171,6 @@ class LexParser(_source:String, _path: String) {
     val end: Int = offset
     val content: String = source.substring(start, end)
     new Quote(content, file, start, end, row, col)
-  }
-
-  
-  def scanBool(): Node = {
-    val start: Int = offset
-    val startRow: Int = row
-    val startCol: Int = col
-    
-    skip(2)
-    
-    val end: Int = offset
-    val content: String = source.substring(start, end)
-    new Bool(content, file, start, end, row, col)
   }
   
   def isIdentifierChar(ch: Char): Boolean = {
@@ -234,9 +222,6 @@ class LexParser(_source:String, _path: String) {
       } 
       else if (isIdentifierChar(source.charAt(offset))) {
         scanSymbol()
-      }
-      else if (source.startsWith("#")) {
-        scanBool()
       }
       else {
         throw new ParserException("unrecognized syntax: " + source.substring(offset, offset + 1),

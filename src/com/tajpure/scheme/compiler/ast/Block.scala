@@ -24,7 +24,7 @@ class Block(_statements: List[Node], _file: String, _start: Int, _end: Int, _row
     }.last
   }
   
-  def codegen(s: Scope): Value = {
+  def codegen(s: Scope): org.jllvm.value.Value = {
     null
   }
   

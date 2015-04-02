@@ -31,8 +31,8 @@ object Constants {
   
   val COMMENTS_BLOCK_END = "|#"
   
-  // SEQ KEYWORD
-  val SEQ_KEYWORD = "seq"
+  // SEQ
+  val SEQ = "seq"
 
   // This keywords are all from R6RS(http://www.r6rs.org/final/html/r6rs/r6rs.html)
   val AND = "and"

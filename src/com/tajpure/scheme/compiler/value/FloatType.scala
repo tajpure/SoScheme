@@ -1,6 +1,6 @@
 package com.tajpure.scheme.compiler.value
 
-class FloatType {
+class FloatType extends Value {
 
   override
   def toString: String = {

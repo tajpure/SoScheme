@@ -13,6 +13,8 @@ abstract class PrimFunc(_name: String, _arity: Int) extends Value {
   
   def typecheck(args: List[Value], location: Node): Value;
   
+  def codegen(args: List[Value], location: Node): Value;
+  
   override
   def toString(): String = {
     name

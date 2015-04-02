@@ -22,7 +22,8 @@ class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
     Value.VOID
   }
   
-  def codegen(s: Scope): Value = {
+  def codegen(s: Scope): org.jllvm.value.Value = {
+    s.codegen.buildDefine(this)
     null
   }
   
