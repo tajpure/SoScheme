@@ -13,7 +13,9 @@ class Compiler(_file: String) {
     val root = Parser.parse(_file, "")
     root.typecheck(scope)
     root.codegen(scope)
-    scope.codegen.module.printToFile(FileUtils.targetPath(_file))
+    
+    val targetPath: String = FileUtils.targetPath(_file)
+    scope.codegen.module.printToFile(targetPath)
   }
   
 }
