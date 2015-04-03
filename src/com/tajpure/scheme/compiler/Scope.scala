@@ -188,6 +188,10 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
 
   }
   
+  def codegen(path: String): Unit = {
+    codegen.module.printToFile(path)
+  }
+  
   override
   def toString(): String = {
     map.keySet.foldLeft("")(
