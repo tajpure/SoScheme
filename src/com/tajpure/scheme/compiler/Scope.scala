@@ -188,7 +188,7 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
 
   }
   
-  def codegen(path: String): Unit = {
+  def toFile(path: String): Unit = {
     codegen.module.printToFile(path)
   }
   

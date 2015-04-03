@@ -15,7 +15,7 @@ class Compiler(_file: String) {
     root.codegen(scope)
     
     val targetPath: String = FileUtils.targetPath(_file)
-    scope.codegen(targetPath)
+    scope.toFile(targetPath)
   }
   
 }
