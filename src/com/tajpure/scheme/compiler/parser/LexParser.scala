@@ -247,7 +247,8 @@ object LexParser extends App {
       try {
         n = lexer.nextToken()
         loop()
-      } catch {
+      } 
+      catch {
         case pe: ParserException => Log.error(pe.toString())
         case e: Exception => Log.error(e.toString())
       }

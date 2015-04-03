@@ -12,6 +12,7 @@ class CompilerException(_message: String, _row: Int, _col: Int, _start: Int) ext
 
   def this(_message: String, node: Node) = this(_message, node.row, node.col, node.start)
 
-  override def toString = "parser error: " + getMessage() + " on row:" + (row + 1) + " col:" + (col + 1)
+  override 
+  def toString = "parser error: " + getMessage() + " on row:" + (row + 1) + " col:" + (col + 1)
   
 }

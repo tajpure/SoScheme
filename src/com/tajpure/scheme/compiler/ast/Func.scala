@@ -3,6 +3,10 @@ package com.tajpure.scheme.compiler.ast
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.Closure
+import org.jllvm._type.FunctionType
+import org.jllvm.bindings.LLVMLinkage
+import org.jllvm._type.IntegerType
+import org.jllvm._type.Type
 
 class Func(_params: List[Symbol], _propertyForm: Scope, _body: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -14,7 +18,8 @@ class Func(_params: List[Symbol], _propertyForm: Scope, _body: Node, _file: Stri
   val body: Node = _body
   
   def interp(s: Scope): Value = {
-    val properties: Scope = if (propertyForm == null) {
+    val properties: Scope = 
+      if (propertyForm == null) {
       null
     } else {
       Scope.evalProperties(propertyForm, s)
@@ -27,7 +32,12 @@ class Func(_params: List[Symbol], _propertyForm: Scope, _body: Node, _file: Stri
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    null
+    val _type: IntegerType = new IntegerType(32)
+    val Doubles:  Array[Type] = new Array[Type](0)
+    val function: org.jllvm.value.user.constant.Function = 
+      new org.jllvm.value.user.constant.Function(s.codegen.module, "test", new FunctionType(_type, Doubles, false))
+    function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
+    function
   }
   
   override

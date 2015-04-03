@@ -1,5 +1,7 @@
 package com.tajpure.scheme.compiler.value
 
+import com.tajpure.scheme.compiler.ast.Node
+
 class IntValue(_value: Int) extends Value {
   
   val value: Int = _value
@@ -9,4 +11,9 @@ class IntValue(_value: Int) extends Value {
     value.toString()
   }
   
+}
+
+object IntValue extends App {
+//  val intVal = new IntValue(10)
+  println("ssssss")
 }

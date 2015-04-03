@@ -34,12 +34,14 @@ object Parser extends App {
   def parseNode(preNode: Node): Node = {
     if (!preNode.isInstanceOf[Tuple]) {
       preNode
-    } else {
+    } 
+    else {
       val tuple: Tuple = preNode.asInstanceOf[Tuple]
       val elements: List[Node] = tuple.elements
       if (elements.isEmpty) {
         throw new ParserException("syntax error: ", tuple)
-      } else {
+      } 
+      else {
         val curNode: Node = elements(0)
         if (curNode.isInstanceOf[Symbol]) {
           curNode.asInstanceOf[Symbol].id match {
@@ -50,7 +52,8 @@ object Parser extends App {
             case Constants.SEQ => parseBlock(tuple)
             case default => parseCall(tuple)
           }
-        } else {
+        } 
+        else {
           parseCall(tuple)
         }
       }
@@ -69,7 +72,8 @@ object Parser extends App {
     val elements: List[Node] = tuple.elements
     if (elements.size != 3) {
       throw new ParserException("incorrect format of definition", tuple)
-    } else {
+    } 
+    else {
       val pattern: Node = parseNode(elements(1))
       val value: Node = parseNode(elements(2))
       new Define(pattern, value, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)

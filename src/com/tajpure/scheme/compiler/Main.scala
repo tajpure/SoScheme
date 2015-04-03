@@ -4,7 +4,7 @@ object Main extends App {
   
   override 
   def main(args: Array[String]) {
-    val compiler: Compiler = new Compiler(args(0))
+    val compiler: Compiler = new Compiler("D:/workspace/workspace11/SoScheme/test/double.scm")
     compiler.compile()
   }
   

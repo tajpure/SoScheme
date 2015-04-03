@@ -33,7 +33,7 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
 
   def this() = this(null, null)
   
-  def this(_parent: Scope) = this(_parent, null)
+  def this(_parent: Scope) = this(_parent, _parent.codegen)
 
   def copy(): Scope = {
     val ret: Scope = new Scope
@@ -189,7 +189,7 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
   }
   
   def toFile(path: String): Unit = {
-    codegen.module.printToFile(path)
+    codegen.toFile(path)
   }
   
   override

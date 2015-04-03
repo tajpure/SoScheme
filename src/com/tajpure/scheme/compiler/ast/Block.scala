@@ -25,7 +25,11 @@ class Block(_statements: List[Node], _file: String, _start: Int, _end: Int, _row
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    null
+    val curScope: Scope = new Scope(s);
+    statements.map {
+      node =>
+        node.codegen(curScope)
+    }.last
   }
   
   override

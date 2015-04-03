@@ -24,7 +24,7 @@ class Div extends PrimFunc("/", -1) {
          new FloatValue( 1 / args(0).asInstanceOf[FloatValue].value)
       }
       else {
-         Log.error(location, "Exception: incorrect arguments count in call '/'")
+         Log.error(location, "Exception: incorrect arguments in call '/'")
          Value.VOID
       }
     } 

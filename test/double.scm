@@ -1,0 +1,1 @@
+(define double (lambda (n) (* n 2)))

@@ -1,5 +1,7 @@
 package com.tajpure.scheme.compiler.value
 
+import com.tajpure.scheme.compiler.ast.Node
+
 class FractionValue (_numerator: Int, _denominator: Int) extends Value {
   
   // greatest common divisor
@@ -8,6 +10,10 @@ class FractionValue (_numerator: Int, _denominator: Int) extends Value {
   val numerator: Int = _numerator / gcd
   
   val denominator: Int = _denominator / gcd
+
+  def apply(args: List[Value], location: Node): Value = {
+    null
+  }
   
   def gcd(numerator: Int, denominator: Int): Int = {
     if (denominator == 0) {

@@ -30,7 +30,8 @@ class PreParser(_source:String, _path: String) {
     val first: Node = lexer.nextToken()
     if (first == null) {
       null
-    } else if (first.isInstanceOf[Quote]) {
+    } 
+    else if (first.isInstanceOf[Quote]) {
       val quote: Quote = first.asInstanceOf[Quote]
       quote.setQuoteNode(nextNode1(depth + 1))
       quote
@@ -97,7 +98,8 @@ object PreParser extends App {
   
   try {
     Log.info("preparser result: " + preParser.parse().toString())
-  } catch {
+  } 
+  catch {
     case pe: ParserException => Log.error(pe.toString())
     case e: Exception => Log.error(e.toString())
   }

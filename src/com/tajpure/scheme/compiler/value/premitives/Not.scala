@@ -14,10 +14,8 @@ class Not extends PrimFunc("not", 1) {
       throw new CompilerException("Args don't match the 'not' function", location)
     }
 
-    val arg0 = args(0)
-
-    if (arg0.isInstanceOf[BoolValue]) {
-      new BoolValue(!arg0.asInstanceOf[BoolValue].value)
+    if (args(0).isInstanceOf[BoolValue]) {
+      new BoolValue(!args(0).asInstanceOf[BoolValue].value)
     } else {
       Log.error(location, "Args type error in function 'not'")
       Value.VOID

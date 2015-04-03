@@ -12,6 +12,9 @@ object Interpreter extends App {
     Parser.parse(_path).interp(Scope.buildInitScope())
   }
   
-  interp("(define double (lambda (x) (* x 2))) (display (double 44))")
+  override 
+  def main(args: Array[String]) {
+    interp(args(0))
+  }
   
 }
