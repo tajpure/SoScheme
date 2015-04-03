@@ -28,7 +28,7 @@ class CodeGen(_source: String) {
 
   val llvmTypes: LLVMTypes = new LLVMTypes()
 
-  private val builder: InstructionBuilder = new InstructionBuilder()
+  val builder: InstructionBuilder = new InstructionBuilder()
 
   def buildAdd(lhs: org.jllvm.value.Value, rhs: org.jllvm.value.Value): org.jllvm.value.Value = {
     builder.buildAdd(lhs, rhs, "")

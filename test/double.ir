@@ -1,3 +1,5 @@
 ; ModuleID = 'D:/workspace/workspace11/SoScheme/test/double.scm'
 
-declare i32 @test()
+define i32 @test() {
+entry:
+}

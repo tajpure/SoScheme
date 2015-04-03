@@ -7,6 +7,7 @@ import org.jllvm._type.FunctionType
 import org.jllvm.bindings.LLVMLinkage
 import org.jllvm._type.IntegerType
 import org.jllvm._type.Type
+import org.jllvm.value.BasicBlock
 
 class Func(_params: List[Symbol], _propertyForm: Scope, _body: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -37,6 +38,8 @@ class Func(_params: List[Symbol], _propertyForm: Scope, _body: Node, _file: Stri
     val function: org.jllvm.value.user.constant.Function = 
       new org.jllvm.value.user.constant.Function(s.codegen.module, "test", new FunctionType(_type, Doubles, false))
     function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
+    val block: BasicBlock = function.appendBasicBlock("entry");
+    s.codegen.builder.positionBuilderAtEnd(block)
     function
   }
   
