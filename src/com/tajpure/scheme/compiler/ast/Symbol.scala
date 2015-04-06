@@ -13,7 +13,7 @@ class Symbol(_id: String, _file: String, _start: Int, _end: Int,
   }
 
   def typecheck(s: Scope): Value = {
-    null
+    s.lookup(id)
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {

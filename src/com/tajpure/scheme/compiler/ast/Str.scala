@@ -3,6 +3,7 @@ package com.tajpure.scheme.compiler.ast
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.StringValue
+import com.tajpure.scheme.compiler.value.Type
 
 class Str(_value: String, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -14,7 +15,7 @@ class Str(_value: String, _file: String, _start: Int, _end: Int, _row: Int, _col
   }
 
   def typecheck(s: Scope): Value = {
-    null
+    Type.STRING
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {

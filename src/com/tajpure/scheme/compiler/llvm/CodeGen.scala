@@ -4,20 +4,22 @@ import org.jllvm.InstructionBuilder
 import org.jllvm.Module
 import org.jllvm.NativeLibrary
 import org.jllvm._type.FunctionType
+import org.jllvm._type.IdentifiedStructType
 import org.jllvm._type.IntegerType
 import org.jllvm._type.Type
 import org.jllvm.bindings.LLVMLinkage
 import org.jllvm.value.BasicBlock
 import org.jllvm.value.user.constant.ConstantInteger
 import org.jllvm.value.user.constant.ConstantReal
-import org.jllvm.value.user.instruction.StackAllocation
+import org.jllvm.value.user.instruction.ReturnInstruction
+
 import com.tajpure.scheme.compiler.ast.Define
+import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.FloatType
 import com.tajpure.scheme.compiler.value.FloatValue
 import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.value.Value
-import org.jllvm.value.user.instruction.ReturnInstruction
-import com.tajpure.scheme.compiler.ast.Node
+import com.tajpure.scheme.compiler.Scope
 
 /**
  * A wrapper for LLVM API.
@@ -29,6 +31,16 @@ class CodeGen(_source: String) {
   val llvmTypes: LLVMTypes = new LLVMTypes()
 
   val builder: InstructionBuilder = new InstructionBuilder()
+  
+  val paramType: IdentifiedStructType = new IdentifiedStructType("ParamType")
+  
+  paramType.setBody(Array[org.jllvm._type.Type](
+      org.jllvm._type.IntegerType.i32, 
+      org.jllvm._type.IntegerType.i8, 
+      org.jllvm._type.IntegerType.i32, 
+      new org.jllvm._type.FloatType(),
+      new org.jllvm._type.VoidType()),
+      false)
 
   def buildAdd(lhs: org.jllvm.value.Value, rhs: org.jllvm.value.Value): org.jllvm.value.Value = {
     builder.buildAdd(lhs, rhs, "")
@@ -46,8 +58,8 @@ class CodeGen(_source: String) {
     builder.buildMul(lhs, rhs, "")
   }
 
-  def buildDefine(pattern: Node, value: org.jllvm.value.Value): org.jllvm.value.Value = {
-//    builder.buildAlloca(null, null)
+  def buildDefine(pattern: Node, value: Node, s: Scope): org.jllvm.value.Value = {
+    val vValue: org.jllvm.value.Value = value.codegen(s)
     null
   }
 

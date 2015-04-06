@@ -1,5 +1,11 @@
-; ModuleID = 'D:/workspace/workspace11/SoScheme/test/double.scm'
+; ModuleID = 'D:\workspaceII\SoScheme\test\double.scm'
 
-define i32 @test() {
+%ParamType = type { i32, i8, i32, float, void }
+
+define i32 @test(%ParamType*) {
+entry:
+}
+
+define i32 @test1(%ParamType*, %ParamType*) {
 entry:
 }

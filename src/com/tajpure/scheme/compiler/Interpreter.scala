@@ -14,7 +14,7 @@ object Interpreter extends App {
   
   override 
   def main(args: Array[String]) {
-    interp(args(0))
+    interp("(define reciprocal (lambda (x) (/ 1 x))) (display (reciprocal 0))")
   }
   
 }
