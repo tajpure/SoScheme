@@ -37,17 +37,7 @@ class Func(_params: List[Symbol], _propertyForm: Scope, _body: Node, _file: Stri
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    val _type: IntegerType = new IntegerType(32)
-    val _params: Array[Type] = params.map { 
-      param => new PointerType(s.codegen.paramType, 0)
-      }.toArray
-    val function: org.jllvm.value.user.constant.Function = new org.jllvm.value.user.constant.Function(
-          s.codegen.module, "test",
-          new FunctionType(_type, _params, false))
-    function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
-    val block: BasicBlock = function.appendBasicBlock("entry")
-    s.codegen.builder.positionBuilderAtEnd(block)
-    function
+   null
   }
   
   override

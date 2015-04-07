@@ -12,7 +12,6 @@ import org.jllvm.value.BasicBlock
 import org.jllvm.value.user.constant.ConstantInteger
 import org.jllvm.value.user.constant.ConstantReal
 import org.jllvm.value.user.instruction.ReturnInstruction
-
 import com.tajpure.scheme.compiler.ast.Define
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.FloatType
@@ -20,6 +19,9 @@ import com.tajpure.scheme.compiler.value.FloatValue
 import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.Scope
+import com.tajpure.scheme.compiler.ast.Func
+import com.tajpure.scheme.compiler.ast.Symbol
+import org.jllvm._type.PointerType
 
 /**
  * A wrapper for LLVM API.
@@ -32,9 +34,9 @@ class CodeGen(_source: String) {
 
   val builder: InstructionBuilder = new InstructionBuilder()
   
-  val paramType: IdentifiedStructType = new IdentifiedStructType("ParamType")
+  val anyType: IdentifiedStructType = new IdentifiedStructType("AnyType")
   
-  paramType.setBody(Array[org.jllvm._type.Type](
+  anyType.setBody(Array[org.jllvm._type.Type](
       org.jllvm._type.IntegerType.i32, 
       org.jllvm._type.IntegerType.i8, 
       org.jllvm._type.IntegerType.i32, 
@@ -59,8 +61,23 @@ class CodeGen(_source: String) {
   }
 
   def buildDefine(pattern: Node, value: Node, s: Scope): org.jllvm.value.Value = {
-    val vValue: org.jllvm.value.Value = value.codegen(s)
-    null
+    if (pattern.isInstanceOf[Symbol] && value.isInstanceOf[Func]) {
+      val _value: Func = value.asInstanceOf[Func]
+      val _type: PointerType = new PointerType(s.codegen.anyType, 0)
+      val _params: Array[Type] = _value.params.map {
+        param => new PointerType(s.codegen.anyType, 0)
+        }.toArray
+      val function: org.jllvm.value.user.constant.Function = 
+        new org.jllvm.value.user.constant.Function(s.codegen.module, pattern.toString(), new FunctionType(_type, _params, false))
+      function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
+      val block: BasicBlock = function.appendBasicBlock("entry")
+      s.codegen.builder.positionBuilderAtEnd(block)
+      _value.body.codegen(s)
+      function
+    }
+    else {
+      null
+    }
   }
 
   def buildInt(value: Value): org.jllvm.value.Value = {

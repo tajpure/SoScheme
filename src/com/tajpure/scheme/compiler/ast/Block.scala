@@ -9,7 +9,7 @@ class Block(_statements: List[Node], _file: String, _start: Int, _end: Int, _row
   val statements: List[Node] = _statements
   
   def interp(s: Scope): Value = {
-    val curScope: Scope = new Scope(s);
+    val curScope: Scope = new Scope(s)
     statements.map {
       node =>
         node.interp(curScope)
@@ -17,7 +17,7 @@ class Block(_statements: List[Node], _file: String, _start: Int, _end: Int, _row
   }
 
   def typecheck(s: Scope): Value = {
-    val curScope: Scope = new Scope(s);
+    val curScope: Scope = new Scope(s)
     statements.map {
       node =>
         node.typecheck(curScope)
@@ -25,7 +25,7 @@ class Block(_statements: List[Node], _file: String, _start: Int, _end: Int, _row
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    val curScope: Scope = new Scope(s);
+    val curScope: Scope = new Scope(s)
     statements.map {
       node =>
         node.codegen(curScope)

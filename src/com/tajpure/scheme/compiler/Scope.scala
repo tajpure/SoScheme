@@ -133,22 +133,25 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
   }
 
   def put(name: String, key: String, value: Object): Unit = {
-    var item: HashMap[String, Object] = null
-    if (map.get(name).isEmpty) {
-      item = new HashMap[String, Object]()
-    } else {
-      item = map.get(name).get
-    }
+    val item: HashMap[String, Object] = 
+      if (map.get(name).isEmpty) {
+        new HashMap[String, Object]()
+      } else {
+        map.get(name).get
+      }
+   
     item.put(key, value)
     map.put(name, item)
   }
 
   def putProperties(name: String, properties: HashMap[String, Object]): Unit = {
-    var item: HashMap[String, Object] = map.get(name).get
-    if (item == null) {
-      item = new HashMap[String, Object]()
-    }
-    item = item ++: properties
+    val item: HashMap[String, Object] = 
+      if (map.get(name).get == null) {
+        new HashMap[String, Object]() ++: properties
+      } else {
+        map.get(name).get ++: properties
+      }
+    
     map.put(name, item)
   }
 

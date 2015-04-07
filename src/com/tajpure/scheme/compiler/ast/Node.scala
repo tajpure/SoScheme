@@ -15,19 +15,19 @@ abstract class Node(_file: String, _start: Int, _end: Int, _row: Int, _col: Int)
 
   val col: Int = _col
 
-  def interp(s: Scope): Value;
+  def interp(s: Scope): Value
 
   def interp(node: Node, s: Scope) {
     node.interp(s)
   }
 
-  def typecheck(s: Scope): Value;
+  def typecheck(s: Scope): Value
 
   def typecheck(node: Node, s: Scope) {
     node.interp(s)
   }
   
-  def codegen(s: Scope): org.jllvm.value.Value;
+  def codegen(s: Scope): org.jllvm.value.Value
   
   def location(): String = {
     file + ": row: " + (row + 1) + " col: " + (col + 1) 

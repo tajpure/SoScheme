@@ -44,6 +44,7 @@ class Mult extends PrimFunc("*", -1) {
   }
   
   def codegen(args: List[Value], location: Node): Value = {
+    println("codegen")
     null
   }
 

@@ -58,36 +58,38 @@ class LexParser(_source:String, _path: String) {
   }
 
   def skipSpaces(): Boolean = {
-    var found = false
     if (offset < source.length && source.charAt(offset) == ' ') {
-      found = true
       skip(1)
       skipSpaces()
+      true
+    } 
+    else {
+      false  
     }
-    found
   }
 
   def skipComments(): Boolean = {
-    var found = false
     if (source.startsWith(Constants.COMMENTS, offset)) {
-      found = true
       while (offset < source.length && source.charAt(offset) != '\n') {
         skip(1)
       }
       if (offset < source.length) {
          forward();
       }
+      true
     }
-    found
+    else {
+      false
+    }
   }
   
   def skipEnter(): Boolean = {
-    var found = false
     if (offset < source.length && (source.charAt(offset) == '\r' || source.charAt(offset) == '\n')) {
-      found = true
       forward()
+      true
+    } else {
+      false
     }
-    found
   }
 
   def skipSpacesAndComments() {
