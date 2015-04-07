@@ -22,8 +22,9 @@ class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
     Value.VOID
   }
   
-  def codegen(s: Scope): org.jllvm.value.Value = {
+  def codegen(s: Scope): Value = {
     s.codegen.buildDefine(pattern, value, s)
+    Value.VOID
   }
   
   override

@@ -20,7 +20,7 @@ class FloatNum(_content: String, _file: String, _start: Int, _end: Int, _row: In
     Type.FLOAT
   }
   
-  def codegen(s: Scope): org.jllvm.value.Value = {
+  def codegen(s: Scope): Value = {
     null
   }
   

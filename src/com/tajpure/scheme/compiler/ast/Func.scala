@@ -36,8 +36,14 @@ class Func(_params: List[Symbol], _propertyForm: Scope, _body: Node, _file: Stri
     null
   }
   
-  def codegen(s: Scope): org.jllvm.value.Value = {
-   null
+  def codegen(s: Scope): Value = {
+    val properties: Scope = 
+      if (propertyForm == null) {
+      null
+    } else {
+      Scope.evalProperties(propertyForm, s)
+    }
+    new Closure(this, properties, s)
   }
   
   override

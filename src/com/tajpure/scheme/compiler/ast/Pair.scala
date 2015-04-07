@@ -18,7 +18,7 @@ class Pair(_head: Node, _tail: Node, _file: String, _start: Int, _end: Int,
     null
   }
   
-  def codegen(s: Scope): org.jllvm.value.Value = {
+  def codegen(s: Scope): Value = {
     null
   }
   

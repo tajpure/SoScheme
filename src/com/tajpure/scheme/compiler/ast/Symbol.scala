@@ -16,8 +16,8 @@ class Symbol(_id: String, _file: String, _start: Int, _end: Int,
     s.lookup(id)
   }
   
-  def codegen(s: Scope): org.jllvm.value.Value = {
-    null
+  def codegen(s: Scope): Value = {
+    s.lookup(id)
   }
   
   override

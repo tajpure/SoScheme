@@ -1,5 +1,7 @@
 package com.tajpure.scheme.compiler.value.premitives
 
+import org.jllvm.value.user.instruction.AddInstruction
+import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.exception.CompilerException
 import com.tajpure.scheme.compiler.util.Log
@@ -8,6 +10,7 @@ import com.tajpure.scheme.compiler.value.FractionValue
 import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.value.Value
+import org.jllvm.value.user.constant.ConstantInteger
 
 class Add extends PrimFunc("+", -1) {
 
@@ -71,6 +74,12 @@ class Add extends PrimFunc("+", -1) {
   }
   
   def codegen(args: List[Value], location: Node): Value = {
+    null
+  }
+  
+  override
+  def codegen(args: List[Value], location: Node, s: Scope): Value = {
+    val addInstruction: AddInstruction = new AddInstruction(s.codegen.builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "d")
     null
   }
 

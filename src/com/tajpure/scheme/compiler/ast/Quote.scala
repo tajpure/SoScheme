@@ -23,7 +23,7 @@ class Quote (_value: String, _file: String, _start: Int, _end: Int, _row: Int, _
     null
   }
   
-  def codegen(s: Scope): org.jllvm.value.Value = {
+  def codegen(s: Scope): Value = {
     null
   }
   

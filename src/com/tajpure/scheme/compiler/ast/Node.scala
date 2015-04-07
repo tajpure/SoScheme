@@ -27,7 +27,7 @@ abstract class Node(_file: String, _start: Int, _end: Int, _row: Int, _col: Int)
     node.interp(s)
   }
   
-  def codegen(s: Scope): org.jllvm.value.Value
+  def codegen(s: Scope): Value
   
   def location(): String = {
     file + ": row: " + (row + 1) + " col: " + (col + 1) 
@@ -41,7 +41,7 @@ object Node {
     nodes.map { node => node.interp(s) }
   }
   
-  def codegenList(nodes: List[Node], s: Scope): List[org.jllvm.value.Value] = {
+  def codegenList(nodes: List[Node], s: Scope): List[Value] = {
     nodes.map { node => node.codegen(s) }
   }
   

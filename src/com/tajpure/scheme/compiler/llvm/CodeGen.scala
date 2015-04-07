@@ -22,6 +22,7 @@ import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.ast.Func
 import com.tajpure.scheme.compiler.ast.Symbol
 import org.jllvm._type.PointerType
+import org.jllvm.value.user.instruction.AddInstruction
 
 /**
  * A wrapper for LLVM API.
@@ -71,9 +72,10 @@ class CodeGen(_source: String) {
         new org.jllvm.value.user.constant.Function(s.codegen.module, pattern.toString(), new FunctionType(_type, _params, false))
       function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
       val block: BasicBlock = function.appendBasicBlock("entry")
-      s.codegen.builder.positionBuilderAtEnd(block)
       _value.body.codegen(s)
-      println(_value.body.toString())
+      val addInstruction: AddInstruction = new AddInstruction(s.codegen.builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "d")
+      s.codegen.builder.positionBuilderAtEnd(block)
+      new ReturnInstruction(s.codegen.builder, addInstruction);
       function
     }
     else {

@@ -24,7 +24,7 @@ class Bool(_content: String, _file: String, _start: Int, _end: Int, _row: Int, _
     Type.BOOL
   }
   
-  def codegen(s: Scope): org.jllvm.value.Value = {
+  def codegen(s: Scope): Value = {
     null
   }
   

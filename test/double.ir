@@ -4,8 +4,5 @@
 
 define %AnyType* @double(%AnyType*) {
 entry:
-}
-
-define %AnyType* @add(%AnyType*, %AnyType*) {
-entry:
+  ret i32 3
 }
