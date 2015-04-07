@@ -73,6 +73,7 @@ class CodeGen(_source: String) {
       val block: BasicBlock = function.appendBasicBlock("entry")
       s.codegen.builder.positionBuilderAtEnd(block)
       _value.body.codegen(s)
+      println(_value.body.toString())
       function
     }
     else {

@@ -9,5 +9,10 @@ class Argument(_elements: List[Node]) {
         node
       }
   }
+  
+  override
+  def toString(): String = {
+    "argument: " + elements.toString()
+  }
 
 }
