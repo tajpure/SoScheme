@@ -1,0 +1,251 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x5217acde, pid=6552, tid=852
+#
+# JRE version: Java(TM) SE Runtime Environment (7.0_71-b14) (build 1.7.0_71-b14)
+# Java VM: Java HotSpot(TM) Client VM (24.71-b01 mixed mode, sharing windows-x86 )
+# Problematic frame:
+# C  [jllvm.dll+0x30acde]
+#
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00c8cc00):  JavaThread "main" [_thread_in_native, id=852, stack(0x00bb0000,0x00c00000)]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x00000000
+
+Registers:
+EAX=0x00000000, EBX=0x001712ac, ECX=0x001712ac, EDX=0x00000001
+ESP=0x00bff3a8, EBP=0x00bff428, ESI=0x0017c298, EDI=0x001712a0
+EIP=0x5217acde, EFLAGS=0x00010212
+
+Top of Stack: (sp=0x00bff3a8)
+0x00bff3a8:   0000001b 001712a0 00000001 00000000
+0x00bff3b8:   00173fd0 03e76f08 00bff484 001712a0
+0x00bff3c8:   001712ac 0000003c 520d5376 0017c298
+0x00bff3d8:   00000000 00000000 00000000 00c8cd30
+0x00bff3e8:   03e76f08 03e76f08 00c8cc00 00000103
+0x00bff3f8:   5211b161 0017c298 03e76f08 51e86757
+0x00bff408:   00173fd0 0017c298 03e76f08 00c8cc00
+0x00bff418:   37315450 37315450 00000000 00000000 
+
+Instructions: (pc=0x5217acde)
+0x5217acbe:   10 00 83 ec 0c 53 56 8b 74 24 18 8b d9 57 ff 74
+0x5217acce:   24 28 8b 46 08 8d 7b f4 6a 01 57 6a 1b 8b 40 0c
+0x5217acde:   ff 30 e8 cb 59 00 00 56 8b cf c7 03 5c 16 87 52
+0x5217acee:   e8 fd 2d dc ff 66 8b 43 06 33 c9 38 4c 24 24 ba 
+
+
+Register to memory mapping:
+
+EAX=0x00000000 is an unknown value
+EBX=0x001712ac is an unknown value
+ECX=0x001712ac is an unknown value
+EDX=0x00000001 is an unknown value
+ESP=0x00bff3a8 is pointing into the stack for thread: 0x00c8cc00
+EBP=0x00bff428 is pointing into the stack for thread: 0x00c8cc00
+ESI=0x0017c298 is an unknown value
+EDI=0x001712a0 is an unknown value
+
+
+Stack: [0x00bb0000,0x00c00000],  sp=0x00bff3a8,  free space=316k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [jllvm.dll+0x30acde]
+j  org.jllvm.bindings.CoreJNI.LLVMBuildLoad(JJLjava/lang/String;)J+0
+j  org.jllvm.bindings.Core.LLVMBuildLoad(Lorg/jllvm/bindings/LLVMOpaqueBuilder;Lorg/jllvm/bindings/LLVMOpaqueValue;Ljava/lang/String;)Lorg/jllvm/bindings/LLVMOpaqueValue;+9
+j  org.jllvm.value.user.instruction.LoadInstruction.<init>(Lorg/jllvm/InstructionBuilder;Lorg/jllvm/value/Value;Ljava/lang/String;)V+38
+j  org.jllvm.InstructionBuilder.buildLoad(Lorg/jllvm/value/Value;Ljava/lang/String;)Lorg/jllvm/value/user/instruction/LoadInstruction;+7
+j  com.tajpure.scheme.compiler.llvm.CodeGen.buildDefine(Lcom/tajpure/scheme/compiler/ast/Node;Lcom/tajpure/scheme/compiler/ast/Node;Lcom/tajpure/scheme/compiler/Scope;)Lorg/jllvm/value/Value;+186
+j  com.tajpure.scheme.compiler.ast.Define.codegen(Lcom/tajpure/scheme/compiler/Scope;)Lcom/tajpure/scheme/compiler/value/Value;+13
+j  com.tajpure.scheme.compiler.ast.Block$$anonfun$codegen$1.apply(Lcom/tajpure/scheme/compiler/ast/Node;)Lcom/tajpure/scheme/compiler/value/Value;+5
+j  com.tajpure.scheme.compiler.ast.Block$$anonfun$codegen$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+j  scala.collection.immutable.List.map(Lscala/Function1;Lscala/collection/generic/CanBuildFrom;)Ljava/lang/Object;+32
+j  com.tajpure.scheme.compiler.ast.Block.codegen(Lcom/tajpure/scheme/compiler/Scope;)Lcom/tajpure/scheme/compiler/value/Value;+28
+j  com.tajpure.scheme.compiler.Compiler.compile()V+36
+j  com.tajpure.scheme.compiler.Main$.main([Ljava/lang/String;)V+11
+j  com.tajpure.scheme.compiler.Main.main([Ljava/lang/String;)V+4
+v  ~StubRoutines::call_stub
+V  [jvm.dll+0x141eda]
+V  [jvm.dll+0x2061ee]
+V  [jvm.dll+0x141f5d]
+V  [jvm.dll+0xcb245]
+V  [jvm.dll+0xd5ee7]
+C  [javaw.exe+0x2070]
+C  [javaw.exe+0xa601]
+C  [javaw.exe+0xa68b]
+C  [kernel32.dll+0x4ee1c]
+C  [ntdll.dll+0x637eb]
+C  [ntdll.dll+0x637be]
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  org.jllvm.bindings.CoreJNI.LLVMBuildLoad(JJLjava/lang/String;)J+0
+j  org.jllvm.bindings.Core.LLVMBuildLoad(Lorg/jllvm/bindings/LLVMOpaqueBuilder;Lorg/jllvm/bindings/LLVMOpaqueValue;Ljava/lang/String;)Lorg/jllvm/bindings/LLVMOpaqueValue;+9
+j  org.jllvm.value.user.instruction.LoadInstruction.<init>(Lorg/jllvm/InstructionBuilder;Lorg/jllvm/value/Value;Ljava/lang/String;)V+38
+j  org.jllvm.InstructionBuilder.buildLoad(Lorg/jllvm/value/Value;Ljava/lang/String;)Lorg/jllvm/value/user/instruction/LoadInstruction;+7
+j  com.tajpure.scheme.compiler.llvm.CodeGen.buildDefine(Lcom/tajpure/scheme/compiler/ast/Node;Lcom/tajpure/scheme/compiler/ast/Node;Lcom/tajpure/scheme/compiler/Scope;)Lorg/jllvm/value/Value;+186
+j  com.tajpure.scheme.compiler.ast.Define.codegen(Lcom/tajpure/scheme/compiler/Scope;)Lcom/tajpure/scheme/compiler/value/Value;+13
+j  com.tajpure.scheme.compiler.ast.Block$$anonfun$codegen$1.apply(Lcom/tajpure/scheme/compiler/ast/Node;)Lcom/tajpure/scheme/compiler/value/Value;+5
+j  com.tajpure.scheme.compiler.ast.Block$$anonfun$codegen$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+j  scala.collection.immutable.List.map(Lscala/Function1;Lscala/collection/generic/CanBuildFrom;)Ljava/lang/Object;+32
+j  com.tajpure.scheme.compiler.ast.Block.codegen(Lcom/tajpure/scheme/compiler/Scope;)Lcom/tajpure/scheme/compiler/value/Value;+28
+j  com.tajpure.scheme.compiler.Compiler.compile()V+36
+j  com.tajpure.scheme.compiler.Main$.main([Ljava/lang/String;)V+11
+j  com.tajpure.scheme.compiler.Main.main([Ljava/lang/String;)V+4
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x007c8c00 JavaThread "Service Thread" daemon [_thread_blocked, id=6560, stack(0x03bd0000,0x03c20000)]
+  0x007c4000 JavaThread "C1 CompilerThread0" daemon [_thread_blocked, id=5128, stack(0x03cc0000,0x03d10000)]
+  0x007b8000 JavaThread "Attach Listener" daemon [_thread_blocked, id=8804, stack(0x03af0000,0x03b40000)]
+  0x007b5000 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=9592, stack(0x039d0000,0x03a20000)]
+  0x00744000 JavaThread "Finalizer" daemon [_thread_blocked, id=8304, stack(0x00c00000,0x00c50000)]
+  0x0073f000 JavaThread "Reference Handler" daemon [_thread_blocked, id=9468, stack(0x03a60000,0x03ab0000)]
+=>0x00c8cc00 JavaThread "main" [_thread_in_native, id=852, stack(0x00bb0000,0x00c00000)]
+
+Other Threads:
+  0x0073cc00 VMThread [stack: 0x03b40000,0x03b90000] [id=120]
+  0x007ca000 WatcherThread [stack: 0x03d10000,0x03d60000] [id=8120]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ def new generation   total 4928K, used 2385K [0x27200000, 0x27750000, 0x2c750000)
+  eden space 4416K,  54% used [0x27200000, 0x27454490, 0x27650000)
+  from space 512K,   0% used [0x27650000, 0x27650000, 0x276d0000)
+  to   space 512K,   0% used [0x276d0000, 0x276d0000, 0x27750000)
+ tenured generation   total 10944K, used 0K [0x2c750000, 0x2d200000, 0x37200000)
+   the space 10944K,   0% used [0x2c750000, 0x2c750000, 0x2c750200, 0x2d200000)
+ compacting perm gen  total 12288K, used 2228K [0x37200000, 0x37e00000, 0x3b200000)
+   the space 12288K,  18% used [0x37200000, 0x3742d160, 0x3742d200, 0x37e00000)
+    ro space 10240K,  44% used [0x3b200000, 0x3b67aee0, 0x3b67b000, 0x3bc00000)
+    rw space 12288K,  52% used [0x3bc00000, 0x3c242e10, 0x3c243000, 0x3c800000)
+
+Card table byte_map: [0x00c90000,0x00d40000] byte_map_base: 0x00b57000
+
+Polling page: 0x00260000
+
+Code Cache  [0x019b0000, 0x01a58000, 0x039b0000)
+ total_blobs=181 nmethods=34 adapters=85 free_code_cache=32113Kb largest_free_block=32884416
+
+Compilation events (10 events):
+Event: 0.151 Thread 0x007c4000   30             sun.misc.MetaIndex::mayContain (51 bytes)
+Event: 0.151 Thread 0x007c4000 nmethod 30 0x01a51b88 code [0x01a51cb0, 0x01a51e38]
+Event: 0.157 Thread 0x007c4000   31             java.lang.String::getChars (62 bytes)
+Event: 0.157 Thread 0x007c4000 nmethod 31 0x01a52048 code [0x01a52180, 0x01a52410]
+Event: 0.177 Thread 0x007c4000   32             java.lang.AbstractStringBuilder::append (48 bytes)
+Event: 0.178 Thread 0x007c4000 nmethod 32 0x01a52608 code [0x01a52720, 0x01a52848]
+Event: 0.182 Thread 0x007c4000   33             java.lang.String::<init> (67 bytes)
+Event: 0.182 Thread 0x007c4000 nmethod 33 0x01a52988 code [0x01a52ac0, 0x01a52d00]
+Event: 0.182 Thread 0x007c4000   34             java.util.Arrays::copyOfRange (63 bytes)
+Event: 0.183 Thread 0x007c4000 nmethod 34 0x01a52ec8 code [0x01a53020, 0x01a533b8]
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (10 events):
+Event: 0.223 Thread 0x00c8cc00 Threw 0x27435930 at C:\re\jdk7u71\1605\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.224 Thread 0x00c8cc00 Threw 0x27437bc0 at C:\re\jdk7u71\1605\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.225 Thread 0x00c8cc00 Threw 0x2743a178 at C:\re\jdk7u71\1605\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.225 Thread 0x00c8cc00 Threw 0x2743be10 at C:\re\jdk7u71\1605\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.226 Thread 0x00c8cc00 Threw 0x2743f060 at C:\re\jdk7u71\1605\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.227 Thread 0x00c8cc00 Threw 0x274426b8 at C:\re\jdk7u71\1605\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.227 Thread 0x00c8cc00 Threw 0x27444390 at C:\re\jdk7u71\1605\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.227 Thread 0x00c8cc00 Threw 0x27445ee8 at C:\re\jdk7u71\1605\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.228 Thread 0x00c8cc00 Threw 0x27447c68 at C:\re\jdk7u71\1605\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.228 Thread 0x00c8cc00 Threw 0x27449fa0 at C:\re\jdk7u71\1605\hotspot\src\share\vm\prims\jvm.cpp:1281
+
+Events (10 events):
+Event: 0.226 loading class 0x03e5c2a0
+Event: 0.226 loading class 0x03e5c2a0 done
+Event: 0.227 loading class 0x03ea39c0
+Event: 0.227 loading class 0x03ea39c0 done
+Event: 0.227 loading class 0x03e6ec18
+Event: 0.227 loading class 0x03e6ec18 done
+Event: 0.228 loading class 0x03e54e88
+Event: 0.228 loading class 0x03e54e88 done
+Event: 0.228 loading class 0x03e5bca0
+Event: 0.228 loading class 0x03e5bca0 done
+
+
+Dynamic libraries:
+0x00d80000 - 0x00daf000 	D:\Program Files\Java\jdk1.7.0_71\bin\javaw.exe
+0x77850000 - 0x7798c000 	C:\Windows\SYSTEM32\ntdll.dll
+0x762f0000 - 0x763c4000 	C:\Windows\system32\kernel32.dll
+0x75a60000 - 0x75aab000 	C:\Windows\system32\KERNELBASE.dll
+0x76250000 - 0x762f0000 	C:\Windows\system32\ADVAPI32.dll
+0x75bd0000 - 0x75c7c000 	C:\Windows\system32\msvcrt.dll
+0x77990000 - 0x779a9000 	C:\Windows\SYSTEM32\sechost.dll
+0x776a0000 - 0x77742000 	C:\Windows\system32\RPCRT4.dll
+0x775d0000 - 0x77699000 	C:\Windows\system32\USER32.dll
+0x76610000 - 0x7665e000 	C:\Windows\system32\GDI32.dll
+0x75eb0000 - 0x75eba000 	C:\Windows\system32\LPK.dll
+0x760a0000 - 0x7613d000 	C:\Windows\system32\USP10.dll
+0x74d20000 - 0x74ebe000 	C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_41e6975e2bd6f2b2\COMCTL32.dll
+0x779c0000 - 0x77a17000 	C:\Windows\system32\SHLWAPI.dll
+0x75b70000 - 0x75b8f000 	C:\Windows\system32\IMM32.DLL
+0x77780000 - 0x7784c000 	C:\Windows\system32\MSCTF.dll
+0x757a0000 - 0x757d5000 	C:\Windows\system32\nvinit.dll
+0x0f000000 - 0x0f006000 	C:\Program Files\NVIDIA Corporation\CoProcManager\_etoured.dll
+0x72750000 - 0x7278d000 	C:\Program Files\NVIDIA Corporation\CoProcManager\nvd3d9wrap.dll
+0x75c80000 - 0x75e1d000 	C:\Windows\system32\SETUPAPI.dll
+0x75860000 - 0x75887000 	C:\Windows\system32\CFGMGR32.dll
+0x75e20000 - 0x75eaf000 	C:\Windows\system32\OLEAUT32.dll
+0x76660000 - 0x767bc000 	C:\Windows\system32\ole32.dll
+0x75b50000 - 0x75b62000 	C:\Windows\system32\DEVOBJ.dll
+0x70920000 - 0x7095b000 	C:\Program Files\NVIDIA Corporation\CoProcManager\nvdxgiwrap.dll
+0x69bd0000 - 0x69c8f000 	D:\Program Files\Java\jdk1.7.0_71\jre\bin\msvcr100.dll
+0x72950000 - 0x72cd9000 	D:\Program Files\Java\jdk1.7.0_71\jre\bin\client\jvm.dll
+0x6f030000 - 0x6f037000 	C:\Windows\system32\WSOCK32.dll
+0x75b90000 - 0x75bc5000 	C:\Windows\system32\WS2_32.dll
+0x779b0000 - 0x779b6000 	C:\Windows\system32\NSI.dll
+0x739e0000 - 0x73a12000 	C:\Windows\system32\WINMM.dll
+0x76820000 - 0x76825000 	C:\Windows\system32\PSAPI.DLL
+0x73950000 - 0x7395c000 	D:\Program Files\Java\jdk1.7.0_71\jre\bin\verify.dll
+0x72930000 - 0x72950000 	D:\Program Files\Java\jdk1.7.0_71\jre\bin\java.dll
+0x72910000 - 0x72923000 	D:\Program Files\Java\jdk1.7.0_71\jre\bin\zip.dll
+0x51e70000 - 0x52d46000 	D:\workspace\jllvm\target\classes\org\jllvm\bindings\windows\x86\jllvm.dll
+0x6e3c0000 - 0x6e4ab000 	C:\Windows\system32\dbghelp.dll
+
+VM Arguments:
+jvm_args: -Dfile.encoding=UTF-8 -Xbootclasspath/a:D:\eclipse\plugins\org.scala-lang.scala-library_2.11.6.v20150224-172222-092690e7bf.jar;D:\eclipse\plugins\org.scala-lang.scala-reflect_2.11.6.v20150224-172222-092690e7bf.jar;D:\eclipse\plugins\org.scala-lang.scala-actors_2.11.6.v20150224-172222-092690e7bf.jar 
+java_command: com.tajpure.scheme.compiler.Main D:\workspaceII\SoScheme\test\double.scm
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=D:\Program Files\Java\jdk1.7.0_71
+CLASSPATH=JAVA_HOME\lib;D:\Program Files\Java\jdk1.7.0_71\lib\tools.jar
+PATH=D:/Program Files/Java/jdk1.7.0_71/bin/../jre/bin/client;D:/Program Files/Java/jdk1.7.0_71/bin/../jre/bin;D:/Program Files/Java/jdk1.7.0_71/bin/../jre/lib/i386;D:\Program Files\ARM\ADSv1_2\bin;D:\Program Files\Java\jdk1.7.0_71\bin;D:\App\Application\adt-bundle-windows-x86-20130522\sdk\platform-tools;D:\Program Files (x86)\maven-2.2.1\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32\wbem;D:\App\apache-maven-2.2.1-bin\apache-maven-2.2.1\bin;C:\Program Files\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files\ThinkPad\Bluetooth Software\;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\DTS\Binn\;D:\Python34;D:\Program Files\Java\jdk1.7.0_71\bin;C:\Program Files\MySQL\MySQL Server 5.6\bin;D:\Program Files\nodejs\;D:\Program Files\scala\bin;D:\Program Files\Microsoft Visual Studio\Common\Tools\WinNT;D:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin;D:\Program Files\Microsoft Visual Studio\Common\Tools;D:\Program Files\Microsoft Visual Studio\VC98\bin;D:\App\Application\adt-bundle-windows-x86-20130522\sdk\platform-tools;D:\App\Application\adt-bundle-windows-x86-20130522\sdk\tools;C:\Users\TAOJX\AppData\Roaming\npm;D:\eclipse;
+USERNAME=TAOJX
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=x86 Family 6 Model 42 Stepping 7, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 7 Build 7601 Service Pack 1
+
+CPU:total 4 (2 cores per cpu, 2 threads per core) family 6 model 42 stepping 7, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, ht, tsc, tscinvbit
+
+Memory: 4k page, physical 3056880k(934968k free), swap 6112012k(1920264k free)
+
+vm_info: Java HotSpot(TM) Client VM (24.71-b01) for windows-x86 JRE (1.7.0_71-b14), built on Sep 26 2014 16:30:49 by "java_re" with unknown MS VC++:1600
+
+time: Sun Apr 12 10:16:38 2015
+elapsed time: 0 seconds
+
