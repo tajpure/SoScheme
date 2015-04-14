@@ -23,6 +23,8 @@ import com.tajpure.scheme.compiler.ast.Func
 import com.tajpure.scheme.compiler.ast.Symbol
 import org.jllvm._type.PointerType
 import org.jllvm.value.user.instruction.AddInstruction
+import com.tajpure.scheme.compiler.ast.IntNum
+import com.tajpure.scheme.compiler.ast.FloatNum
 
 /**
  * A wrapper for LLVM API.
@@ -75,8 +77,18 @@ class CodeGen(_source: String) {
       _value.body.codegen(s)
       val addInstruction: AddInstruction = new AddInstruction(s.codegen.builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "d")
       s.codegen.builder.positionBuilderAtEnd(block)
-      new ReturnInstruction(s.codegen.builder, addInstruction);
+      new ReturnInstruction(s.codegen.builder, addInstruction)
       function
+    }
+    else if (pattern.isInstanceOf[Symbol] && value.isInstanceOf[IntNum]) {
+      val _pattern: Symbol = pattern.asInstanceOf[Symbol]
+      val _value: Int = value.asInstanceOf[IntNum].value
+      builder.buildLoad(ConstantInteger.constI32(_value), _pattern.id);
+    }
+    else if (pattern.isInstanceOf[Symbol] && value.isInstanceOf[FloatNum]) {
+      val _pattern: Symbol = pattern.asInstanceOf[Symbol]
+      val _value: Float = value.asInstanceOf[FloatNum].value
+      builder.buildLoad(new ConstantReal(new org.jllvm._type.FloatType(), _value), _pattern.id);
     }
     else {
       null
