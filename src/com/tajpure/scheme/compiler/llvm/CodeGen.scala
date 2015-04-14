@@ -64,12 +64,10 @@ class CodeGen(_source: String) {
   def buildMult(lhs: org.jllvm.value.Value, rhs: org.jllvm.value.Value): org.jllvm.value.Value = {
     builder.buildMul(lhs, rhs, "")
   }
-
-  def buildDefine(pattern: Node, value: Node, s: Scope): org.jllvm.value.Value = {
-    if (pattern.isInstanceOf[Symbol] && value.isInstanceOf[Func]) {
+  
+  def buildFunction(pattern: Node, value: Node, s: Scope): org.jllvm.value.Value = {
       val _value: Func = value.asInstanceOf[Func]
-//      val _type: PointerType = new PointerType(s.codegen.anyType, 0)
-      val _type: org.jllvm._type.IntegerType = org.jllvm._type.IntegerType.i32
+      val _type: PointerType = new PointerType(s.codegen.anyType, 0)
       val _params: Array[Type] = _value.params.map {
         param => new PointerType(s.codegen.anyType, 0)
         }.toArray
@@ -79,12 +77,26 @@ class CodeGen(_source: String) {
       val block: BasicBlock = function.appendBasicBlock("entry")
       _value.body.codegen(s)
       function.getParameter(0).dump()
-//      val one: GetElementPointerInstruction = 
-//        new GetElementPointerInstruction(s.codegen.builder, function.getParameter(0), Array(ConstantInteger.constI32(0)), "1")
-//      val two: LoadInstruction = builder.buildLoad(ConstantInteger.constI32(2), "2")
       val addInstruction: AddInstruction = new AddInstruction(s.codegen.builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "d")
-      val two: LoadInstruction = builder.buildLoad(addInstruction, "2")
-      val mul = buildMult(ConstantInteger.constI32(1),  ConstantInteger.constI32(1)) 
+      s.codegen.builder.positionBuilderAtEnd(block)
+      new ReturnInstruction(s.codegen.builder, addInstruction)
+      function
+    }
+
+  def buildDefine(pattern: Node, value: Node, s: Scope): org.jllvm.value.Value = {
+    if (pattern.isInstanceOf[Symbol] && value.isInstanceOf[Func]) {
+      val _value: Func = value.asInstanceOf[Func]
+      val _type: PointerType = new PointerType(s.codegen.anyType, 0)
+      val _params: Array[Type] = _value.params.map {
+        param => new PointerType(s.codegen.anyType, 0)
+        }.toArray
+      val function: org.jllvm.value.user.constant.Function = 
+        new org.jllvm.value.user.constant.Function(s.codegen.module, pattern.toString(), new FunctionType(_type, _params, false))
+      function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
+      val block: BasicBlock = function.appendBasicBlock("entry")
+      _value.body.codegen(s)
+      function.getParameter(0).dump()
+      val addInstruction: AddInstruction = new AddInstruction(s.codegen.builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "d")
       s.codegen.builder.positionBuilderAtEnd(block)
       new ReturnInstruction(s.codegen.builder, addInstruction)
       function

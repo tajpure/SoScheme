@@ -1,4 +1,4 @@
-package com.tajpure.scheme.compiler.llvm;
+package com.tajpure.scheme;
 
 import org.jllvm.ExecutionEngine;
 import org.jllvm.InstructionBuilder;
