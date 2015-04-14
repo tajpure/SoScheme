@@ -24,7 +24,7 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
         Scope.mergeDefault(closure.properties, funcScope)
       }
       
-      params.zipWithIndex.foreach { 
+      params.zipWithIndex.foreach {
         case (param, i) => 
         val value: Value = args.positional(i).interp(s)
         funcScope.putValue(params(i).id, value)

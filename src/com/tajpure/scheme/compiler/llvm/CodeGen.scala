@@ -25,6 +25,8 @@ import org.jllvm._type.PointerType
 import org.jllvm.value.user.instruction.AddInstruction
 import com.tajpure.scheme.compiler.ast.IntNum
 import com.tajpure.scheme.compiler.ast.FloatNum
+import org.jllvm.value.user.instruction.GetElementPointerInstruction
+import org.jllvm.value.user.instruction.LoadInstruction
 
 /**
  * A wrapper for LLVM API.
@@ -66,7 +68,8 @@ class CodeGen(_source: String) {
   def buildDefine(pattern: Node, value: Node, s: Scope): org.jllvm.value.Value = {
     if (pattern.isInstanceOf[Symbol] && value.isInstanceOf[Func]) {
       val _value: Func = value.asInstanceOf[Func]
-      val _type: PointerType = new PointerType(s.codegen.anyType, 0)
+//      val _type: PointerType = new PointerType(s.codegen.anyType, 0)
+      val _type: org.jllvm._type.IntegerType = org.jllvm._type.IntegerType.i32
       val _params: Array[Type] = _value.params.map {
         param => new PointerType(s.codegen.anyType, 0)
         }.toArray
@@ -75,7 +78,13 @@ class CodeGen(_source: String) {
       function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
       val block: BasicBlock = function.appendBasicBlock("entry")
       _value.body.codegen(s)
+      function.getParameter(0).dump()
+//      val one: GetElementPointerInstruction = 
+//        new GetElementPointerInstruction(s.codegen.builder, function.getParameter(0), Array(ConstantInteger.constI32(0)), "1")
+//      val two: LoadInstruction = builder.buildLoad(ConstantInteger.constI32(2), "2")
       val addInstruction: AddInstruction = new AddInstruction(s.codegen.builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "d")
+      val two: LoadInstruction = builder.buildLoad(addInstruction, "2")
+      val mul = buildMult(ConstantInteger.constI32(1),  ConstantInteger.constI32(1)) 
       s.codegen.builder.positionBuilderAtEnd(block)
       new ReturnInstruction(s.codegen.builder, addInstruction)
       function

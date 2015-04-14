@@ -1,8 +1,8 @@
-; ModuleID = 'D:\workspace\workspace11\SoScheme\test\double.scm'
+; ModuleID = 'D:/workspaceII/SoScheme/test/double.scm'
 
 %AnyType = type { i32, i8, i32, float, void }
 
-define %AnyType* @double(%AnyType*) {
+define i32 @double(%AnyType*) {
 entry:
   ret i32 3
 }
