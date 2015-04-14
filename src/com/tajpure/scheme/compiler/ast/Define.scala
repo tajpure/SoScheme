@@ -2,6 +2,7 @@ package com.tajpure.scheme.compiler.ast
 
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
+import com.tajpure.scheme.compiler.util.Log
 
 class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int,
              _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
@@ -23,7 +24,15 @@ class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
   }
   
   def codegen(s: Scope): Value = {
-    s.codegen.buildDefine(pattern, value, s)
+    if (value.isInstanceOf[Func]) {
+      s.codegen.buildFunction(pattern, value, s)
+    }
+    else if (value.isInstanceOf[IntNum]) {
+      null
+    }
+    else {
+      Log.error(this, "unknown value")
+    }
     Value.VOID
   }
   

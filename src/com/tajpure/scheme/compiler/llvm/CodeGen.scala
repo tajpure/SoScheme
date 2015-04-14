@@ -81,39 +81,6 @@ class CodeGen(_source: String) {
       s.codegen.builder.positionBuilderAtEnd(block)
       new ReturnInstruction(s.codegen.builder, addInstruction)
       function
-    }
-
-  def buildDefine(pattern: Node, value: Node, s: Scope): org.jllvm.value.Value = {
-    if (pattern.isInstanceOf[Symbol] && value.isInstanceOf[Func]) {
-      val _value: Func = value.asInstanceOf[Func]
-      val _type: PointerType = new PointerType(s.codegen.anyType, 0)
-      val _params: Array[Type] = _value.params.map {
-        param => new PointerType(s.codegen.anyType, 0)
-        }.toArray
-      val function: org.jllvm.value.user.constant.Function = 
-        new org.jllvm.value.user.constant.Function(s.codegen.module, pattern.toString(), new FunctionType(_type, _params, false))
-      function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
-      val block: BasicBlock = function.appendBasicBlock("entry")
-      _value.body.codegen(s)
-      function.getParameter(0).dump()
-      val addInstruction: AddInstruction = new AddInstruction(s.codegen.builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "d")
-      s.codegen.builder.positionBuilderAtEnd(block)
-      new ReturnInstruction(s.codegen.builder, addInstruction)
-      function
-    }
-    else if (pattern.isInstanceOf[Symbol] && value.isInstanceOf[IntNum]) {
-      val _pattern: Symbol = pattern.asInstanceOf[Symbol]
-      val _value: Int = value.asInstanceOf[IntNum].value
-      builder.buildLoad(ConstantInteger.constI32(_value), _pattern.id);
-    }
-    else if (pattern.isInstanceOf[Symbol] && value.isInstanceOf[FloatNum]) {
-      val _pattern: Symbol = pattern.asInstanceOf[Symbol]
-      val _value: Float = value.asInstanceOf[FloatNum].value
-      builder.buildLoad(new ConstantReal(new org.jllvm._type.FloatType(), _value), _pattern.id);
-    }
-    else {
-      null
-    }
   }
 
   def buildInt(value: Value): org.jllvm.value.Value = {
