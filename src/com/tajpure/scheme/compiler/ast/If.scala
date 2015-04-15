@@ -14,7 +14,7 @@ class If(_test: Node, _then: Node, _orelse: Node, _file: String, _start: Int, _e
     null
   }
   
-  def codegen(s: Scope): Value = {
+  def codegen(s: Scope): org.jllvm.value.Value = {
     null
   }
   

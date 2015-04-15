@@ -29,8 +29,8 @@ class IntNum(_content: String, _file: String, _start: Int, _end: Int, _row: Int,
     Type.INT
   }
 
-  def codegen(s: Scope): Value = {
-    new IntValue(value)
+  def codegen(s: Scope): org.jllvm.value.Value = {
+    s.codegen.buildInt(new IntValue(value))
   }
 
   override def toString(): String = {

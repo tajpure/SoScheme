@@ -47,8 +47,8 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
     null
   }
   
-  def codegen(s: Scope): Value = {
-    val opValue: Value = this.op.codegen(s)
+  def codegen(s: Scope): org.jllvm.value.Value = {
+    val opValue: Value = this.op.interp(s)
     if (opValue.isInstanceOf[Closure]) {
       val closure: Closure = opValue.asInstanceOf[Closure]
       val funcScope: Scope = new Scope(closure.env)
@@ -59,18 +59,18 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
       }
       
       params.zipWithIndex.foreach { case (param, i) => 
-        val value: Value = args.positional(i).codegen(s)
+        val value: Value = args.positional(i).interp(s)
         funcScope.putValue(params(i).id, value)
       }
       
       closure.func.body.codegen(funcScope)
     } else if (opValue.isInstanceOf[PrimFunc]) {
       val primFunc = opValue.asInstanceOf[PrimFunc]
-      val args: List[Value] = Node.interpList(this.args.positional, s)
+      val args: List[org.jllvm.value.Value] = Node.codegenList(this.args.positional, s)
       primFunc.codegen(args, this, s)
     } else {
       Log.error(this.op, "this is not a function.")
-      Value.VOID
+      null
     }
   }
   

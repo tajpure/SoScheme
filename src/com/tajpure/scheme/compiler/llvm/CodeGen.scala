@@ -27,6 +27,7 @@ import com.tajpure.scheme.compiler.ast.IntNum
 import com.tajpure.scheme.compiler.ast.FloatNum
 import org.jllvm.value.user.instruction.GetElementPointerInstruction
 import org.jllvm.value.user.instruction.LoadInstruction
+import org.jllvm.value.user.constant.Function
 
 /**
  * A wrapper for LLVM API.
@@ -65,21 +66,16 @@ class CodeGen(_source: String) {
     builder.buildMul(lhs, rhs, "")
   }
   
-  def buildFunction(pattern: Node, value: Node, s: Scope): org.jllvm.value.Value = {
+  def buildFunc(pattern: Node, value: Node, s: Scope): org.jllvm.value.Value = {
       val _value: Func = value.asInstanceOf[Func]
       val _type: PointerType = new PointerType(s.codegen.anyType, 0)
-      val _params: Array[Type] = _value.params.map {
-        param => new PointerType(s.codegen.anyType, 0)
-        }.toArray
-      val function: org.jllvm.value.user.constant.Function = 
-        new org.jllvm.value.user.constant.Function(s.codegen.module, pattern.toString(), new FunctionType(_type, _params, false))
+      val _params: Array[Type] = _value.params.map { param => new PointerType(s.codegen.anyType, 0) }.toArray
+      val function: Function = new Function(s.codegen.module, pattern.toString(), new FunctionType(_type, _params, false))
       function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
       val block: BasicBlock = function.appendBasicBlock("entry")
-      _value.body.codegen(s)
-      function.getParameter(0).dump()
-      val addInstruction: AddInstruction = new AddInstruction(s.codegen.builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "d")
-      s.codegen.builder.positionBuilderAtEnd(block)
-      new ReturnInstruction(s.codegen.builder, addInstruction)
+      builder.positionBuilderAtEnd(block)
+      val last = _value.body.codegen(s)
+      s.codegen.builder.buildRet(last)
       function
   }
 
@@ -118,6 +114,6 @@ object CodeGen extends App {
   codegen.builder.positionBuilderAtEnd(block)
   
   new ReturnInstruction(codegen.builder, ConstantInteger.constI32(0));
-  codegen.print
+  codegen.print()
 
 }

@@ -14,7 +14,7 @@ object FileUtils {
   }
   
   def targetPath(path: String): String = {
-    path.substring(0, path.lastIndexOf(".")) + ".ir"
+    path.substring(0, path.lastIndexOf(".")) + ".ll"
   }
   
   def main(args: Array[String]): Unit = {

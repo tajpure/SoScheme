@@ -18,7 +18,7 @@ class Number(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
     null
   }
   
-  def codegen(s: Scope): Value = {
+  def codegen(s: Scope): org.jllvm.value.Value = {
     null
   }
   

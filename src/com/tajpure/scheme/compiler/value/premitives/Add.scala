@@ -78,7 +78,7 @@ class Add extends PrimFunc("+", -1) {
   }
   
   override
-  def codegen(args: List[Value], location: Node, s: Scope): Value = {
+  def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
     val addInstruction: AddInstruction = new AddInstruction(s.codegen.builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "d")
     null
   }

@@ -16,7 +16,7 @@ class Tuple(_elements: List[Node], open: Node, close: Node, _file: String, _star
     null
   }
   
-  def codegen(s: Scope): Value = {
+  def codegen(s: Scope): org.jllvm.value.Value = {
     null
   }
   

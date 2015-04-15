@@ -23,9 +23,9 @@ class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
     Value.VOID
   }
   
-  def codegen(s: Scope): Value = {
+  def codegen(s: Scope): org.jllvm.value.Value = {
     if (value.isInstanceOf[Func]) {
-      s.codegen.buildFunction(pattern, value, s)
+      val last = s.codegen.buildFunc(pattern, value, s)
     }
     else if (value.isInstanceOf[IntNum]) {
       null
@@ -33,7 +33,7 @@ class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
     else {
       Log.error(this, "unknown value")
     }
-    Value.VOID
+    null
   }
   
   override

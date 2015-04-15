@@ -4,5 +4,6 @@
 
 define %AnyType* @double(%AnyType*) {
 entry:
-  ret i32 3
+  %n = alloca %AnyType
+  ret i32 4
 }
