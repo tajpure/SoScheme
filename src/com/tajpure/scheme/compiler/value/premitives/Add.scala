@@ -14,6 +14,7 @@ import org.jllvm.value.user.constant.ConstantInteger
 import org.jllvm.value.user.instruction.StackAllocation
 import org.jllvm.value.user.instruction.GetElementPointerInstruction
 import org.jllvm.value.user.instruction.LoadInstruction
+import org.jllvm.value.user.instruction.StoreInstruction
 
 class Add extends PrimFunc("+", -1) {
 
@@ -99,7 +100,10 @@ class Add extends PrimFunc("+", -1) {
       
       val indeces0 = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(0))
       val index0: GetElementPointerInstruction = s.codegen.builder.buildGEP(alloc, indeces0, "typeP")
+      new StoreInstruction(s.codegen.builder, ConstantInteger.constI32(2), index0)
       val value0: LoadInstruction = s.codegen.builder.buildLoad(index0, "typeV")
+      
+      
       
       val indeces1 = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(1))
       val index1: GetElementPointerInstruction = s.codegen.builder.buildGEP(alloc, indeces1, "valueP")

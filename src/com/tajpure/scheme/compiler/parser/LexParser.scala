@@ -27,8 +27,8 @@ class LexParser(_source:String, _path: String) {
   var col: Int = 0
 
   val source: String = _source match {
-    case null => FileUtils.readFile(_path)
-    case "" => FileUtils.readFile(_path)
+    case null => FileUtils.read(_path)
+    case "" => FileUtils.read(_path)
     case default => _source
   }
   

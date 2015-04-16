@@ -82,7 +82,7 @@ class CodeGen(_source: String) {
     module.dump()
   }
   
-  def toFile(_path: String): Unit = {
+  def save(_path: String): Unit = {
     module.printToFile(_path)
   }
 

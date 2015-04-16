@@ -191,8 +191,8 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
 
   }
   
-  def toFile(path: String): Unit = {
-    codegen.toFile(path)
+  def save(path: String): Unit = {
+    codegen.save(path)
   }
   
   override

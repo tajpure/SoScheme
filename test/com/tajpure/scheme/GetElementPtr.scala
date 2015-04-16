@@ -21,6 +21,8 @@ import org.jllvm.NativeLibrary
 import org.jllvm.value.user.constant.ConstantNamedStruct
 import org.jllvm.value.user.constant.Constant
 import org.jllvm._type.IdentifiedStructType
+import org.jllvm.ExecutionEngine
+import org.jllvm.generic.GenericValue
 
 object GetElementPtr extends App {
   
@@ -36,15 +38,27 @@ object GetElementPtr extends App {
   builder.positionBuilderAtEnd(BB)
   
   val structType = new IdentifiedStructType("ee")
-  structType.setBody(elements, true)
+  structType.setBody(elements, false)
     
   val alloca = new StackAllocation(builder, structType, "testHeapAllocation")
   
-  val addInstruction = new AddInstruction(builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "")
+  val addInstruction = new AddInstruction(builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "12")
   val get = new GetElementPointerInstruction(builder, alloca, Array(ConstantInteger.constI32(0), ConstantInteger.constI32(0)), "hell")
-  new StoreInstruction(builder, ConstantInteger.constI32(10098), get)
+  new StoreInstruction(builder, ConstantInteger.constI32(2), get)
   val loadInstruction = new LoadInstruction(builder, get, "hell")
-  new ReturnInstruction(builder, ConstantInteger.constI32(0))
+  
+//  val addInstruction1 = new AddInstruction(builder, ConstantInteger.constI32(1), new ConstantInteger(addInstruction.getInstance),false, "")
+  val add = new ConstantInteger(addInstruction.getInstance)
+  add.truncate(IntegerType.i32)
+  val add1 = ConstantInteger.constI32(0)
+  val get1 = new GetElementPointerInstruction(builder, alloca, Array(ConstantInteger.constI32(0), add1), "hell")
+  
+  new ReturnInstruction(builder, loadInstruction)
   
   module.dump()
+  val engine = new ExecutionEngine(module)
+  val runFunction = engine.runFunction(F, new Array[GenericValue](0))
+  println(org.jllvm.bindings.ExecutionEngine.LLVMGenericValueToInt(runFunction.getInstance(), 1))
+  
+  
 }

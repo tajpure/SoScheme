@@ -21,13 +21,17 @@ class Compiler(_file: String) {
 //    root.typecheck(scope)
     root.codegen(scope)
     
-    val targetPath: String = FileUtils.targetPath(_file)
+    val targetPath: String = FileUtils.target(_file)
     
 //    Log.info("saving LLVM IR code to " + targetPath + "...")
-    scope.toFile(targetPath)
+    scope.save(targetPath)
 //    Log.info("finished")
     
     scope.codegen.print()
+  }
+  
+  def run(): Unit = {
+    
   }
   
 }

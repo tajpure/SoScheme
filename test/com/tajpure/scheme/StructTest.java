@@ -1,5 +1,6 @@
 package com.tajpure.scheme;
 
+import org.jllvm.ExecutionEngine;
 import org.jllvm.InstructionBuilder;
 import org.jllvm.Module;
 import org.jllvm.NativeLibrary;
@@ -8,6 +9,7 @@ import org.jllvm._type.IntegerType;
 import org.jllvm._type.StructType;
 import org.jllvm._type.Type;
 import org.jllvm.bindings.LLVMLinkage;
+import org.jllvm.generic.GenericValue;
 import org.jllvm.value.BasicBlock;
 import org.jllvm.value.Value;
 import org.jllvm.value.user.constant.ConstantInteger;
@@ -21,7 +23,7 @@ import org.jllvm.value.user.instruction.StoreInstruction;
 
 public class StructTest {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
     	NativeLibrary.load();
 
 		Type[] elements = new Type[2];
@@ -30,7 +32,7 @@ public class StructTest {
 
 		Module module = new Module("test");
 		InstructionBuilder builder = new InstructionBuilder();
-		StructType structType = new StructType(elements, true);
+		StructType structType = new StructType(elements, false);
 
 		FunctionType FT = new FunctionType(IntegerType.i32, new Type[0], false);
 		Function F = new Function(module, "fac", FT);
@@ -39,15 +41,17 @@ public class StructTest {
 		BasicBlock BB = F.appendBasicBlock("entry");
 		builder.positionBuilderAtEnd(BB);
 		StackAllocation alloca = new StackAllocation(builder, structType, "testHeapAllocation");
-		new ReturnInstruction(builder, ConstantInteger.constI32(0));
 
-	    AddInstruction addInstruction = new AddInstruction(builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "");
 		GetElementPointerInstruction get = new GetElementPointerInstruction(builder, alloca, new Value[]{ConstantInteger.constI32(0), ConstantInteger.constI32(0)}, "hell");
 		new StoreInstruction(builder, ConstantInteger.constI32(10098), get);
 		LoadInstruction loadInstruction = new LoadInstruction(builder, get, "hell");
-		System.out.println(loadInstruction);
+		new ReturnInstruction(builder, loadInstruction);
 		
 		module.dump();
+		
+		ExecutionEngine engine = new ExecutionEngine(module);
+		GenericValue runFunction = engine.runFunction(F, new GenericValue[0]);
+		System.out.println(org.jllvm.bindings.ExecutionEngine.LLVMGenericValueToInt(runFunction.getInstance(), 1));
     }
 
 }

@@ -9,7 +9,7 @@ object FileUtils {
     path
   }
   
-  def readFile(path: String): String = {
+  def read(path: String): String = {
     try {
       scala.io.Source.fromFile(path).mkString
     } catch {
@@ -18,12 +18,12 @@ object FileUtils {
     }
   }
   
-  def targetPath(path: String): String = {
+  def target(path: String): String = {
     path.substring(0, path.lastIndexOf(".")) + ".ll"
   }
   
   def main(args: Array[String]): Unit = {
-    println(targetPath("/d/c/s.ss"))
+    println(target("/d/c/s.ss"))
   }
   
 }
