@@ -90,24 +90,12 @@ class Add extends PrimFunc("+", -1) {
       null
     }
     else if (!args(0).isInstanceOf[StackAllocation] && args(1).isInstanceOf[StackAllocation]) {
-      val alloc: StackAllocation = args(1).asInstanceOf[StackAllocation]
-      val mone: GetElementPointerInstruction = s.codegen.builder.buildGEP(alloc, 0, "1")
-      val value0: LoadInstruction = s.codegen.builder.buildLoad(mone, "2")
-      s.codegen.builder.buildMul(args(0), value0, "add")
+      val value1 = s.codegen.valueOf(args(1).asInstanceOf[StackAllocation], s)
+      s.codegen.builder.buildMul(args(0), value1, "add")
     }
     else if (args(0).isInstanceOf[StackAllocation] && !args(1).isInstanceOf[StackAllocation]) {
-      val alloc: StackAllocation = args(0).asInstanceOf[StackAllocation]
-      
-      val indeces0 = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(0))
-      val index0: GetElementPointerInstruction = s.codegen.builder.buildGEP(alloc, indeces0, "typeP")
-      new StoreInstruction(s.codegen.builder, ConstantInteger.constI32(2), index0)
-      val value0: LoadInstruction = s.codegen.builder.buildLoad(index0, "typeV")
-      
-      val indeces1 = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(1))
-      val index1: GetElementPointerInstruction = s.codegen.builder.buildGEP(alloc, indeces1, "valueP")
-      val value1: LoadInstruction = s.codegen.builder.buildLoad(index1, "valueV")
-      
-      s.codegen.builder.buildAdd(value1, args(1), "add")
+      val value0 = s.codegen.valueOf(args(0).asInstanceOf[StackAllocation], s)
+      s.codegen.builder.buildMul(value0, args(1), "add")
     }
     else if (args(0).isInstanceOf[StackAllocation] && args(1).isInstanceOf[StackAllocation]) {
       null

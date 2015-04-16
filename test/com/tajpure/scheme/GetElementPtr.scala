@@ -39,7 +39,7 @@ object GetElementPtr extends App {
   
   val structType = new IdentifiedStructType("ee")
   structType.setBody(elements, false)
-    
+  
   val alloca = new StackAllocation(builder, structType, "testHeapAllocation")
   
   val addInstruction = new AddInstruction(builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "12")
