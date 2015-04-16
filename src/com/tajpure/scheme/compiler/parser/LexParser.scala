@@ -14,9 +14,6 @@ import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.ast.Bool
 
-/**
- * Split source file
- */
 class LexParser(_source:String, _path: String) {
 
   def this(_path: String) {

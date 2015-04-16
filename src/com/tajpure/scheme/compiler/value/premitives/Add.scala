@@ -11,6 +11,9 @@ import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.value.Value
 import org.jllvm.value.user.constant.ConstantInteger
+import org.jllvm.value.user.instruction.StackAllocation
+import org.jllvm.value.user.instruction.GetElementPointerInstruction
+import org.jllvm.value.user.instruction.LoadInstruction
 
 class Add extends PrimFunc("+", -1) {
 
@@ -79,8 +82,37 @@ class Add extends PrimFunc("+", -1) {
   
   override
   def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
-    val addInstruction: AddInstruction = new AddInstruction(s.codegen.builder, ConstantInteger.constI32(1),ConstantInteger.constI32(2),false, "d")
-    null
+    if (args.size != 2) {
+      throw new CompilerException("Exception: incorrect arguments count in call '*'", location)
+    }
+    else if (!args(0).isInstanceOf[StackAllocation] && !args(1).isInstanceOf[StackAllocation]) {
+      null
+    }
+    else if (!args(0).isInstanceOf[StackAllocation] && args(1).isInstanceOf[StackAllocation]) {
+      val alloc: StackAllocation = args(1).asInstanceOf[StackAllocation]
+      val mone: GetElementPointerInstruction = s.codegen.builder.buildGEP(alloc, 0, "1")
+      val value0: LoadInstruction = s.codegen.builder.buildLoad(mone, "2")
+      s.codegen.builder.buildMul(args(0), value0, "add")
+    }
+    else if (args(0).isInstanceOf[StackAllocation] && !args(1).isInstanceOf[StackAllocation]) {
+      val alloc: StackAllocation = args(0).asInstanceOf[StackAllocation]
+      
+      val indeces0 = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(0))
+      val index0: GetElementPointerInstruction = s.codegen.builder.buildGEP(alloc, indeces0, "typeP")
+      val value0: LoadInstruction = s.codegen.builder.buildLoad(index0, "typeV")
+      
+      val indeces1 = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(1))
+      val index1: GetElementPointerInstruction = s.codegen.builder.buildGEP(alloc, indeces1, "valueP")
+      val value1: LoadInstruction = s.codegen.builder.buildLoad(index1, "valueV")
+      
+      s.codegen.builder.buildAdd(value1, args(1), "add")
+    }
+    else if (args(0).isInstanceOf[StackAllocation] && args(1).isInstanceOf[StackAllocation]) {
+      null
+    }
+    else {
+      null
+    }
   }
 
   override def toString: String = {
