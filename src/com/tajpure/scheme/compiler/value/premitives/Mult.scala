@@ -62,19 +62,23 @@ class Mult extends PrimFunc("*", -1) {
       null
     }
     else if (!args(0).isInstanceOf[StackAllocation] && args(1).isInstanceOf[StackAllocation]) {
-      val alloc: StackAllocation = args(0).asInstanceOf[StackAllocation]
+      val alloc: StackAllocation = args(1).asInstanceOf[StackAllocation]
       val mone: GetElementPointerInstruction = s.codegen.builder.buildGEP(alloc, 0, "1")
-      val _type: LoadInstruction = s.codegen.builder.buildLoad(mone, "2");
-      s.codegen.builder.buildMul(_type, args(1), "mult")
+      val value0: LoadInstruction = s.codegen.builder.buildLoad(mone, "2")
+      s.codegen.builder.buildMul(args(0), value0, "mult")
     }
     else if (args(0).isInstanceOf[StackAllocation] && !args(1).isInstanceOf[StackAllocation]) {
       val alloc: StackAllocation = args(0).asInstanceOf[StackAllocation]
-      val indeces = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(0))
-      val mone: GetElementPointerInstruction = s.codegen.builder.buildGEP(alloc, indeces, "1")
-      mone.dump()
-//      val _type: LoadInstruction = s.codegen.builder.buildLoad(mone, "2")
-//      _type.dump()
-      s.codegen.builder.buildMul(args(1), args(1), "mult")
+      
+      val indeces0 = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(0))
+      val index0: GetElementPointerInstruction = s.codegen.builder.buildGEP(alloc, indeces0, "typeP")
+      val value0: LoadInstruction = s.codegen.builder.buildLoad(index0, "typeV")
+      
+      val indeces1 = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(1))
+      val index1: GetElementPointerInstruction = s.codegen.builder.buildGEP(alloc, indeces1, "valueP")
+      val value1: LoadInstruction = s.codegen.builder.buildLoad(index1, "valueV")
+      
+      s.codegen.builder.buildMul(value1, args(1), "mult")
     }
     else if (args(0).isInstanceOf[StackAllocation] && args(1).isInstanceOf[StackAllocation]) {
       null

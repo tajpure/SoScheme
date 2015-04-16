@@ -1,9 +1,14 @@
 ; ModuleID = 'D:/workspace/workspace11/SoScheme/test/double.scm'
 
-%AnyType = type { i32, i8, i32, float, void }
+%Any = type { i32, i8, i32, float }
 
-define %AnyType* @double(%AnyType*) {
+define %Any* @double(%Any*) {
 entry:
-  %n = alloca %AnyType
-  ret i32 4
+  %n = alloca %Any
+  %typeP = getelementptr %Any* %n, i32 0, i32 0
+  %typeV = load i32* %typeP
+  %valueP = getelementptr %Any* %n, i32 0, i32 1
+  %valueV = load i8* %valueP
+  %mult = mul i8 %valueV, i32 2
+  ret i8 %mult
 }

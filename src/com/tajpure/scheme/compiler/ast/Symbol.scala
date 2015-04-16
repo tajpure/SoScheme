@@ -33,7 +33,7 @@ class Symbol(_id: String, _file: String, _start: Int, _end: Int,
        }
     }
     else {
-      s.codegen.builder.buildAlloca(s.codegen.anyType, id)
+      s.codegen.builder.buildAlloca(s.codegen.any, id)
     }
   }
   

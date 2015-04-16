@@ -20,12 +20,13 @@ import org.jllvm.value.user.instruction.ReturnInstruction
 import org.jllvm.NativeLibrary
 import org.jllvm.value.user.constant.ConstantNamedStruct
 import org.jllvm.value.user.constant.Constant
+import org.jllvm._type.IdentifiedStructType
 
 object GetElementPtr extends App {
   
   NativeLibrary.load()
   
-  val elements = Array[Type](IntegerType.i64, IntegerType.i64)
+  val elements = Array[Type](IntegerType.i64, IntegerType.i32)
   val module: Module = new Module("test")
   val builder: InstructionBuilder = new InstructionBuilder()
   val FT: FunctionType = new FunctionType(IntegerType.i32, Array(IntegerType.i32), false)
@@ -34,7 +35,8 @@ object GetElementPtr extends App {
   val BB: BasicBlock = F.appendBasicBlock("entry")
   builder.positionBuilderAtEnd(BB)
   
-  val structType = new StructType(elements, true)
+  val structType = new IdentifiedStructType("ee")
+  structType.setBody(elements, true)
     
   val alloca = new StackAllocation(builder, structType, "testHeapAllocation")
   
