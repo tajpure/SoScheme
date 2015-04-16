@@ -50,7 +50,6 @@ object SwitchTest extends App {
   new ReturnInstruction(builder, ConstantInteger.constI32(2))
   seitch.addCase(ConstantInteger.constI32(2), BB3)
   
-  
   module.dump()
   val engine = new ExecutionEngine(module)
   val runFunction = engine.runFunction(F, new Array[GenericValue](0))

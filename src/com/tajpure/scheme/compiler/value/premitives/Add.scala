@@ -103,8 +103,6 @@ class Add extends PrimFunc("+", -1) {
       new StoreInstruction(s.codegen.builder, ConstantInteger.constI32(2), index0)
       val value0: LoadInstruction = s.codegen.builder.buildLoad(index0, "typeV")
       
-      
-      
       val indeces1 = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(1))
       val index1: GetElementPointerInstruction = s.codegen.builder.buildGEP(alloc, indeces1, "valueP")
       val value1: LoadInstruction = s.codegen.builder.buildLoad(index1, "valueV")
