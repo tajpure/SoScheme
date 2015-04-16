@@ -100,8 +100,8 @@ object PreParser extends App {
     Log.info("preparser result: " + preParser.parse().toString())
   } 
   catch {
-    case pe: ParserException => Log.error(pe.toString())
-    case e: Exception => Log.error(e.toString())
+    case e0: ParserException => Log.error(e0.toString())
+    case e1: Exception => Log.error(e1.toString())
   }
   
 }

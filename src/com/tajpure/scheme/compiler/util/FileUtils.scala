@@ -1,6 +1,7 @@
 package com.tajpure.scheme.compiler.util
 
 import java.io.File
+import java.io.FileNotFoundException
 
 object FileUtils {
   
@@ -9,8 +10,12 @@ object FileUtils {
   }
   
   def readFile(path: String): String = {
-    val content: String = scala.io.Source.fromFile(path).mkString
-    content
+    try {
+      scala.io.Source.fromFile(path).mkString
+    } catch {
+      case e0 : FileNotFoundException => Log.error(e0.getMessage); null
+      case e1 : Exception => Log.error(e1.getMessage); null
+    }
   }
   
   def targetPath(path: String): String = {
