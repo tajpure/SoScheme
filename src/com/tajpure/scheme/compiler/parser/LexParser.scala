@@ -211,7 +211,7 @@ class LexParser(_source:String, _path: String) {
       else if (source.startsWith(Constants.STRING_BEGIN, offset)) {
         scanString()
       } 
-      else if (source.charAt(offset) == Constants.QUOTE) {
+      else if (source.charAt(offset) == Constants.QUOTE || source.charAt(offset) == Constants._QUOTE) {
         scanQuote()
       }
       else if (Character.isDigit(source.charAt(offset)) ||
@@ -233,7 +233,7 @@ class LexParser(_source:String, _path: String) {
 
 object LexParser extends App {
   
-  val lexer: LexParser = new LexParser("D:/workspace/workspace11/SoScheme/test/double.scm")
+  val lexer: LexParser = new LexParser("D:/workspaceII/SoScheme/test/helloworld.scm")
 //  val lexer: LexParser = new LexParser("/home/taojx/sworkspace/SoScheme/test/location.scm")
   
   var tokens: List[Node] = List[Node]()
@@ -256,6 +256,6 @@ object LexParser extends App {
   loop()
   
   Log.info("LexParser result:")
-  tokens.foreach { node => Log.info(node.toString()) }
+  tokens.foreach { node => print(node.toString() + "") }
   
 }
