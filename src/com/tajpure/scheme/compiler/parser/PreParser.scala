@@ -7,7 +7,7 @@ import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
-import com.tajpure.scheme.compiler.ast.Quote
+import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.exception.ParserException
 
 class PreParser(_source:String, _path: String) {
@@ -31,10 +31,10 @@ class PreParser(_source:String, _path: String) {
     if (first == null) {
       null
     } 
-    else if (first.isInstanceOf[Quote]) {
-      val quote: Quote = first.asInstanceOf[Quote]
-      quote.setQuoteNode(nextNode1(depth + 1))
-      quote
+    else if (first.isInstanceOf[Symbol]) {
+      val symbol: Symbol = first.asInstanceOf[Symbol]
+      symbol.setQuoteNode(nextNode1(depth + 1))
+      symbol
     }
     else {
       if (Delimeter.isOpen(first)) {
@@ -75,7 +75,7 @@ class PreParser(_source:String, _path: String) {
     var s: Node = nextNode()
     val first: Node = s
     var last: Node = null
-    elements = elements :+ Symbol.genSymbol(Constants.SEQ)
+    elements = elements :+ Name.genName(Constants.SEQ)
     
     def loop() {
       if (s != null) {
@@ -87,7 +87,7 @@ class PreParser(_source:String, _path: String) {
     }
     loop()
     
-    new Tuple(elements, Symbol.genSymbol(Constants.PAREN_BEGIN), Symbol.genSymbol(Constants.PAREN_END), file, first.start, last.end, 0, 0)
+    new Tuple(elements, Name.genName(Constants.PAREN_BEGIN), Name.genName(Constants.PAREN_END), file, first.start, last.end, 0, 0)
   }
   
 }

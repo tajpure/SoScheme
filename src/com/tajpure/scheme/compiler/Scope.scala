@@ -22,6 +22,7 @@ import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.value.premitives.Display
 import com.tajpure.scheme.compiler.llvm.CodeGen
+import com.tajpure.scheme.compiler.ast.Name
 
 class Scope(_parent: Scope, _codegen: CodeGen) {
 
@@ -172,8 +173,8 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
   }
 
   def define(_pattern: Node, _value: Value): Unit = {
-    if (_pattern.isInstanceOf[Symbol]) {
-      val id: String = _pattern.asInstanceOf[Symbol].id
+    if (_pattern.isInstanceOf[Name]) {
+      val id: String = _pattern.asInstanceOf[Name].id
       val value: Value = lookupLocal(id)
       if (value != null) {
         Log.error(_pattern, "trying to redefine name: " + id)

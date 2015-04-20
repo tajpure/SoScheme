@@ -13,10 +13,10 @@ import org.jllvm.value.BasicBlock
 import org.jllvm._type.PointerType
 import com.tajpure.scheme.compiler.exception.CompilerException
 
-class Func(_params: List[Symbol], _propertyForm: Scope, _body: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
+class Func(_params: List[Name], _propertyForm: Scope, _body: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
   
-  val params: List[Symbol] = _params
+  val params: List[Name] = _params
   
   val propertyForm: Scope = _propertyForm
   
