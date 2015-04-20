@@ -6,7 +6,7 @@ import com.tajpure.scheme.compiler.ast.FloatNum
 import com.tajpure.scheme.compiler.ast.IntNum
 import com.tajpure.scheme.compiler.ast.Keyword
 import com.tajpure.scheme.compiler.ast.Node
-import com.tajpure.scheme.compiler.ast.Quote
+import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.ast.Str
 import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.exception.ParserException
@@ -154,7 +154,7 @@ class LexParser(_source:String, _path: String) {
     }
   }
   
-  def scanQuote(): Node = {
+  def scanSymbol(): Node = {
     val start: Int = offset
     val startRow: Int = row
     val startCol: Int = col
@@ -169,14 +169,14 @@ class LexParser(_source:String, _path: String) {
     
     val end: Int = offset
     val content: String = source.substring(start, end)
-    new Quote(content, file, start, end, row, col)
+    new Symbol(content, file, start, end, row, col)
   }
   
   def isIdentifierChar(ch: Char): Boolean = {
     Character.isLetterOrDigit(ch) || Constants.IDENT_CHARS.contains(ch)
   }
 
-  def scanSymbol(): Node = {
+  def scanName(): Node = {
     val start: Int = offset
     val startRow: Int = row
     val startCol: Int = col
@@ -190,7 +190,7 @@ class LexParser(_source:String, _path: String) {
     loop()
 
     val content = source.substring(start, offset)
-    new Symbol(content, file, start, offset, startRow, startCol)
+    new Name(content, file, start, offset, startRow, startCol)
   }
 
   @throws(classOf[ParserException])
@@ -211,8 +211,8 @@ class LexParser(_source:String, _path: String) {
       else if (source.startsWith(Constants.STRING_BEGIN, offset)) {
         scanString()
       } 
-      else if (source.charAt(offset) == Constants.QUOTE || source.charAt(offset) == Constants._QUOTE) {
-        scanQuote()
+      else if (source.charAt(offset) == Constants.QUOTE || source.startsWith(Constants._QUOTE, offset)) {
+        scanSymbol()
       }
       else if (Character.isDigit(source.charAt(offset)) ||
         ((source.charAt(offset) == '+' || source.charAt(offset) == '-') 
@@ -220,7 +220,7 @@ class LexParser(_source:String, _path: String) {
         scanNumber()
       } 
       else if (isIdentifierChar(source.charAt(offset))) {
-        scanSymbol()
+        scanName()
       }
       else {
         throw new ParserException("unrecognized syntax: " + source.substring(offset, offset + 1),

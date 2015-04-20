@@ -13,6 +13,7 @@ import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.ast.Argument
 import com.tajpure.scheme.compiler.ast.Block
 import com.tajpure.scheme.compiler.exception.ParserException
+import com.tajpure.scheme.compiler.ast.Name
 
 object Parser extends App {
 
@@ -43,8 +44,8 @@ object Parser extends App {
       } 
       else {
         val curNode: Node = elements(0)
-        if (curNode.isInstanceOf[Symbol]) {
-          curNode.asInstanceOf[Symbol].id match {
+        if (curNode.isInstanceOf[Name]) {
+          curNode.asInstanceOf[Name].id match {
             case Constants.DEFINE => parseDefine(tuple)
             case Constants.IF => parseIf(tuple)
             case Constants.LET => parseAssign(tuple)
@@ -104,11 +105,11 @@ object Parser extends App {
     }
 
     val params: List[Node] = preNode.asInstanceOf[Tuple].elements
-    val paramsName: List[Symbol] = params.map { node =>
-      if (!node.isInstanceOf[Symbol]) {
+    val paramsName: List[Name] = params.map { node =>
+      if (!node.isInstanceOf[Name]) {
         throw new ParserException("can't pass as an argument:" + node.toString(), node)
       }
-      node.asInstanceOf[Symbol]
+      node.asInstanceOf[Name]
     }
 
     val statements: List[Node] = parseList(elements.slice(2, elements.size))

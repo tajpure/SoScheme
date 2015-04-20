@@ -2,52 +2,34 @@ package com.tajpure.scheme.compiler.ast
 
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
-import org.jllvm._type.PointerType
-import com.tajpure.scheme.compiler.value.IntValue
-import com.tajpure.scheme.compiler.value.FloatValue
+import com.tajpure.scheme.compiler.value.ConstValue
 
-class Symbol(_id: String, _file: String, _start: Int, _end: Int,
-           _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
+class Symbol (_value: String, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
+  extends Node(_file, _start, _end, _row, _col) {
+
+  val value = _value
   
-  val id: String = _id
+  var quoteNode: Node = null 
 
+  def setQuoteNode(node: Node): Unit = {
+    this.quoteNode = node  
+  }
+  
   def interp(s: Scope): Value = {
-    s.lookup(id)
+    new ConstValue(quoteNode.toString())
   }
 
   def typecheck(s: Scope): Value = {
-    s.lookup(id)
+    null
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    val value: Value = s.lookup(id)
-    if (value != null) {
-       if (value.isInstanceOf[IntValue]) {
-         s.codegen.buildInt(value)
-       }
-       else if (value.isInstanceOf[FloatValue]) {
-         s.codegen.buildFloat(value)
-       }
-       else {
-         null
-       }
-    }
-    else {
-      s.codegen.builder.buildAlloca(s.codegen.any, id)
-    }
+    null
   }
   
   override
   def toString(): String = {
-    id
-  }
-  
-}
-
-object Symbol {
-  
-  def genSymbol(id: String): Node = {
-    new Symbol(id, null, 0, 0, 0, 0)
+    value + quoteNode
   }
   
 }

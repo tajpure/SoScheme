@@ -18,7 +18,7 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
     if (opValue.isInstanceOf[Closure]) {
       val closure: Closure = opValue.asInstanceOf[Closure]
       val funcScope: Scope = new Scope(closure.env)
-      val params: List[Symbol] = closure.func.params
+      val params: List[Name] = closure.func.params
       
       if (closure.properties != null) {
         Scope.mergeDefault(closure.properties, funcScope)
@@ -52,7 +52,7 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
     if (opValue.isInstanceOf[Closure]) {
       val closure: Closure = opValue.asInstanceOf[Closure]
       val funcScope: Scope = new Scope(closure.env)
-      val params: List[Symbol] = closure.func.params
+      val params: List[Name] = closure.func.params
       
       if (closure.properties != null) {
         Scope.mergeDefault(closure.properties, funcScope)
