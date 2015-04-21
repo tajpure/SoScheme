@@ -1,18 +1,19 @@
 package com.tajpure.scheme.compiler.parser
 
 import com.tajpure.scheme.compiler.Constants
+import com.tajpure.scheme.compiler.ast.Bool
 import com.tajpure.scheme.compiler.ast.Delimeter
 import com.tajpure.scheme.compiler.ast.FloatNum
 import com.tajpure.scheme.compiler.ast.IntNum
 import com.tajpure.scheme.compiler.ast.Keyword
-import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.Name
+import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.Str
 import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.exception.ParserException
 import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
-import com.tajpure.scheme.compiler.ast.Bool
+import com.tajpure.scheme.compiler.ast.CharNum
 
 class LexParser(_source:String, _path: String) {
 
@@ -99,7 +100,7 @@ class LexParser(_source:String, _path: String) {
     val start: Int = offset
     val startRow: Int = row
     val startCol: Int = col
-    skip(Constants.STRING_BEGIN.length());
+    skip(Constants.STRING_BEGIN.length())
 
     def loop() {
       if (offset >= source.length() || source.charAt(offset) == '\n') {
@@ -118,6 +119,24 @@ class LexParser(_source:String, _path: String) {
     val end: Int = offset
     val content: String = source.substring(start + Constants.STRING_BEGIN.length(), end - Constants.STRING_END.length())
     new Str(content, file, start, end, row, col)
+  }
+  
+  def scanChar(): Node = {
+    val start: Int = offset
+    val startRow: Int = row
+    val startCol: Int = col
+    skip(Constants.CHAR_PREFIX.length())
+    
+    if (source.charAt(offset) == ' ') {
+      skip(1)
+    }
+    else if (Character.isLetter(source.charAt(offset))) {
+      skip(1)
+    }
+    
+    val end: Int = offset
+    val content: String = source.substring(start, end)
+    new CharNum(content, file, start, end, row, col)
   }
 
   def isNumberOrChar(ch: Char): Boolean = {
@@ -219,6 +238,9 @@ class LexParser(_source:String, _path: String) {
         && offset + 1 < source.length() && Character.isDigit(source.charAt(offset + 1)))) {
         scanNumber()
       } 
+      else if (source.startsWith(Constants.CHAR_PREFIX, offset)) {
+        scanChar()
+      }
       else if (isIdentifierChar(source.charAt(offset))) {
         scanName()
       }

@@ -31,6 +31,8 @@ object Constants {
   
   val COMMENTS_BLOCK_END = "|#"
   
+  val CHAR_PREFIX = "#\\"
+  
   // SEQ
   val SEQ = "seq"
 
