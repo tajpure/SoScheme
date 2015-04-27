@@ -86,19 +86,8 @@ class Add extends PrimFunc("+", -1) {
     if (args.size != 2) {
       throw new CompilerException("Exception: incorrect arguments count in call '*'", location)
     }
-    else if (!args(0).isInstanceOf[StackAllocation] && !args(1).isInstanceOf[StackAllocation]) {
-      null
-    }
-    else if (!args(0).isInstanceOf[StackAllocation] && args(1).isInstanceOf[StackAllocation]) {
-      val value1 = s.codegen.valueOf(args(1).asInstanceOf[StackAllocation], s)
-      s.codegen.builder.buildMul(args(0), value1, "add")
-    }
-    else if (args(0).isInstanceOf[StackAllocation] && !args(1).isInstanceOf[StackAllocation]) {
-      val value0 = s.codegen.valueOf(args(0).asInstanceOf[StackAllocation], s)
-      s.codegen.builder.buildMul(value0, args(1), "add")
-    }
-    else if (args(0).isInstanceOf[StackAllocation] && args(1).isInstanceOf[StackAllocation]) {
-      null
+    else if (args(0).isInstanceOf[org.jllvm.value.Value] && args(1).isInstanceOf[org.jllvm.value.Value]) {
+      s.codegen.builder.buildAdd(args(0), args(1), "add")
     }
     else {
       null

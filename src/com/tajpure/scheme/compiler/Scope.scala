@@ -1,12 +1,21 @@
 package com.tajpure.scheme.compiler
 
-import scala.collection.mutable.HashMap
+import java.util.NoSuchElementException
+
 import scala.collection.Set
+import scala.collection.mutable.HashMap
+
+import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.ast.Node
+import com.tajpure.scheme.compiler.ast.Symbol
+import com.tajpure.scheme.compiler.ast.Tuple
+import com.tajpure.scheme.compiler.llvm.CodeGen
+import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.value.Type
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.premitives.Add
 import com.tajpure.scheme.compiler.value.premitives.And
+import com.tajpure.scheme.compiler.value.premitives.Display
 import com.tajpure.scheme.compiler.value.premitives.Div
 import com.tajpure.scheme.compiler.value.premitives.Eq
 import com.tajpure.scheme.compiler.value.premitives.GT
@@ -17,12 +26,6 @@ import com.tajpure.scheme.compiler.value.premitives.Mult
 import com.tajpure.scheme.compiler.value.premitives.Not
 import com.tajpure.scheme.compiler.value.premitives.Or
 import com.tajpure.scheme.compiler.value.premitives.Sub
-import com.tajpure.scheme.compiler.ast.Symbol
-import com.tajpure.scheme.compiler.ast.Tuple
-import com.tajpure.scheme.compiler.util.Log
-import com.tajpure.scheme.compiler.value.premitives.Display
-import com.tajpure.scheme.compiler.llvm.CodeGen
-import com.tajpure.scheme.compiler.ast.Name
 
 class Scope(_parent: Scope, _codegen: CodeGen) {
 
@@ -58,9 +61,11 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
     val v: Object = lookupProperty(name, "value")
     if (v == null) {
       null
-    } else if (v.isInstanceOf[Value]) {
+    } 
+    else if (v.isInstanceOf[Value]) {
       v.asInstanceOf[Value]
-    } else {
+    } 
+    else {
       null
     }
   }
@@ -69,9 +74,24 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
     val v: Object = lookupPropertyLocal(name, "value")
     if (v == null) {
       null
-    } else if (v.isInstanceOf[Value]) {
+    } 
+    else if (v.isInstanceOf[Value]) {
       v.asInstanceOf[Value]
-    } else {
+    } 
+    else {
+      null
+    }
+  }
+  
+  def lookupParameter(name: String): Object = {
+    val v: Object = lookupProperty(name, "parameter")
+    if (v == null) {
+      null
+    } 
+    else if (v.isInstanceOf[Object]) {
+      v.asInstanceOf[Object]
+    } 
+    else {
       null
     }
   }
@@ -80,9 +100,11 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
     val v: Object = lookupProperty(name, "type")
     if (v == null) {
       null
-    } else if (v.isInstanceOf[Value]) {
+    } 
+    else if (v.isInstanceOf[Value]) {
       v.asInstanceOf[Value]
-    } else {
+    } 
+    else {
       null
     }
   }
@@ -91,9 +113,11 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
     val v: Object = lookupPropertyLocal(name, "type")
     if (v == null) {
       null
-    } else if (v.isInstanceOf[Value]) {
+    } 
+    else if (v.isInstanceOf[Value]) {
       v.asInstanceOf[Value]
-    } else {
+    } 
+    else {
       null
     }
   }
@@ -101,7 +125,12 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
   def lookupPropertyLocal(name: String, key: String): Object = {
     val item = map.get(name)
     if (!item.isEmpty) {
-      item.get(key)
+      try {
+        item.get(key)
+      } catch {
+        case nsee: NoSuchElementException => null
+        case e: Exception => Log.error(e.toString()); null
+      }
     } else {
       null
     }
@@ -126,9 +155,11 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
     val v: Object = map.get(name)
     if (v != null) {
       this
-    } else if (parent != null) {
+    } 
+    else if (parent != null) {
       parent.findDefiningScope(name)
-    } else {
+    } 
+    else {
       null
     }
   }
@@ -137,7 +168,8 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
     val item: HashMap[String, Object] = 
       if (map.get(name).isEmpty) {
         new HashMap[String, Object]()
-      } else {
+      } 
+      else {
         map.get(name).get
       }
    
@@ -149,7 +181,8 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
     val item: HashMap[String, Object] = 
       if (map.get(name).get == null) {
         new HashMap[String, Object]() ++: properties
-      } else {
+      } 
+      else {
         map.get(name).get ++: properties
       }
     
@@ -178,12 +211,15 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
       val value: Value = lookupLocal(id)
       if (value != null) {
         Log.error(_pattern, "trying to redefine name: " + id)
-      } else {
+      } 
+      else {
         putValue(id, _value)
       }
-    } else if (_pattern.isInstanceOf[Tuple]) {
+    } 
+    else if (_pattern.isInstanceOf[Tuple]) {
 
-    } else {
+    } 
+    else {
 
     }
   }

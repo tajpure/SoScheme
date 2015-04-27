@@ -214,7 +214,7 @@ class LexParser(_source:String, _path: String) {
 
   @throws(classOf[ParserException])
   def nextToken(): Node = {
-      
+
     skipSpacesAndComments()
 
     if (offset >= source.length()) {

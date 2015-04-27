@@ -5,6 +5,7 @@ import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.Closure
 import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.util.Log
+import com.tajpure.scheme.compiler.exception.CompilerException
 
 class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -19,6 +20,10 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
       val closure: Closure = opValue.asInstanceOf[Closure]
       val funcScope: Scope = new Scope(closure.env)
       val params: List[Name] = closure.func.params
+      
+      if (closure.func.params.size != args.elements.size) {
+        throw new CompilerException("incorrect number of arguments.", this)
+      }
       
       if (closure.properties != null) {
         Scope.mergeDefault(closure.properties, funcScope)
@@ -64,11 +69,13 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
       }
       
       closure.func.body.codegen(funcScope)
-    } else if (opValue.isInstanceOf[PrimFunc]) {
+    } 
+    else if (opValue.isInstanceOf[PrimFunc]) {
       val primFunc = opValue.asInstanceOf[PrimFunc]
       val args: List[org.jllvm.value.Value] = Node.codegenList(this.args.positional, s)
       primFunc.codegen(args, this, s)
-    } else {
+    } 
+    else {
       Log.error(this.op, "this is not a function.")
       null
     }

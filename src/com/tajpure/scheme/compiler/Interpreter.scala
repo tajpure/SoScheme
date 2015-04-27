@@ -20,7 +20,7 @@ object Interpreter extends App {
                 (lambda (x) 
                   (define y (/ 3 x)) 
                   (+ x y))) 
-        (display #\a)
+        (display (reciprocal 2))
         """)
   }
   
