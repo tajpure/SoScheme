@@ -16,11 +16,7 @@ object Interpreter extends App {
   def main(args: Array[String]) {
     interp(
         """
-        (define reciprocal 
-                (lambda (x) 
-                  (define y (/ 3 x)) 
-                  (+ x y))) 
-        (display (reciprocal 3))
+        (2)
         """)
   }
   
