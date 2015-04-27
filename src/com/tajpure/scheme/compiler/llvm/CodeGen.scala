@@ -37,14 +37,16 @@ class CodeGen(_source: String) {
 
   val builder: InstructionBuilder = new InstructionBuilder()
   
-  val any: IdentifiedStructType = new IdentifiedStructType("Any")
+//  val any: IdentifiedStructType = new IdentifiedStructType("Any")
+//  
+//  any.setBody(Array[org.jllvm._type.Type](
+//      org.jllvm._type.IntegerType.i32, 
+//      org.jllvm._type.IntegerType.i8, 
+//      org.jllvm._type.IntegerType.i32, 
+//      new org.jllvm._type.FloatType()),
+//      false)
   
-  any.setBody(Array[org.jllvm._type.Type](
-      org.jllvm._type.IntegerType.i32, 
-      org.jllvm._type.IntegerType.i8, 
-      org.jllvm._type.IntegerType.i32, 
-      new org.jllvm._type.FloatType()),
-      false)
+  val any: IntegerType = IntegerType.i32
 
   def buildAdd(lhs: org.jllvm.value.Value, rhs: org.jllvm.value.Value): org.jllvm.value.Value = {
     builder.buildAdd(lhs, rhs, "")
@@ -71,6 +73,9 @@ class CodeGen(_source: String) {
       function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
       s.put("this", "function", function)
       
+      _value.params.zipWithIndex.foreach {
+        case (param, i) => s.put(param.id, "parameter", function.getParameter(i)) }
+      
       val block: BasicBlock = function.appendBasicBlock("entry")
       builder.positionBuilderAtEnd(block)
       val last = _value.body.codegen(s)
@@ -79,53 +84,7 @@ class CodeGen(_source: String) {
   }
   
   def valueOf(alloc: StackAllocation, s: Scope): org.jllvm.value.Value = {
-     val typeIndeces = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(0))
-     val typePtr: GetElementPointerInstruction = builder.buildGEP(alloc, typeIndeces, "typeP")
-     val typeVal: LoadInstruction = builder.buildLoad(typePtr, "typeVal")
-     
-     val curFunc: Function = s.lookupPropertyLocal("this", "function").asInstanceOf[Function]
-     val switchEntry: BasicBlock = curFunc.appendBasicBlock("switch_entry")
-     val switchEnd: BasicBlock = curFunc.appendBasicBlock("switch_end")
-     val switchDefault: BasicBlock = curFunc.appendBasicBlock("switch_default")
-     val block1: BasicBlock = curFunc.appendBasicBlock("block1")
-     val block2: BasicBlock = curFunc.appendBasicBlock("block2")
-     val block3: BasicBlock = curFunc.appendBasicBlock("block3")
-     
-     builder.positionBuilderAtEnd(switchEntry)
-     val switch = builder.buildSwitch(typeVal, block1, 3)
-     switch.addCase(ConstantInteger.constI32(1), block1)
-     switch.addCase(ConstantInteger.constI32(2), block2)
-     switch.addCase(ConstantInteger.constI32(3), block3)
-     
-     builder.positionBuilderAtEnd(switchDefault)
-     builder.buildBr(switchEnd)
-     
-     builder.positionBuilderAtEnd(block1)
-     val valueIndeces1 = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(1))
-     val valuePtr1: GetElementPointerInstruction = builder.buildGEP(alloc, valueIndeces1, "valuePtr1")
-     val valueVal1: LoadInstruction = builder.buildLoad(valuePtr1, "valueVal1")
-     builder.buildBr(switchEnd)
-     
-     builder.positionBuilderAtEnd(block2)
-     val valueIndeces2 = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(2))
-     val valuePtr2: GetElementPointerInstruction = builder.buildGEP(alloc, valueIndeces2, "valuePtr2")
-     val valueVal2: LoadInstruction = builder.buildLoad(valuePtr2, "valueVal2")
-     builder.buildBr(switchEnd)
-     
-     builder.positionBuilderAtEnd(block3)
-     val valueIndeces3 = Array[org.jllvm.value.Value](ConstantInteger.constI32(0), ConstantInteger.constI32(3))
-     val valuePtr3: GetElementPointerInstruction = builder.buildGEP(alloc, valueIndeces3, "valuePtr3")
-     val valueVal3: LoadInstruction = builder.buildLoad(valuePtr3, "valueVal3")
-     builder.buildBr(switchEnd)
-     
-     builder.positionBuilderAtEnd(switchEnd)
-     
-     val res = new PhiNode(builder, IntegerType.i32, "result")
-     val phiVals = Array[org.jllvm.value.Value](valueVal1, valueVal2, valueVal3)
-     val phiBlocks = Array(block1, block2, block3)
-     res.addIncoming(phiVals, phiBlocks)
-     
-     res
+     null
   }
 
   def buildInt(value: Value): org.jllvm.value.Value = {

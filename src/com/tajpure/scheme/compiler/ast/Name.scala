@@ -5,6 +5,8 @@ import com.tajpure.scheme.compiler.value.Value
 import org.jllvm._type.PointerType
 import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.value.FloatValue
+import org.jllvm.value.user.constant.ConstantReal
+import org.jllvm._type.DoubleType
 
 class Name(_id: String, _file: String, _start: Int, _end: Int,
            _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
@@ -33,7 +35,8 @@ class Name(_id: String, _file: String, _start: Int, _end: Int,
        }
     }
     else {
-      s.codegen.builder.buildAlloca(s.codegen.any, id)
+      s.lookupParameter(id).asInstanceOf[org.jllvm.value.Argument]
+//      null
     }
   }
   

@@ -1,9 +1,11 @@
 package com.tajpure.scheme.compiler.ast
 
+import java.util.HashMap
+
+import scala.collection.mutable.HashSet
+
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
-import scala.collection.mutable.HashSet
-import java.util.HashMap
 
 class Delimeter(_shape: String, _file: String, _start: Int, _end: Int,
                 _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
