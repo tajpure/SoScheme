@@ -25,15 +25,20 @@ class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
   
   def codegen(s: Scope): org.jllvm.value.Value = {
     if (value.isInstanceOf[Func]) {
-      val last = s.codegen.buildFunc(pattern, value, s)
+      value.asInstanceOf[Func].codegen(pattern.toString(), s)
     }
     else if (value.isInstanceOf[IntNum]) {
-      null
+      val intVal = value.asInstanceOf[IntNum].codegen(s)
+      s.codegen.buildLoad(intVal, pattern.toString())
+    }
+    else if (value.isInstanceOf[FloatNum]) {
+       val floatVal = value.asInstanceOf[FloatNum].codegen(s)
+      s.codegen.buildLoad(floatVal, pattern.toString())
     }
     else {
       Log.error(this, "unknown value")
+      null
     }
-    null
   }
   
   override

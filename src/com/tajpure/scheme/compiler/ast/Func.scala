@@ -11,6 +11,7 @@ import org.jllvm._type.IntegerType
 import org.jllvm._type.Type
 import org.jllvm.value.BasicBlock
 import org.jllvm._type.PointerType
+import org.jllvm.value.user.constant.Function
 import com.tajpure.scheme.compiler.exception.CompilerException
 
 class Func(_params: List[Name], _propertyForm: Scope, _body: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
@@ -45,6 +46,23 @@ class Func(_params: List[Name], _propertyForm: Scope, _body: Node, _file: String
     }
     new Closure(this, properties, s)
     null
+  }
+  
+  def codegen(name:String, s: Scope): org.jllvm.value.Value = {
+      val _params: Array[Type] = params.map { param => new PointerType(s.codegen.any, 0) }.toArray
+      val function: Function = new Function(s.codegen.module, name, new FunctionType(s.codegen.any, _params, false))
+      
+      function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
+      s.put("this", "function", function)
+      
+      params.zipWithIndex.foreach {
+        case (param, i) => s.put(param.id, "parameter", function.getParameter(i)) }
+      
+      val block: BasicBlock = function.appendBasicBlock("entry")
+      s.codegen.builder.positionBuilderAtEnd(block)
+      val last = body.codegen(s)
+      s.codegen.builder.buildRet(last)
+      function
   }
   
   override

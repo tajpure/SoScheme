@@ -64,11 +64,15 @@ class CodeGen(_source: String) {
     builder.buildMul(lhs, rhs, "")
   }
   
+  def buildLoad(value: org.jllvm.value.Value, name: String): org.jllvm.value.Value = {
+    builder.buildLoad(value, name)
+  }
+  
   def buildFunc(pattern: Node, value: Node, s: Scope): org.jllvm.value.Value = {
       val _value: Func = value.asInstanceOf[Func]
-      val _type: PointerType = new PointerType(s.codegen.any, 0)
+//      val _type: PointerType = new PointerType(s.codegen.any, 0)
       val _params: Array[Type] = _value.params.map { param => new PointerType(s.codegen.any, 0) }.toArray
-      val function: Function = new Function(s.codegen.module, pattern.toString(), new FunctionType(_type, _params, false))
+      val function: Function = new Function(s.codegen.module, pattern.toString(), new FunctionType(any, _params, false))
       
       function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
       s.put("this", "function", function)
@@ -101,6 +105,10 @@ class CodeGen(_source: String) {
   
   def save(_path: String): Unit = {
     module.printToFile(_path)
+  }
+  
+  def execute(): Unit = {
+    module.dump()
   }
 
 }

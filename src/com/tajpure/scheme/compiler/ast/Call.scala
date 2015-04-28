@@ -21,10 +21,6 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
       val funcScope: Scope = new Scope(closure.env)
       val params: List[Name] = closure.func.params
       
-      if (closure.func.params.size != args.elements.size) {
-        throw new CompilerException("incorrect number of arguments.", this)
-      }
-      
       if (closure.properties != null) {
         Scope.mergeDefault(closure.properties, funcScope)
       }

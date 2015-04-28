@@ -21,7 +21,7 @@ class FloatNum(_content: String, _file: String, _start: Int, _end: Int, _row: In
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    null
+    s.codegen.buildFloat(new FloatValue(value))
   }
   
   override
