@@ -14,6 +14,9 @@ import com.tajpure.scheme.compiler.ast.Argument
 import com.tajpure.scheme.compiler.ast.Block
 import com.tajpure.scheme.compiler.exception.ParserException
 import com.tajpure.scheme.compiler.ast.Name
+import com.tajpure.scheme.compiler.ast.IntNum
+import com.tajpure.scheme.compiler.ast.Str
+import com.tajpure.scheme.compiler.ast.FloatNum
 
 object Parser extends App {
 
@@ -53,7 +56,19 @@ object Parser extends App {
             case Constants.SEQ => parseBlock(tuple)
             case default => parseCall(tuple)
           }
-        } 
+        }
+        else if (curNode.isInstanceOf[IntNum]) {
+          curNode.asInstanceOf[IntNum]
+        }
+        else if (curNode.isInstanceOf[FloatNum]) {
+          curNode.asInstanceOf[FloatNum]
+        }
+        else if (curNode.isInstanceOf[Str]) {
+          curNode.asInstanceOf[Str]
+        }
+        else if (curNode.isInstanceOf[Symbol]) {
+          curNode.asInstanceOf[Symbol]
+        }
         else {
           parseCall(tuple)
         }
