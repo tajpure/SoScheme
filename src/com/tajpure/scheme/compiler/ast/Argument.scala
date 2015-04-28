@@ -12,7 +12,7 @@ class Argument(_elements: List[Node]) {
   
   override
   def toString(): String = {
-    "argument: " + elements.toString()
+    elements.foldLeft(" ( ")((node, str) => node + str + " ") + ")"
   }
 
 }

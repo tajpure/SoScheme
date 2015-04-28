@@ -39,7 +39,7 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
       primFunc.apply(args, this)
     } 
     else {
-      Log.error(this.op, "this is not a function.")
+      throw new CompilerException("this is not a function", this.op)
       Value.VOID
     }
   }
@@ -79,7 +79,7 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
   
   override
   def toString(): String = {
-    op + " " + args
+    "in call " + op + args
   }
   
 }

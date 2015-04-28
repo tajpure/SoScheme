@@ -19,7 +19,7 @@ object Interpreter extends App {
         (define reciprocal 
                 (lambda (x) 
                   (define y (/ 3 x)) 
-                  (+ x y))) 
+                  (+ x "ss"))) 
         (display (reciprocal 2))
         """)
   }

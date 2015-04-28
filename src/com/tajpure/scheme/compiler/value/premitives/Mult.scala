@@ -17,7 +17,7 @@ class Mult extends PrimFunc("*", -1) {
 
   def apply(args: List[Value], location: Node): Value = {
     if (args.size == 0) {
-      throw new CompilerException("Exception: incorrect arguments count in call '*'", location)
+      throw new CompilerException("incorrect arguments count in call '*'", location)
     } 
     else if (args.size == 1) {
       args(0)
@@ -37,7 +37,7 @@ class Mult extends PrimFunc("*", -1) {
           new FloatValue(result.asInstanceOf[FloatValue].value * arg.asInstanceOf[FloatValue].value)
         } 
         else {
-          Log.error(location, "Exception: incorrect arguments in call '*'")
+          throw new CompilerException("incorrect arguments in call '*' : " + arg, location)
           Value.VOID
         }
       })

@@ -20,7 +20,7 @@ class Add extends PrimFunc("+", -1) {
 
   def apply(args: List[Value], location: Node): Value = {
     if (args.size == 0) {
-      throw new CompilerException("Exception: incorrect arguments count in call '+'", location)
+      throw new CompilerException("incorrect arguments count", location)
     } 
     else if (args.size == 1) {
       args(0)
@@ -61,12 +61,12 @@ class Add extends PrimFunc("+", -1) {
             new FractionValue(fraction.numerator * fraction0.denominator + fraction.denominator * fraction0.numerator, fraction.denominator * fraction0.denominator)
           } 
           else {
-            Log.error(location, "Exception: incorrect arguments in call '+' : " + arg)
+            throw new CompilerException("incorrect arguments", location)
             Value.VOID
           }
         }
         else {
-          Log.error(location, "Exception: incorrect arguments in call '+' : " + arg)
+          throw new CompilerException("incorrect arguments", location)
           Value.VOID
         }
       })
@@ -84,7 +84,7 @@ class Add extends PrimFunc("+", -1) {
   override
   def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
     if (args.size != 2) {
-      throw new CompilerException("Exception: incorrect arguments count in call '*'", location)
+      throw new CompilerException("Exception: incorrect arguments count in call '+'", location)
     }
     else if (args(0).isInstanceOf[org.jllvm.value.Value] && args(1).isInstanceOf[org.jllvm.value.Value]) {
       val arg0 = s.codegen.builder.buildLoad(args(0), "arg0")

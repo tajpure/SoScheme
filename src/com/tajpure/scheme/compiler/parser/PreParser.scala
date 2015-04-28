@@ -43,11 +43,10 @@ class PreParser(_source:String, _path: String) {
         def loop() {
           if (!Delimeter._match(first, next)) {
             if (next == null) {
-              throw new ParserException("unclosed delimeter till end of file: " + first.toString(), first)
+              throw new ParserException("unclosed delimeter till end of file", first)
             } 
             else if (Delimeter.isClose(next)) {
-              throw new ParserException("unmatched closing delimeter: " +
-                  next.toString() + " does not close " + first.toString(), next)
+              throw new ParserException("unmatched closing delimeter does not close", next)
             } 
             else {
               elements = elements :+ next
@@ -60,8 +59,7 @@ class PreParser(_source:String, _path: String) {
         new Tuple(elements, first, next, first.file, first.start, next.end, first.row, first.col)
       } 
       else if (depth == 0 && Delimeter.isClose(first)) {
-        throw new ParserException("unmatched closing delimeter: " + first.toString() +
-            " does not close any open delimeter", first);
+        throw new ParserException("unmatched closing delimeter does not close any open delimeter", first);
       } 
       else {
         first
