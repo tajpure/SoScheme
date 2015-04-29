@@ -7,6 +7,7 @@ import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.value.FloatValue
 import org.jllvm.value.user.constant.ConstantReal
 import org.jllvm._type.DoubleType
+import com.tajpure.scheme.compiler.value.Closure
 
 class Name(_id: String, _file: String, _start: Int, _end: Int,
            _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
@@ -30,13 +31,15 @@ class Name(_id: String, _file: String, _start: Int, _end: Int,
        else if (value.isInstanceOf[FloatValue]) {
          s.codegen.buildFloat(value)
        }
+       else if (value.isInstanceOf[Closure]) {
+         s.lookup0(id)
+       }
        else {
          null
        }
     }
     else {
       s.lookupParameter(id).asInstanceOf[org.jllvm.value.Argument]
-//      null
     }
   }
   

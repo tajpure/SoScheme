@@ -38,31 +38,39 @@ class Func(_params: List[Name], _propertyForm: Scope, _body: Node, _file: String
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    val properties: Scope = 
-      if (propertyForm == null) {
-      null
-    } else {
-      Scope.evalProperties(propertyForm, s)
+    val _params: Array[Type] = params.map { param => s.codegen.any }.toArray
+    val function: Function = new Function(s.codegen.module, "anonymous", new FunctionType(s.codegen.any, _params, false))
+    
+    function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
+    s.put("this", "function", function)
+      
+    params.zipWithIndex.foreach {
+      case (param, i) => s.put(param.id, "parameter", function.getParameter(i)) 
     }
-    new Closure(this, properties, s)
-    null
+      
+    val block: BasicBlock = function.appendBasicBlock("entry")
+    s.codegen.builder.positionBuilderAtEnd(block)
+    val last = body.codegen(s)
+    s.codegen.builder.buildRet(last)
+    function
   }
   
   def codegen(name:String, s: Scope): org.jllvm.value.Value = {
-      val _params: Array[Type] = params.map { param => new PointerType(s.codegen.any, 0) }.toArray
-      val function: Function = new Function(s.codegen.module, name, new FunctionType(s.codegen.any, _params, false))
+    val _params: Array[Type] = params.map { param => s.codegen.any }.toArray
+    val function: Function = new Function(s.codegen.module, name, new FunctionType(s.codegen.any, _params, false))
       
-      function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
-      s.put("this", "function", function)
+    function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
+    s.put("this", "function", function)
       
-      params.zipWithIndex.foreach {
-        case (param, i) => s.put(param.id, "parameter", function.getParameter(i)) }
+    params.zipWithIndex.foreach {
+      case (param, i) => s.put(param.id, "parameter", function.getParameter(i)) 
+    }
       
-      val block: BasicBlock = function.appendBasicBlock("entry")
-      s.codegen.builder.positionBuilderAtEnd(block)
-      val last = body.codegen(s)
-      s.codegen.builder.buildRet(last)
-      function
+    val block: BasicBlock = function.appendBasicBlock("entry")
+    s.codegen.builder.positionBuilderAtEnd(block)
+    val last = body.codegen(s)
+    s.codegen.builder.buildRet(last)
+    function
   }
   
   override

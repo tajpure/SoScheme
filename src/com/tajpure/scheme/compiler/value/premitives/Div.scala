@@ -9,6 +9,7 @@ import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.exception.CompilerException
 import com.tajpure.scheme.compiler.value.FractionValue
 import com.tajpure.scheme.compiler.value.VoidValue
+import com.tajpure.scheme.compiler.Scope
 
 class Div extends PrimFunc("/", -1) {
 
@@ -65,7 +66,7 @@ class Div extends PrimFunc("/", -1) {
     null
   }
   
-  def codegen(args: List[Value], location: Node): Value = {
+ def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
     null
   }
 

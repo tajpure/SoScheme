@@ -8,6 +8,7 @@ import com.tajpure.scheme.compiler.value.FloatValue
 import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.exception.CompilerException
 import com.tajpure.scheme.compiler.value.BoolValue
+import com.tajpure.scheme.compiler.Scope
 
 class And extends PrimFunc("and" , -1) {
   
@@ -49,6 +50,18 @@ class And extends PrimFunc("and" , -1) {
   
   def codegen(args: List[Value], location: Node): Value = {
     null
+  }
+  
+  def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
+    if (args.size != 2) {
+      throw new CompilerException("incorrect arguments count in call '+'", location)
+    }
+    else if (args(0).isInstanceOf[org.jllvm.value.Value] && args(1).isInstanceOf[org.jllvm.value.Value]) {
+      s.codegen.builder.buildAdd(args(0), args(1), "add")
+    }
+    else {
+      throw new CompilerException("incorrect arguments", location)
+    }
   }
 
   override

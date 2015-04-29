@@ -58,9 +58,9 @@ class Mult extends PrimFunc("*", -1) {
     if (args.size != 2) {
       throw new CompilerException("Exception: incorrect arguments count in call '*'", location)
     }
+    
     else if (args(0).isInstanceOf[org.jllvm.value.Value] && args(1).isInstanceOf[org.jllvm.value.Value]) {
-      val arg0 = s.codegen.builder.buildLoad(args(0), "arg0")
-      s.codegen.builder.buildMul(arg0, args(1), "mul")
+      s.codegen.builder.buildMul(args(0), args(1), "mul")
     }
     else {
       null

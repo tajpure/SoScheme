@@ -7,6 +7,7 @@ import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.value.FloatValue
 import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.exception.CompilerException
+import com.tajpure.scheme.compiler.Scope
 
 class Sub extends PrimFunc("-", -1) {
 
@@ -48,7 +49,7 @@ class Sub extends PrimFunc("-", -1) {
     }
   }
   
-  def codegen(args: List[Value], location: Node): Value = {
+  def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
     null
   }
 

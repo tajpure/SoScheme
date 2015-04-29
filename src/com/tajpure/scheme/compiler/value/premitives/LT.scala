@@ -6,6 +6,7 @@ import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.BoolValue
 import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.exception.CompilerException
+import com.tajpure.scheme.compiler.Scope
 
 class LT extends PrimFunc("<" , 2) {
   
@@ -29,7 +30,7 @@ class LT extends PrimFunc("<" , 2) {
     null
   }
   
-  def codegen(args: List[Value], location: Node): Value = {
+  def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
     null
   }
 

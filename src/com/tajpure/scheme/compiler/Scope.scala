@@ -232,6 +232,23 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
     codegen.save(path)
   }
   
+  def lookup0(name: String): org.jllvm.value.Value = {
+    val v: Object = lookupProperty(name, "llvm.value")
+    if (v == null) {
+      null
+    } 
+    else if (v.isInstanceOf[org.jllvm.value.Value]) {
+      v.asInstanceOf[org.jllvm.value.Value]
+    } 
+    else {
+      null
+    }
+  }
+
+  def putValue0(name: String, value: org.jllvm.value.Value): Unit = {
+    put(name, "llvm.value", value)
+  }
+  
   override
   def toString(): String = {
     map.keySet.foldLeft("")(

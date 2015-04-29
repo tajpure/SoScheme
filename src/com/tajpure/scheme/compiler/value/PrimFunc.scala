@@ -14,11 +14,7 @@ abstract class PrimFunc(_name: String, _arity: Int) extends Value {
   
   def typecheck(args: List[Value], location: Node): Value
   
-  def codegen(args: List[Value], location: Node): Value
-  
-  def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
-    null
-  }
+  def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value
   
   override
   def toString(): String = {

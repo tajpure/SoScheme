@@ -3,6 +3,7 @@ package com.tajpure.scheme.compiler.ast
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.util.Log
+import com.tajpure.scheme.compiler.exception.CompilerException
 
 class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int,
              _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
@@ -24,20 +25,25 @@ class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
+    val vValue: Value = value.interp(s)
+    s.define(pattern, vValue)
     if (value.isInstanceOf[Func]) {
-      value.asInstanceOf[Func].codegen(pattern.toString(), s)
+      val func= value.asInstanceOf[Func].codegen(pattern.toString(), s)
+      s.putValue0(pattern.toString(), func)
+      func
     }
     else if (value.isInstanceOf[IntNum]) {
       val intVal = value.asInstanceOf[IntNum].codegen(s)
-      s.codegen.buildLoad(intVal, pattern.toString())
+      val pointer = s.codegen.builder.buildAlloca(intVal.typeOf(), pattern.toString())
+      s.codegen.builder.buildStore(intVal, pointer)
     }
     else if (value.isInstanceOf[FloatNum]) {
-       val floatVal = value.asInstanceOf[FloatNum].codegen(s)
-      s.codegen.buildLoad(floatVal, pattern.toString())
+      val floatVal = value.asInstanceOf[FloatNum].codegen(s)
+      val pointer = s.codegen.builder.buildAlloca(floatVal.typeOf(), pattern.toString())
+      s.codegen.builder.buildStore(floatVal, pointer)
     }
     else {
-      Log.error(this, "unknown value")
-      null
+      throw new CompilerException("unknown value", this)
     }
   }
   

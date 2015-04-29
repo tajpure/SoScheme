@@ -40,7 +40,6 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
     } 
     else {
       throw new CompilerException("this is not a function", this.op)
-      Value.VOID
     }
   }
 
@@ -52,19 +51,14 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
     val opValue: Value = this.op.interp(s)
     if (opValue.isInstanceOf[Closure]) {
       val closure: Closure = opValue.asInstanceOf[Closure]
-      val funcScope: Scope = new Scope(closure.env)
       val params: List[Name] = closure.func.params
       
-      if (closure.properties != null) {
-        Scope.mergeDefault(closure.properties, funcScope)
+      val func = this.op.codegen(s)
+      val _params =   params.zipWithIndex.map { case (param, i) => 
+        args.positional(i).codegen(s)
       }
       
-      params.zipWithIndex.foreach { case (param, i) => 
-        val value: Value = args.positional(i).interp(s)
-        funcScope.putValue(params(i).id, value)
-      }
-      
-      closure.func.body.codegen(funcScope)
+      s.codegen.builder.buildCall(func, _params.toArray, "call")
     } 
     else if (opValue.isInstanceOf[PrimFunc]) {
       val primFunc = opValue.asInstanceOf[PrimFunc]
@@ -72,14 +66,13 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
       primFunc.codegen(args, this, s)
     } 
     else {
-      Log.error(this.op, "this is not a function.")
-      null
+      throw new CompilerException("this is not a function", this.op)
     }
   }
   
   override
   def toString(): String = {
-    "in call " + op + args
+    op + args.toString()
   }
   
 }

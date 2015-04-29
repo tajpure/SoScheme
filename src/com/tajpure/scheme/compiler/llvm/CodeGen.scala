@@ -25,6 +25,8 @@ import org.jllvm.value.user.instruction.GetElementPointerInstruction
 import org.jllvm.value.user.instruction.LoadInstruction
 import org.jllvm.value.user.instruction.StoreInstruction
 import org.jllvm.value.user.instruction.PhiNode
+import org.jllvm.ExecutionEngine
+import org.jllvm.generic.GenericValue
 
 /**
  * A wrapper for LLVM API.
@@ -47,45 +49,6 @@ class CodeGen(_source: String) {
 //      false)
   
   val any: IntegerType = IntegerType.i32
-
-  def buildAdd(lhs: org.jllvm.value.Value, rhs: org.jllvm.value.Value): org.jllvm.value.Value = {
-    builder.buildAdd(lhs, rhs, "")
-  }
-
-  def buildSub(lhs: org.jllvm.value.Value, rhs: org.jllvm.value.Value): org.jllvm.value.Value = {
-    builder.buildSub(lhs, rhs, "")
-  }
-
-  def builDiv(lhs: org.jllvm.value.Value, rhs: org.jllvm.value.Value): org.jllvm.value.Value = {
-    builder.buildSDiv(lhs, rhs, "")
-  }
-
-  def buildMult(lhs: org.jllvm.value.Value, rhs: org.jllvm.value.Value): org.jllvm.value.Value = {
-    builder.buildMul(lhs, rhs, "")
-  }
-  
-  def buildLoad(value: org.jllvm.value.Value, name: String): org.jllvm.value.Value = {
-    builder.buildLoad(value, name)
-  }
-  
-  def buildFunc(pattern: Node, value: Node, s: Scope): org.jllvm.value.Value = {
-      val _value: Func = value.asInstanceOf[Func]
-//      val _type: PointerType = new PointerType(s.codegen.any, 0)
-      val _params: Array[Type] = _value.params.map { param => new PointerType(s.codegen.any, 0) }.toArray
-      val function: Function = new Function(s.codegen.module, pattern.toString(), new FunctionType(any, _params, false))
-      
-      function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
-      s.put("this", "function", function)
-      
-      _value.params.zipWithIndex.foreach {
-        case (param, i) => s.put(param.id, "parameter", function.getParameter(i)) }
-      
-      val block: BasicBlock = function.appendBasicBlock("entry")
-      builder.positionBuilderAtEnd(block)
-      val last = _value.body.codegen(s)
-      s.codegen.builder.buildRet(last)
-      function
-  }
   
   def valueOf(alloc: StackAllocation, s: Scope): org.jllvm.value.Value = {
      null
@@ -107,8 +70,11 @@ class CodeGen(_source: String) {
     module.printToFile(_path)
   }
   
-  def execute(): Unit = {
-    module.dump()
+  def execute(s: Scope): Unit = {
+    val func: Function = module.getNamedFunction("double")
+    val engine = new ExecutionEngine(module)
+    val runFunction = engine.runFunction(func, new Array[GenericValue](0))
+    println(org.jllvm.bindings.ExecutionEngine.LLVMGenericValueToInt(runFunction.getInstance(), 1))
   }
 
 }
