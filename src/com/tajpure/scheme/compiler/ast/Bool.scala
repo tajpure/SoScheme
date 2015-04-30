@@ -5,6 +5,9 @@ import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.BoolValue
 import com.tajpure.scheme.compiler.value.Type
+import com.tajpure.scheme.compiler.exception.CompilerException
+import org.jllvm.value.user.constant.ConstantInteger
+import org.jllvm.value.user.constant.ConstantBoolean
 
 class Bool(_content: String, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -25,7 +28,7 @@ class Bool(_content: String, _file: String, _start: Int, _end: Int, _row: Int, _
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    null
+    new ConstantBoolean(value)
   }
   
   override

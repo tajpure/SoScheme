@@ -4,6 +4,7 @@ import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.FloatValue
 import com.tajpure.scheme.compiler.value.Type
+import org.jllvm.value.user.constant.ConstantReal
 
 class FloatNum(_content: String, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -21,7 +22,7 @@ class FloatNum(_content: String, _file: String, _start: Int, _end: Int, _row: In
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    s.codegen.buildFloat(new FloatValue(value))
+    new ConstantReal(new org.jllvm._type.FloatType(), value)
   }
   
   override

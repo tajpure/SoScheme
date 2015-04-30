@@ -4,6 +4,7 @@ import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.value.Type
+import org.jllvm.value.user.constant.ConstantInteger
 
 class IntNum(_content: String, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -30,7 +31,7 @@ class IntNum(_content: String, _file: String, _start: Int, _end: Int, _row: Int,
   }
 
   def codegen(s: Scope): org.jllvm.value.Value = {
-    s.codegen.buildInt(new IntValue(value))
+    ConstantInteger.constI32(value)
   }
 
   override def toString(): String = {

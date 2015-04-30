@@ -29,6 +29,10 @@ abstract class Node(_file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   
   def codegen(s: Scope): org.jllvm.value.Value
   
+  def codegen(node: Node, s: Scope): org.jllvm.value.Value = {
+    node.codegen(s)
+  }
+  
   def location(): String = {
     file + ": row: " + (row + 1) + " col: " + (col + 1) 
   }

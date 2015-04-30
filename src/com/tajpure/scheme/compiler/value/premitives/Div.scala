@@ -67,7 +67,15 @@ class Div extends PrimFunc("/", -1) {
   }
   
  def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
-    null
+    if (args.size != 2) {
+      throw new CompilerException("incorrect arguments count in call '/'", location)
+    }
+    else if (args(0).isInstanceOf[org.jllvm.value.Value] && args(1).isInstanceOf[org.jllvm.value.Value]) {
+      s.codegen.builder.buildFDiv(args(0), args(1), "div")
+    }
+    else {
+      throw new CompilerException("incorrect arguments", location)
+    }
   }
 
   override def toString: String = {

@@ -5,7 +5,6 @@ import com.tajpure.scheme.compiler.ast.Bool
 import com.tajpure.scheme.compiler.ast.Delimeter
 import com.tajpure.scheme.compiler.ast.FloatNum
 import com.tajpure.scheme.compiler.ast.IntNum
-import com.tajpure.scheme.compiler.ast.Keyword
 import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.Str
@@ -55,10 +54,10 @@ class LexParser(_source:String, _path: String) {
     (1 to n).foreach( _ => forward())
   }
 
-  def skipSpaces(): Boolean = {
-    if (offset < source.length && source.charAt(offset) == ' ') {
+  def skipSpacesAndTab(): Boolean = {
+    if (offset < source.length && (source.charAt(offset) == ' ' || source.charAt(offset) == '\t')) {
       skip(1)
-      skipSpaces()
+      skipSpacesAndTab()
       true
     } 
     else {
@@ -91,7 +90,7 @@ class LexParser(_source:String, _path: String) {
   }
 
   def skipSpacesAndComments() {
-    if (skipSpaces() || skipComments() || skipEnter()) {
+    if (skipSpacesAndTab() || skipComments() || skipEnter()) {
       skipSpacesAndComments()
     }
   }
@@ -131,7 +130,16 @@ class LexParser(_source:String, _path: String) {
       skip(1)
     }
     else if (Character.isLetter(source.charAt(offset))) {
-      skip(1)
+      def loop() {
+        if (Character.isLetter(source.charAt(offset))) {
+          skip(1)
+          loop()
+        }
+      }
+      loop()
+    }
+    else {
+      throw new ParserException("character can't be null", startRow, startCol, offset)
     }
     
     val end: Int = offset

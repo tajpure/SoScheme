@@ -25,25 +25,16 @@ class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    val vValue: Value = value.interp(s)
-    s.define(pattern, vValue)
     if (value.isInstanceOf[Func]) {
-      val func= value.asInstanceOf[Func].codegen(pattern.toString(), s)
-      s.putValue0(pattern.toString(), func)
-      func
-    }
-    else if (value.isInstanceOf[IntNum]) {
-      val intVal = value.asInstanceOf[IntNum].codegen(s)
-      val pointer = s.codegen.builder.buildAlloca(intVal.typeOf(), pattern.toString())
-      s.codegen.builder.buildStore(intVal, pointer)
-    }
-    else if (value.isInstanceOf[FloatNum]) {
-      val floatVal = value.asInstanceOf[FloatNum].codegen(s)
-      val pointer = s.codegen.builder.buildAlloca(floatVal.typeOf(), pattern.toString())
-      s.codegen.builder.buildStore(floatVal, pointer)
+      val closure = value.interp(s)
+      s.define(_pattern, closure)
+      value.codegen(pattern, s)
     }
     else {
-      throw new CompilerException("unknown value", this)
+      val _value = value.codegen(s)
+      val pointer = s.codegen.builder.buildAlloca(_value.typeOf(), pattern.toString())
+      s.putValue0(pattern.toString(), pointer)
+      s.codegen.builder.buildStore(_value, pointer)
     }
   }
   

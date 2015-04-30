@@ -9,7 +9,7 @@ class Tuple(_elements: List[Node], open: Node, close: Node, _file: String, _star
   val elements = _elements
   
   def interp(s: Scope): Value = {
-    null
+    elements.map { node => node.interp(s) }.last
   }
 
   def typecheck(s: Scope): Value = {

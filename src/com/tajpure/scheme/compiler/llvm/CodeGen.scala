@@ -42,12 +42,12 @@ class CodeGen(_source: String) {
 //  val any: IdentifiedStructType = new IdentifiedStructType("Any")
 //  
 //  any.setBody(Array[org.jllvm._type.Type](
-//      org.jllvm._type.IntegerType.i32, 
+//      org.jllvm._type.IntegerType.i1, 
 //      org.jllvm._type.IntegerType.i8, 
 //      org.jllvm._type.IntegerType.i32, 
 //      new org.jllvm._type.FloatType()),
 //      false)
-  
+
   val any: IntegerType = IntegerType.i32
   
   def valueOf(alloc: StackAllocation, s: Scope): org.jllvm.value.Value = {

@@ -48,13 +48,21 @@ class Sub extends PrimFunc("-", -1) {
       })
     }
   }
-  
-  def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
-    null
-  }
 
   def typecheck(args: List[Value], location: Node): Value = {
     null
+  }
+  
+  def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
+    if (args.size != 2) {
+      throw new CompilerException("incorrect arguments count in call '-'", location)
+    }
+    else if (args(0).isInstanceOf[org.jllvm.value.Value] && args(1).isInstanceOf[org.jllvm.value.Value]) {
+      s.codegen.builder.buildSub(args(0), args(1), "sub")
+    }
+    else {
+      throw new CompilerException("incorrect arguments", location)
+    }
   }
 
   override def toString: String = {

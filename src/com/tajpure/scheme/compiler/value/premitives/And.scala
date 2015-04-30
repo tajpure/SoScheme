@@ -10,38 +10,19 @@ import com.tajpure.scheme.compiler.exception.CompilerException
 import com.tajpure.scheme.compiler.value.BoolValue
 import com.tajpure.scheme.compiler.Scope
 
-class And extends PrimFunc("and" , -1) {
+class And extends PrimFunc("and" , 2) {
   
   def apply(args: List[Value], location: Node): Value = {
-   if (args.size < 2 || (arity != -1 && arity == args.size)) {
+   if (args.size < arity) {
       throw new CompilerException("Args don't match the 'and' function", location)
     }
-    
-    args.foldLeft(new BoolValue(true).asInstanceOf[Value])((result, arg) => {
-        if (result.isInstanceOf[BoolValue]) {
-          if (result.asInstanceOf[BoolValue].value) {
-            arg
-          }
-          else {
-            new BoolValue(false)
-          }
-        }
-        else if (arg.isInstanceOf[BoolValue]) {
-          if (arg.asInstanceOf[BoolValue].value) {
-            result
-          }
-          else {
-            new BoolValue(false)
-          }
-        }
-        else if (result.isInstanceOf[IntValue] && arg.isInstanceOf[IntValue]) {
-          new IntValue(result.asInstanceOf[IntValue].value & arg.asInstanceOf[IntValue].value)
-        }
-        else {
-          Log.error(location, "Args type error in function 'and'")
-          Value.VOID
-        }
-    })
+    if (args(0).isInstanceOf[BoolValue] && args(1).isInstanceOf[BoolValue]) {
+      new BoolValue(args(0).asInstanceOf[BoolValue].value && args(1).asInstanceOf[BoolValue].value)
+    }
+    else {
+      Log.error(location, "Args type error in function 'and'")
+      Value.VOID
+    }
   }
   
   def typecheck(args: List[Value], location: Node): Value= {
@@ -54,10 +35,10 @@ class And extends PrimFunc("and" , -1) {
   
   def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
     if (args.size != 2) {
-      throw new CompilerException("incorrect arguments count in call '+'", location)
+      throw new CompilerException("incorrect arguments count in call 'and'", location)
     }
     else if (args(0).isInstanceOf[org.jllvm.value.Value] && args(1).isInstanceOf[org.jllvm.value.Value]) {
-      s.codegen.builder.buildAdd(args(0), args(1), "add")
+      s.codegen.builder.buildAnd(args(0), args(1), "and")
     }
     else {
       throw new CompilerException("incorrect arguments", location)

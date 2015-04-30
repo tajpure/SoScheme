@@ -1,10 +1,8 @@
 package com.tajpure.scheme.compiler
 
 import java.util.NoSuchElementException
-
 import scala.collection.Set
 import scala.collection.mutable.HashMap
-
 import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.Symbol
@@ -26,6 +24,8 @@ import com.tajpure.scheme.compiler.value.premitives.Mult
 import com.tajpure.scheme.compiler.value.premitives.Not
 import com.tajpure.scheme.compiler.value.premitives.Or
 import com.tajpure.scheme.compiler.value.premitives.Sub
+import org.jllvm.value.user.constant.ConstantBoolean
+import com.tajpure.scheme.compiler.value.BoolValue
 
 class Scope(_parent: Scope, _codegen: CodeGen) {
 
@@ -77,19 +77,6 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
     } 
     else if (v.isInstanceOf[Value]) {
       v.asInstanceOf[Value]
-    } 
-    else {
-      null
-    }
-  }
-  
-  def lookupParameter(name: String): Object = {
-    val v: Object = lookupProperty(name, "parameter")
-    if (v == null) {
-      null
-    } 
-    else if (v.isInstanceOf[Object]) {
-      v.asInstanceOf[Object]
     } 
     else {
       null
@@ -281,8 +268,8 @@ object Scope extends App {
     init.putValue("not", new Not())
     init.putValue("display", new Display())
 
-    init.putValue("#t", Type.BOOL)
-    init.putValue("#f", Type.BOOL)
+    init.putValue("#t", new BoolValue(true))
+    init.putValue("#f", new BoolValue(false))
 
     init.putValue("Int", Type.INT)
     init.putValue("Bool", Type.BOOL)
@@ -307,8 +294,8 @@ object Scope extends App {
     init.putValue("not", new Not())
     init.putValue("display", new Display())
 
-    init.putValue("#t", Type.BOOL)
-    init.putValue("#f", Type.BOOL)
+    init.putValue0("#t", new ConstantBoolean(true))
+    init.putValue0("#f", new ConstantBoolean(false))
 
     init.putValue("Int", Type.INT)
     init.putValue("Bool", Type.BOOL)

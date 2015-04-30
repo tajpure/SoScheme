@@ -17,6 +17,8 @@ import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.ast.IntNum
 import com.tajpure.scheme.compiler.ast.Str
 import com.tajpure.scheme.compiler.ast.FloatNum
+import com.tajpure.scheme.compiler.ast.CharNum
+import com.tajpure.scheme.compiler.ast.Bool
 
 object Parser extends App {
 
@@ -57,18 +59,6 @@ object Parser extends App {
             case default => parseCall(tuple)
           }
         }
-        else if (curNode.isInstanceOf[IntNum]) {
-          curNode.asInstanceOf[IntNum]
-        }
-        else if (curNode.isInstanceOf[FloatNum]) {
-          curNode.asInstanceOf[FloatNum]
-        }
-        else if (curNode.isInstanceOf[Str]) {
-          curNode.asInstanceOf[Str]
-        }
-        else if (curNode.isInstanceOf[Symbol]) {
-          curNode.asInstanceOf[Symbol]
-        }
         else {
           parseCall(tuple)
         }
@@ -98,7 +88,21 @@ object Parser extends App {
 
   @throws(classOf[ParserException])
   def parseIf(tuple: Tuple): If = {
-    null
+    val elements: List[Node] = tuple.elements
+
+    if (elements.size < 3) {
+      throw new ParserException("incorrect format of function", tuple)
+    }
+    
+    val test: Node = parseNode(elements(1))
+    val then: Node = parseNode(elements(2))
+    val _else: Node = if (elements.size == 4) {
+        parseNode(elements(3))
+      } else {
+        null
+      }
+    
+    new If(test, then, _else, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
   }
 
   @throws(classOf[ParserException])

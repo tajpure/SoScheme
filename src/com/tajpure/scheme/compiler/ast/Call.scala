@@ -6,6 +6,10 @@ import com.tajpure.scheme.compiler.value.Closure
 import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.exception.CompilerException
+import org.jllvm.value.user.instruction.StackAllocation
+import com.tajpure.scheme.compiler.value.IntValue
+import org.jllvm.value.user.constant.ConstantInteger
+import org.jllvm.value.user.instruction.GetElementPointerInstruction
 
 class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -39,7 +43,7 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
       primFunc.apply(args, this)
     } 
     else {
-      throw new CompilerException("this is not a function", this.op)
+      throw new CompilerException("It's not a function", this.op)
     }
   }
 
@@ -62,12 +66,25 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
     } 
     else if (opValue.isInstanceOf[PrimFunc]) {
       val primFunc = opValue.asInstanceOf[PrimFunc]
-      val args: List[org.jllvm.value.Value] = Node.codegenList(this.args.positional, s)
-      primFunc.codegen(args, this, s)
+      val unconvertedArgs: List[org.jllvm.value.Value] = Node.codegenList(this.args.positional, s)
+      val convertedArgs = argsTypeConvert(this.args.positional, unconvertedArgs, s)
+      
+      primFunc.codegen(convertedArgs, this, s)
     } 
     else {
-      throw new CompilerException("this is not a function", this.op)
+      throw new CompilerException("It's not a function", this.op)
     }
+  }
+  
+  def argsTypeConvert(origin: List[Node], unconverted: List[org.jllvm.value.Value], s: Scope): List[org.jllvm.value.Value] = {
+    unconverted.map { arg => {
+        if (arg.isInstanceOf[GetElementPointerInstruction]) {
+          s.codegen.builder.buildLoad(arg, "load")
+        }
+        else {
+          arg
+        }
+   } }
   }
   
   override

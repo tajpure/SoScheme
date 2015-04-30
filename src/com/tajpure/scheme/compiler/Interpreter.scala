@@ -16,11 +16,8 @@ object Interpreter extends App {
   def main(args: Array[String]) {
     interp(
         """
-        (define reciprocal 
-                (lambda (x) 
-                  (define y (/ 3 x)) 
-                  (+ x y))) 
-        (display (reciprocal 2))
+        (define iftest (lambda () (if (not (and #t #f)) "false" "true")))
+        (display (iftest))
         """)
   }
   

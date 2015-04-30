@@ -23,24 +23,7 @@ class Name(_id: String, _file: String, _start: Int, _end: Int,
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    val value: Value = s.lookup(id)
-    if (value != null) {
-       if (value.isInstanceOf[IntValue]) {
-         s.codegen.buildInt(value)
-       }
-       else if (value.isInstanceOf[FloatValue]) {
-         s.codegen.buildFloat(value)
-       }
-       else if (value.isInstanceOf[Closure]) {
-         s.lookup0(id)
-       }
-       else {
-         null
-       }
-    }
-    else {
-      s.lookupParameter(id).asInstanceOf[org.jllvm.value.Argument]
-    }
+    s.lookup0(id)
   }
   
   override

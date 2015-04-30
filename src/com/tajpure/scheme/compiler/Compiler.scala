@@ -11,22 +11,17 @@ class Compiler(_file: String) {
   val file: String  = _file
   
   def compile(): Unit = {
-//    Log.info("loading native library...")
+    
     NativeLibrary.load()
     
-//    Log.info("start compiling...")
-    
+    val root = Parser.parse(file)
+    val targetPath: String = FileUtils.target(file)
     val scope: Scope = Scope.buildInitCompilerScope(new CodeGen(file))
-    val root = Parser.parse("", _file)
+    
 //    root.typecheck(scope)
     root.codegen(scope)
     
-    val targetPath: String = FileUtils.target(_file)
-    
-//    Log.info("saving LLVM IR code to " + targetPath + "...")
     scope.save(targetPath)
-//    Log.info("finished")
-    
     scope.codegen.print()
   }
   
