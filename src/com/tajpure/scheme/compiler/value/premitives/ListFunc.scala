@@ -1,15 +1,23 @@
 package com.tajpure.scheme.compiler.value.premitives
 
-import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
+import com.tajpure.scheme.compiler.value.PrimFunc
+import com.tajpure.scheme.compiler.value.ListValue
+import com.tajpure.scheme.compiler.exception.CompilerException
 import com.tajpure.scheme.compiler.ast.Node
 
-class Cons extends PrimFunc("cons" , -1) {
+class ListFunc extends PrimFunc("list" , -1) {
 
   def apply(args: List[Value], location: Node): Value = {
-//    args.foldLeft(z)(f)
-    null
+    args.foldLeft(new ListValue())((sum, arg) => {
+      if (arg.isInstanceOf[ListValue]) {
+        arg.asInstanceOf[ListValue].add(sum)
+      }
+      else {
+        throw new CompilerException("incorrect arguments", location)
+      }
+    })
   }
   
   def typecheck(args: List[Value], location: Node): Value= {
@@ -22,6 +30,6 @@ class Cons extends PrimFunc("cons" , -1) {
 
   override
   def toString: String = {
-    "cons"
+    "list"
   }
 }

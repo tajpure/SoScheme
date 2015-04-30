@@ -16,8 +16,7 @@ object Interpreter extends App {
   def main(args: Array[String]) {
     interp(
         """
-        (define iftest (lambda () (if (not (and #t #f)) "false" "true")))
-        (display (iftest))
+        (display (list (1 2 "rr") (list (1 2) (1 2))))
         """)
   }
   

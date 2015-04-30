@@ -1,5 +1,27 @@
 package com.tajpure.scheme.compiler.value.premitives
 
-class Car {
+import com.tajpure.scheme.compiler.value.PrimFunc
+import com.tajpure.scheme.compiler.Scope
+import com.tajpure.scheme.compiler.value.Value
+import com.tajpure.scheme.compiler.ast.Node
 
+class Car extends PrimFunc("car" , -1) {
+
+  def apply(args: List[Value], location: Node): Value = {
+//    args.foldLeft(z)(f)
+    null
+  }
+  
+  def typecheck(args: List[Value], location: Node): Value= {
+    null
+  }
+  
+  def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
+    null
+  }
+
+  override
+  def toString: String = {
+    "car"
+  }
 }

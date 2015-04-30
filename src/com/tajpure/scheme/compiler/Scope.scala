@@ -26,6 +26,7 @@ import com.tajpure.scheme.compiler.value.premitives.Or
 import com.tajpure.scheme.compiler.value.premitives.Sub
 import org.jllvm.value.user.constant.ConstantBoolean
 import com.tajpure.scheme.compiler.value.BoolValue
+import com.tajpure.scheme.compiler.value.premitives.ListFunc
 
 class Scope(_parent: Scope, _codegen: CodeGen) {
 
@@ -267,6 +268,7 @@ object Scope extends App {
     init.putValue("or", new Or())
     init.putValue("not", new Not())
     init.putValue("display", new Display())
+    init.putValue("list", new ListFunc())
 
     init.putValue("#t", new BoolValue(true))
     init.putValue("#f", new BoolValue(false))

@@ -19,6 +19,9 @@ import com.tajpure.scheme.compiler.ast.Str
 import com.tajpure.scheme.compiler.ast.FloatNum
 import com.tajpure.scheme.compiler.ast.CharNum
 import com.tajpure.scheme.compiler.ast.Bool
+import com.tajpure.scheme.compiler.value.IntValue
+import com.tajpure.scheme.compiler.ast._List
+import com.tajpure.scheme.compiler.ast.PrimNode
 
 object Parser extends App {
 
@@ -58,6 +61,13 @@ object Parser extends App {
             case Constants.SEQ => parseBlock(tuple)
             case default => parseCall(tuple)
           }
+        }
+        else if (curNode.isInstanceOf[Symbol]) {
+          curNode
+        }
+        else if (curNode.isInstanceOf[PrimNode]) {
+          val intList = parseList(elements)
+          new _List(intList, tuple)
         }
         else {
           parseCall(tuple)

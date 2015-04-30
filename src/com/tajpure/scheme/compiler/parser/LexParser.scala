@@ -187,8 +187,12 @@ class LexParser(_source:String, _path: String) {
     val startCol: Int = col
     
     def loop() {
-      if (offset < source.length && source.charAt(offset) == Constants.QUOTE) {
-        forward()
+      if (offset < source.length && (source.charAt(offset) == Constants.QUOTE)) {
+        skip(1)
+        loop()
+      }
+      else if (offset < source.length && source.startsWith(Constants._QUOTE, offset)) {
+        skip(Constants._QUOTE.length())
         loop()
       }
     }

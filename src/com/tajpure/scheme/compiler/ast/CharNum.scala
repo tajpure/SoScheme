@@ -7,7 +7,7 @@ import org.jllvm.value.user.constant.ConstantInteger
 import com.tajpure.scheme.compiler.exception.CompilerException
 
 class CharNum (_value: String, _file: String, _start: Int, _end: Int,
-             _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
+             _row: Int, _col: Int) extends PrimNode(_file, _start, _end, _row, _col) {
   
   val value: String = _value
 
