@@ -11,11 +11,15 @@ class Compiler(_file: String) {
   val file: String  = _file
   
   def compile(): Unit = {
+    val targetPath: String = FileUtils.target(file)
+    compile(targetPath)
+  }
+  
+  def compile(targetPath: String): Unit = {
     
     NativeLibrary.load()
     
     val root = Parser.parse(file)
-    val targetPath: String = FileUtils.target(file)
     val scope: Scope = Scope.buildInitCompilerScope(new CodeGen(file))
     
 //    root.typecheck(scope)

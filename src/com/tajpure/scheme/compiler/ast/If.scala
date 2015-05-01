@@ -8,6 +8,9 @@ import com.tajpure.scheme.compiler.exception.CompilerException
 class If(_test: Node, _then: Node, _else: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
   
+  def this(_test: Node, _then: Node, _else: Node, node: Node) = 
+    this(_test, _then, _else, node.file, node.start, node.end, node.row, node.col)
+  
   val test = _test
   
   val then = _then

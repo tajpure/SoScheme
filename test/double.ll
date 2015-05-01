@@ -1,4 +1,4 @@
-; ModuleID = 'D:/workspace/workspace11/SoScheme/test/double.scm'
+; ModuleID = 'D:/workspaceII/SoScheme/test/double.scm'
 
 define i32 @strr() {
 entry:

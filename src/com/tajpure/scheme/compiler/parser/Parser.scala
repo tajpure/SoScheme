@@ -2,26 +2,20 @@ package com.tajpure.scheme.compiler.parser
 
 import com.tajpure.scheme.compiler.Constants
 import com.tajpure.scheme.compiler.Scope
-import com.tajpure.scheme.compiler.Scope
+import com.tajpure.scheme.compiler.ast.Argument
+import com.tajpure.scheme.compiler.ast.Block
 import com.tajpure.scheme.compiler.ast.Call
 import com.tajpure.scheme.compiler.ast.Define
 import com.tajpure.scheme.compiler.ast.Func
 import com.tajpure.scheme.compiler.ast.If
+import com.tajpure.scheme.compiler.ast.Let
+import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.ast.Node
+import com.tajpure.scheme.compiler.ast.PrimNode
 import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
-import com.tajpure.scheme.compiler.ast.Argument
-import com.tajpure.scheme.compiler.ast.Block
-import com.tajpure.scheme.compiler.exception.ParserException
-import com.tajpure.scheme.compiler.ast.Name
-import com.tajpure.scheme.compiler.ast.IntNum
-import com.tajpure.scheme.compiler.ast.Str
-import com.tajpure.scheme.compiler.ast.FloatNum
-import com.tajpure.scheme.compiler.ast.CharNum
-import com.tajpure.scheme.compiler.ast.Bool
-import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.ast._List
-import com.tajpure.scheme.compiler.ast.PrimNode
+import com.tajpure.scheme.compiler.exception.ParserException
 
 object Parser extends App {
 
@@ -48,7 +42,7 @@ object Parser extends App {
       val tuple: Tuple = preNode.asInstanceOf[Tuple]
       val elements: List[Node] = tuple.elements
       if (elements.isEmpty) {
-        throw new ParserException("syntax error: ", tuple)
+          new _List(List[Node](), tuple)
       } 
       else {
         val curNode: Node = elements(0)
@@ -56,7 +50,7 @@ object Parser extends App {
           curNode.asInstanceOf[Name].id match {
             case Constants.DEFINE => parseDefine(tuple)
             case Constants.IF => parseIf(tuple)
-            case Constants.LET => parseAssign(tuple)
+            case Constants.LET => parseLet(tuple)
             case Constants.LAMBDA => parseLambda(tuple)
             case Constants.SEQ => parseBlock(tuple)
             case default => parseCall(tuple)
@@ -66,8 +60,8 @@ object Parser extends App {
           curNode
         }
         else if (curNode.isInstanceOf[PrimNode]) {
-          val intList = parseList(elements)
-          new _List(intList, tuple)
+          val list = parseList(elements)
+          new _List(list, tuple)
         }
         else {
           parseCall(tuple)
@@ -77,22 +71,33 @@ object Parser extends App {
   }
   
   @throws(classOf[ParserException])
-  def parseBlock(tuple: Tuple): Block = {
+  def parseBlock(tuple: Tuple): Node = {
     val elements: List[Node] = tuple.elements
     val statements = parseList(elements.slice(1, elements.size))
     new Block(statements, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
   }
 
   @throws(classOf[ParserException])
-  def parseDefine(tuple: Tuple): Define = {
+  def parseDefine(tuple: Tuple): Node = {
     val elements: List[Node] = tuple.elements
     if (elements.size != 3) {
       throw new ParserException("incorrect format of definition", tuple)
     } 
     else {
-      val pattern: Node = parseNode(elements(1))
-      val value: Node = parseNode(elements(2))
-      new Define(pattern, value, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
+      if (elements(1).isInstanceOf[Tuple]) {
+          val funcTuple = elements(1).asInstanceOf[Tuple]
+          val funcElements = funcTuple.elements
+          val pattern: Node = parseNode(funcElements(0))
+          val paramsTuple = new Tuple(funcElements.slice(1, funcElements.size),funcTuple.open, funcTuple.close, funcTuple)
+          val lambdaElements = List(Name.genName(Constants.LAMBDA), paramsTuple, elements(2))
+          val lambdaTuple = new Tuple(lambdaElements,funcTuple.open, funcTuple.close, funcTuple)
+          val value: Node = parseNode(lambdaTuple)
+          new Define(pattern, value, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
+        } else {
+          val pattern: Node = parseNode(elements(1))
+          val value: Node = parseNode(elements(2))
+          new Define(pattern, value, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
+        }
     }
   }
 
@@ -101,7 +106,7 @@ object Parser extends App {
     val elements: List[Node] = tuple.elements
 
     if (elements.size < 3) {
-      throw new ParserException("incorrect format of function", tuple)
+      throw new ParserException("incorrect format of if", tuple)
     }
     
     val test: Node = parseNode(elements(1))
@@ -112,16 +117,43 @@ object Parser extends App {
         null
       }
     
-    new If(test, then, _else, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
+    new If(test, then, _else, tuple)
   }
 
   @throws(classOf[ParserException])
-  def parseAssign(tuple: Tuple): Define = {
-    null
+  def parseLet(tuple: Tuple): Node = {
+    val elements = tuple.elements
+    val bindings = 
+      if (elements(1).isInstanceOf[Tuple]) {
+        parseBindings(elements(1).asInstanceOf[Tuple])
+      } else {
+        throw new ParserException("incorrect format of bindings", tuple)
+      }
+    val statements = parseList(elements.slice(2, elements.size))
+    val start: Int = statements(0).start
+    val end: Int = statements(statements.size - 1).end
+    val body: Block = new Block(statements, tuple.file, start, end, tuple.row, tuple.col)
+    
+    new Let(bindings, body, tuple)
   }
 
   @throws(classOf[ParserException])
-  def parseLambda(tuple: Tuple): Func = {
+  def parseBindings(tuple: Tuple): List[Node] = {
+    val elements = tuple.elements
+    elements.map { element => {
+      if (element.isInstanceOf[Tuple]) {
+        val origin = element.asInstanceOf[Tuple]
+        val define = new Tuple(Name.genName(Constants.DEFINE)::origin.elements, origin.open, origin.close, origin)
+        parseDefine(define)
+      }
+      else {
+        throw new ParserException("incorrect format of bindings", tuple)
+      }
+    } }
+  }
+
+  @throws(classOf[ParserException])
+  def parseLambda(tuple: Tuple): Node = {
     val elements: List[Node] = tuple.elements
 
     if (elements.size < 3) {
@@ -151,7 +183,7 @@ object Parser extends App {
   }
 
   @throws(classOf[ParserException])
-  def parseCall(tuple: Tuple): Call = {
+  def parseCall(tuple: Tuple): Node = {
     val elements: List[Node] = tuple.elements
     val func: Node = parseNode(tuple.elements(0))
     val parsedArgs: List[Node] = parseList(elements.slice(1, elements.size))

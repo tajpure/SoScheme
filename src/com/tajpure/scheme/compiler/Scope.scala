@@ -27,6 +27,7 @@ import com.tajpure.scheme.compiler.value.premitives.Sub
 import org.jllvm.value.user.constant.ConstantBoolean
 import com.tajpure.scheme.compiler.value.BoolValue
 import com.tajpure.scheme.compiler.value.premitives.ListFunc
+import com.tajpure.scheme.compiler.exception.RunTimeException
 
 class Scope(_parent: Scope, _codegen: CodeGen) {
 
@@ -196,13 +197,7 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
   def define(_pattern: Node, _value: Value): Unit = {
     if (_pattern.isInstanceOf[Name]) {
       val id: String = _pattern.asInstanceOf[Name].id
-      val value: Value = lookupLocal(id)
-      if (value != null) {
-        Log.error(_pattern, "trying to redefine name: " + id)
-      } 
-      else {
-        putValue(id, _value)
-      }
+      putValue(id, _value)
     } 
     else if (_pattern.isInstanceOf[Tuple]) {
 

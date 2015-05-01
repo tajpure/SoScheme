@@ -1,5 +1,5 @@
 ;(define double (lambda (m n) (* (+ m (- n 2)) 4)))		
 ;(define main (lambda () (define x 8) (double 1 (+ x 2))))	
-;(define strr (lambda () (define s #f)))
+(define strr (lambda () (define s #f)))
 ;(lambda () (+ 1 2))
 ;(define iftest (lambda () (if (> 2 1) (display 2))))

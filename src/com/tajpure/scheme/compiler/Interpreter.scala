@@ -16,7 +16,9 @@ object Interpreter extends App {
   def main(args: Array[String]) {
     interp(
         """
-        (display (list (1 2 "rr") (list (1 2) (1 2))))
+          (define func (lambda (x y) (+ x y)))
+          (define (ff f) (f 2 3))
+          (display (ff func))
         """)
   }
   
