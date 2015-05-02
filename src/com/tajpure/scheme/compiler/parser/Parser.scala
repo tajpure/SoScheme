@@ -14,7 +14,6 @@ import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.PrimNode
 import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
-import com.tajpure.scheme.compiler.ast._List
 import com.tajpure.scheme.compiler.exception.ParserException
 
 object Parser extends App {
@@ -42,7 +41,7 @@ object Parser extends App {
       val tuple: Tuple = preNode.asInstanceOf[Tuple]
       val elements: List[Node] = tuple.elements
       if (elements.isEmpty) {
-          new _List(List[Node](), tuple)
+          throw new ParserException("syntax error", tuple)
       } 
       else {
         val curNode: Node = elements(0)
@@ -55,13 +54,6 @@ object Parser extends App {
             case Constants.SEQ => parseBlock(tuple)
             case default => parseCall(tuple)
           }
-        }
-        else if (curNode.isInstanceOf[Symbol]) {
-          curNode
-        }
-        else if (curNode.isInstanceOf[PrimNode]) {
-          val list = parseList(elements)
-          new _List(list, tuple)
         }
         else {
           parseCall(tuple)
@@ -110,19 +102,9 @@ object Parser extends App {
     }
     
     val test: Node = parseNode(elements(1))
-    val then: Node = if (elements(2).isInstanceOf[Tuple]) {
-        val thenTuple = elements(2).asInstanceOf[Tuple]
-        parseNode(new Tuple(Name.genName(Constants.SEQ)::thenTuple.elements, thenTuple))
-      } else {
-        parseNode(elements(2))
-      }
+    val then: Node = parseNode(new Tuple(List(Name.genName(Constants.SEQ), elements(2)), elements(2)))
     val _else: Node = if (elements.size == 4) {
-        if (elements(3).isInstanceOf[Tuple]) {
-          val elseTuple = elements(3).asInstanceOf[Tuple]
-          parseNode(new Tuple(Name.genName(Constants.SEQ)::elseTuple.elements, elseTuple))
-        } else {
-          parseNode(elements(3))
-        }
+        parseNode(new Tuple(List(Name.genName(Constants.SEQ), elements(3)), elements(3)))
       } else {
         null
       }

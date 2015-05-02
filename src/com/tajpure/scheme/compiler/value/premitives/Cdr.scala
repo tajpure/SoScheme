@@ -4,12 +4,23 @@ import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.ast.Node
+import com.tajpure.scheme.compiler.value.PairValue
+import com.tajpure.scheme.compiler.exception.RunTimeException
+import com.tajpure.scheme.compiler.exception.CompilerException
 
-class Cdr extends PrimFunc("cdr" , -1) {
+class Cdr extends PrimFunc("cdr" , 1) {
 
   def apply(args: List[Value], location: Node): Value = {
-//    args.foldLeft(z)(f)
-    null
+   if (args.size != arity) {
+      throw new CompilerException("args don't match the 'cdr' function", location)
+    }
+    
+    if (!args(0).isInstanceOf[PairValue]) {
+      throw new RunTimeException("args type error in function 'cdr'", location)
+    }
+    else {
+      args(0).asInstanceOf[PairValue].tail
+    }
   }
   
   def typecheck(args: List[Value], location: Node): Value= {

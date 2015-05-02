@@ -29,6 +29,9 @@ import com.tajpure.scheme.compiler.value.BoolValue
 import com.tajpure.scheme.compiler.value.premitives.ListFunc
 import com.tajpure.scheme.compiler.exception.RunTimeException
 import com.tajpure.scheme.compiler.value.premitives.Newline
+import com.tajpure.scheme.compiler.value.premitives.Cons
+import com.tajpure.scheme.compiler.value.premitives.Cdr
+import com.tajpure.scheme.compiler.value.premitives.Car
 
 class Scope(_parent: Scope, _codegen: CodeGen) {
 
@@ -266,6 +269,9 @@ object Scope extends App {
     init.putValue("display", new Display())
     init.putValue("list", new ListFunc())
     init.putValue("newline", new Newline())
+    init.putValue("cons", new Cons())
+    init.putValue("car", new Car())
+    init.putValue("cdr", new Cdr())
 
     init.putValue("#t", new BoolValue(true))
     init.putValue("#f", new BoolValue(false))

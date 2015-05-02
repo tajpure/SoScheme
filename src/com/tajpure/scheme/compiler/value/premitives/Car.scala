@@ -4,12 +4,23 @@ import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.ast.Node
+import com.tajpure.scheme.compiler.value.PairValue
+import com.tajpure.scheme.compiler.exception.CompilerException
+import com.tajpure.scheme.compiler.exception.RunTimeException
 
-class Car extends PrimFunc("car" , -1) {
+class Car extends PrimFunc("car" , 1) {
 
   def apply(args: List[Value], location: Node): Value = {
-//    args.foldLeft(z)(f)
-    null
+    if (args.size != arity) {
+      throw new CompilerException("args don't match the 'car' function", location)
+    }
+    
+    if (!args(0).isInstanceOf[PairValue]) {
+      throw new RunTimeException("args type error in function 'car'", location)
+    }
+    else {
+      args(0).asInstanceOf[PairValue].head
+    }
   }
   
   def typecheck(args: List[Value], location: Node): Value= {
