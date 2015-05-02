@@ -1,4 +1,4 @@
-treasure
+scheme2llvm
 ========
 
-A lisp dialect compiler.
+A interpreter for scheme and a compiler compile scheme to LLVM IR.

@@ -19,6 +19,9 @@ import org.jllvm.value.user.instruction.StoreInstruction
 class Func(_params: List[Name], _propertyForm: Scope, _body: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
   
+  def this(_params: List[Name], _propertyForm: Scope, _body: Node, node: Node) = 
+    this(_params, _propertyForm, _body, node.file, node.start, node.end, node.row, node.col)
+  
   val params: List[Name] = _params
   
   val propertyForm: Scope = _propertyForm

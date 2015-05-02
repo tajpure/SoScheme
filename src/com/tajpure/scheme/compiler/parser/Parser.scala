@@ -74,7 +74,7 @@ object Parser extends App {
   def parseBlock(tuple: Tuple): Node = {
     val elements: List[Node] = tuple.elements
     val statements = parseList(elements.slice(1, elements.size))
-    new Block(statements, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
+    new Block(statements, tuple)
   }
 
   @throws(classOf[ParserException])
@@ -88,15 +88,15 @@ object Parser extends App {
           val funcTuple = elements(1).asInstanceOf[Tuple]
           val funcElements = funcTuple.elements
           val pattern: Node = parseNode(funcElements(0))
-          val paramsTuple = new Tuple(funcElements.slice(1, funcElements.size),funcTuple.open, funcTuple.close, funcTuple)
+          val paramsTuple = new Tuple(funcElements.slice(1, funcElements.size), funcTuple)
           val lambdaElements = List(Name.genName(Constants.LAMBDA), paramsTuple, elements(2))
-          val lambdaTuple = new Tuple(lambdaElements,funcTuple.open, funcTuple.close, funcTuple)
+          val lambdaTuple = new Tuple(lambdaElements, funcTuple)
           val value: Node = parseNode(lambdaTuple)
-          new Define(pattern, value, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
+          new Define(pattern, value, tuple)
         } else {
           val pattern: Node = parseNode(elements(1))
           val value: Node = parseNode(elements(2))
-          new Define(pattern, value, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
+          new Define(pattern, value, tuple)
         }
     }
   }
@@ -110,11 +110,19 @@ object Parser extends App {
     }
     
     val test: Node = parseNode(elements(1))
-    val thenTuple = elements(2).asInstanceOf[Tuple]
-    val then: Node = parseNode(new Tuple(Name.genName(Constants.SEQ)::thenTuple.elements, thenTuple))
+    val then: Node = if (elements(2).isInstanceOf[Tuple]) {
+        val thenTuple = elements(2).asInstanceOf[Tuple]
+        parseNode(new Tuple(Name.genName(Constants.SEQ)::thenTuple.elements, thenTuple))
+      } else {
+        parseNode(elements(2))
+      }
     val _else: Node = if (elements.size == 4) {
-        val elseTuple = elements(3).asInstanceOf[Tuple]
-        parseNode(new Tuple(Name.genName(Constants.SEQ)::elseTuple.elements, elseTuple))
+        if (elements(3).isInstanceOf[Tuple]) {
+          val elseTuple = elements(3).asInstanceOf[Tuple]
+          parseNode(new Tuple(Name.genName(Constants.SEQ)::elseTuple.elements, elseTuple))
+        } else {
+          parseNode(elements(3))
+        }
       } else {
         null
       }
@@ -181,7 +189,7 @@ object Parser extends App {
     val body: Block = new Block(statements, tuple.file, start, end, tuple.row, tuple.col)
 
     val properties: Scope = null
-    new Func(paramsName, properties, body, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
+    new Func(paramsName, properties, body, tuple)
   }
 
   @throws(classOf[ParserException])
@@ -190,7 +198,7 @@ object Parser extends App {
     val func: Node = parseNode(tuple.elements(0))
     val parsedArgs: List[Node] = parseList(elements.slice(1, elements.size))
     val argument: Argument = new Argument(parsedArgs)
-    new Call(func, argument, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
+    new Call(func, argument, tuple)
   }
 
   @throws(classOf[ParserException])

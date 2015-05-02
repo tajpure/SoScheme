@@ -8,6 +8,9 @@ import com.tajpure.scheme.compiler.exception.CompilerException
 class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int,
              _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
   
+  def this(_pattern: Node, _value: Node, node: Node) = 
+    this(_pattern, _value, node.file, node.start, node.end, node.row, node.col)
+  
   val pattern: Node = _pattern
   
   val value: Node = _value

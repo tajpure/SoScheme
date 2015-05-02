@@ -53,14 +53,6 @@ class CodeGen(_source: String) {
   def valueOf(alloc: StackAllocation, s: Scope): org.jllvm.value.Value = {
      null
   }
-
-  def buildInt(value: Value): org.jllvm.value.Value = {
-    ConstantInteger.constI32(value.asInstanceOf[IntValue].value)
-  }
-  
-  def buildFloat(value: Value): org.jllvm.value.Value = {
-    new ConstantReal(new org.jllvm._type.FloatType(), value.asInstanceOf[FloatValue].value)
-  }
   
   def print(): Unit = {
     module.dump()

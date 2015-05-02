@@ -73,6 +73,7 @@ class PreParser(_source:String, _path: String) {
     var s: Node = nextNode()
     val first: Node = s
     var last: Node = null
+    elements = elements :+ Name.genName(Constants.SEQ)
     
     def loop() {
       if (s != null) {
