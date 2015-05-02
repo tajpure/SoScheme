@@ -44,10 +44,10 @@ class PreParser(_source:String, _path: String) {
           if (!Delimeter._match(first, next)) {
             if (next == null) {
               throw new ParserException("unclosed delimeter till end of file", first)
-            } 
+            }  
             else if (Delimeter.isClose(next)) {
               throw new ParserException("unmatched closing delimeter does not close", next)
-            } 
+            }
             else {
               elements = elements :+ next
               next = nextNode1(depth + 1)
@@ -73,7 +73,6 @@ class PreParser(_source:String, _path: String) {
     var s: Node = nextNode()
     val first: Node = s
     var last: Node = null
-    elements = elements :+ Name.genName(Constants.SEQ)
     
     def loop() {
       if (s != null) {
@@ -92,10 +91,11 @@ class PreParser(_source:String, _path: String) {
 
 object PreParser extends App {
   
-  val preParser: PreParser = new PreParser("/home/taojx/sworkspace/SoScheme/test/hello.scm")
+  val preParser: PreParser = new PreParser("D:/workspaceII/SoScheme/test/fib.scm")
+//  val preParser: PreParser = new PreParser("/home/taojx/sworkspace/SoScheme/test/hello.scm")
   
   try {
-    Log.info("preparser result: " + preParser.parse().toString())
+    Log.info(preParser.parse().toString())
   } 
   catch {
     case e0: ParserException => Log.error(e0.toString())
