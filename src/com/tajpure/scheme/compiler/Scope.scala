@@ -28,6 +28,7 @@ import org.jllvm.value.user.constant.ConstantBoolean
 import com.tajpure.scheme.compiler.value.BoolValue
 import com.tajpure.scheme.compiler.value.premitives.ListFunc
 import com.tajpure.scheme.compiler.exception.RunTimeException
+import com.tajpure.scheme.compiler.value.premitives.Newline
 
 class Scope(_parent: Scope, _codegen: CodeGen) {
 
@@ -264,6 +265,7 @@ object Scope extends App {
     init.putValue("not", new Not())
     init.putValue("display", new Display())
     init.putValue("list", new ListFunc())
+    init.putValue("newline", new Newline())
 
     init.putValue("#t", new BoolValue(true))
     init.putValue("#f", new BoolValue(false))

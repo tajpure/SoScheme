@@ -28,7 +28,7 @@ class Sub extends PrimFunc("-", -1) {
       }
     } 
     else {
-      args.foldLeft(new IntValue(0).asInstanceOf[Value])((result, arg) => {
+      args.slice(1, args.size).foldLeft(args(0))((result, arg) => {
         if (result.isInstanceOf[IntValue] && arg.isInstanceOf[IntValue]) {
           new IntValue(result.asInstanceOf[IntValue].value - arg.asInstanceOf[IntValue].value)
         } 

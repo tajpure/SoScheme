@@ -8,6 +8,9 @@ class Tuple(_elements: List[Node], _open: Node, _close: Node, _file: String, _st
   
   def this(_elements: List[Node], _open: Node, _close: Node, node: Node) = 
     this(_elements, _open, _close, node.file, node.start, node.end, node.row, node.col)
+  
+  def this(_elements: List[Node], tuple: Tuple) = 
+    this(_elements, tuple.open, tuple.close, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
 
   val open = _open
   

@@ -110,9 +110,11 @@ object Parser extends App {
     }
     
     val test: Node = parseNode(elements(1))
-    val then: Node = parseNode(elements(2))
+    val thenTuple = elements(2).asInstanceOf[Tuple]
+    val then: Node = parseNode(new Tuple(Name.genName(Constants.SEQ)::thenTuple.elements, thenTuple))
     val _else: Node = if (elements.size == 4) {
-        parseNode(elements(3))
+        val elseTuple = elements(3).asInstanceOf[Tuple]
+        parseNode(new Tuple(Name.genName(Constants.SEQ)::elseTuple.elements, elseTuple))
       } else {
         null
       }
