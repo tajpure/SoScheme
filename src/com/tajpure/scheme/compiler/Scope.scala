@@ -32,6 +32,7 @@ import com.tajpure.scheme.compiler.value.premitives.Newline
 import com.tajpure.scheme.compiler.value.premitives.Cons
 import com.tajpure.scheme.compiler.value.premitives.Cdr
 import com.tajpure.scheme.compiler.value.premitives.Car
+import com.tajpure.scheme.compiler.value.premitives.SetEM
 
 class Scope(_parent: Scope, _codegen: CodeGen) {
 
@@ -272,6 +273,7 @@ object Scope extends App {
     init.putValue("cons", new Cons())
     init.putValue("car", new Car())
     init.putValue("cdr", new Cdr())
+    init.putValue("set!", new SetEM())
 
     init.putValue("#t", new BoolValue(true))
     init.putValue("#f", new BoolValue(false))

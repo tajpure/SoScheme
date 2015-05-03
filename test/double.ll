@@ -1,9 +1,7 @@
 ; ModuleID = 'D:/workspaceII/SoScheme/test/double.scm'
 
-define i32 @fact(i32) {
+define i32 @double(i32) {
 entry:
-  ret void
-  %call = call i32 @fact(i32 10)
+  %mul = mul i32 %0, %0
+  ret i32 %mul
 }
-
-declare i32 @anonymous(i32)

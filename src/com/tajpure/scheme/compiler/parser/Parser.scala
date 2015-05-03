@@ -152,11 +152,7 @@ object Parser extends App {
     }
 
     val params: Node = elements(1)
-//    val params: List[Node] =  if (elements(1).isInstanceOf[Tuple]) {
-//        elements(1).asInstanceOf[Tuple].elements
-//      } else {
-//        List(elements(1))
-//      }
+    
     if (params.isInstanceOf[Tuple]) {
       params.asInstanceOf[Tuple].elements.map { node =>
       if (!node.isInstanceOf[Name]) {

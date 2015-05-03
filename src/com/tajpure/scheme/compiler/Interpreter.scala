@@ -12,18 +12,16 @@ object Interpreter extends App {
     Parser.parse(_path).interp(Scope.buildInitScope())
   }
   
+  def test() {
+    interp0("D:/workspaceII/SoScheme/test/fact.scm")
+    interp0("D:/workspaceII/SoScheme/test/fib.scm")
+    interp0("D:/workspaceII/SoScheme/test/procedure.scm")
+    interp0("D:/workspaceII/SoScheme/test/if.scm")
+  }
+  
   override 
   def main(args: Array[String]) {
-    interp(
-        """
-          ;(define add4
-          ;(let ((x 4)))
-          (display ((lambda (y) (+ 1 y)) 2))
-          (newline)
-          (display ((lambda x x) 3 4 5 6))
-          (newline)
-          (display ((lambda (x y . z) z) 3 4 5 6 7))
-        """)
+    test()
   }
   
 }

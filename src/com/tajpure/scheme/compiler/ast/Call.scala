@@ -44,11 +44,12 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
               val value = new ListFunc().apply(restArgsVal, this)
               funcScope.putValue(params(i + 1).id, value)
             }
-            else if (i < params.size && params.size <= args.elements.size && !Constants.DOT.equals(param.id)) {
-              if (params.size <= 1 || (i == params.size - 1 && i > 0 && !Constants.DOT.equals(params(i - 1).id))) {
+            else if (i > 0 && params.size - 1 == i && Constants.DOT.equals(params(i - 1).id)) {
+              // When the arguments like "(x y . z)", we need to avoid "z" being reset.
+            }
+            else if (i < params.size && params.size <= args.elements.size) {
                 val value = args.positional(i).interp(s)
                 funcScope.putValue(params(i).id, value)
-              }
             }  
             else {
               throw new RunTimeException("incorrent argument count in call", this)
@@ -64,7 +65,6 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
       else {
         throw new RunTimeException("incorrent argument", this)
       }
-      
       
       closure.func.body.interp(funcScope)
     } 
