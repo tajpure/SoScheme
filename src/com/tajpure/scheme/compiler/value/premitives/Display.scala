@@ -30,8 +30,10 @@ class Display extends PrimFunc("display" , -1) {
     
     val argsPtr = args.map { arg => {
       if (arg.isInstanceOf[ConstantString]) {
-        val ptr = s.codegen.builder.buildGlobalString(arg.asInstanceOf[ConstantString])
-        s.codegen.builder.buildGEP(new ConstantPointer(ptr.getInstance), Array(0 , 0), "str")
+        val str = arg.asInstanceOf[ConstantString]
+        val strP = s.codegen.builder.buildLoad(str, "str")
+        strP.dump()
+        s.codegen.builder.buildGEP(strP, Array(0, 0), "strP")
       }
       else {
         arg
