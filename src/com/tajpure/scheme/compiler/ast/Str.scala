@@ -7,7 +7,7 @@ import com.tajpure.scheme.compiler.value.Type
 import org.jllvm.value.user.constant.ConstantString
 
 class Str(_value: String, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
-  extends PrimNode(_file, _start, _end, _row, _col) {
+  extends Node(_file, _start, _end, _row, _col) {
 
   val value = _value
 

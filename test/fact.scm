@@ -1,3 +1,10 @@
 ; fact function
-(define fact (lambda (n) (* (fact (- n 1) n))))
-(x 1 2)
+
+(define (fact n) 
+			(if (= n 1) 
+				n 
+				(* (fact (- n 1)) n)))
+				
+(display (fact 10))
+
+; 3628800

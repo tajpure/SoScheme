@@ -5,7 +5,7 @@ import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.ConstValue
 
 class Symbol (_value: String, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
-  extends PrimNode(_file, _start, _end, _row, _col) {
+  extends Node(_file, _start, _end, _row, _col) {
 
   val value = _value
   

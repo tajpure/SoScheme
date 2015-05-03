@@ -10,6 +10,7 @@ import org.jllvm.value.user.instruction.StackAllocation
 import com.tajpure.scheme.compiler.value.IntValue
 import org.jllvm.value.user.constant.ConstantInteger
 import org.jllvm.value.user.instruction.GetElementPointerInstruction
+import com.tajpure.scheme.compiler.value.premitives.ListFunc
 
 class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -26,16 +27,22 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
     if (opValue.isInstanceOf[Closure]) {
       val closure: Closure = opValue.asInstanceOf[Closure]
       val funcScope: Scope = new Scope(closure.env)
-      val params: List[Name] = closure.func.params
+      val funcParams: List[Name] = closure.func.params
       
       if (closure.properties != null) {
         Scope.mergeDefault(closure.properties, funcScope)
       }
       
-      params.zipWithIndex.foreach {
-        case (param, i) => 
-        val value: Value = args.positional(i).interp(s)
-        funcScope.putValue(params(i).id, value)
+      funcParams.zipWithIndex.foreach {
+        case (param, i) => {
+          val value: Value = if (funcParams.size - 1 == i) {
+              val restArgsVal = Node.interpList(args.positional.slice(i, args.elements.size), s)
+              new ListFunc().apply(restArgsVal, this)
+            } else {
+              args.positional(i).interp(s)
+            }
+          funcScope.putValue(funcParams(i).id, value)
+        }
       }
       
       closure.func.body.interp(funcScope)

@@ -35,7 +35,7 @@ class LexParser(_source:String, _path: String) {
   val file: String = FileUtils.unifyPath(_path)
 
   if (source == null) {
-    Log.error("Failed to read the file:" + file)
+    Log.error("failed to read the file:" + file)
   }
   
   Delimeter.addDelimiterPair(Constants.PAREN_BEGIN, Constants.PAREN_END)

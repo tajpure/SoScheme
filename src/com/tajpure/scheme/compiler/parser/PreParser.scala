@@ -46,7 +46,7 @@ class PreParser(_source:String, _path: String) {
               throw new ParserException("unclosed delimeter till end of file", first)
             }  
             else if (Delimeter.isClose(next)) {
-              throw new ParserException("unmatched closing delimeter does not close", next)
+              throw new ParserException("unmatched closing delimeter doesn't close", next)
             }
             else {
               elements = elements :+ next
@@ -73,7 +73,7 @@ class PreParser(_source:String, _path: String) {
     var s: Node = nextNode()
     val first: Node = s
     var last: Node = null
-    elements = elements :+ Name.genName(Constants.SEQ)
+    elements = elements :+ Name.genName(Constants.BEGIN)
     
     def loop() {
       if (s != null) {

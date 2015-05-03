@@ -16,7 +16,10 @@ object Interpreter extends App {
   def main(args: Array[String]) {
     interp(
         """
-          (display '(list))
+          (define add4
+          (let ((x 4))
+          (lambda (y) (+ x y))))
+          (display ((lambda x x) 3 4 5 6))
         """)
   }
   

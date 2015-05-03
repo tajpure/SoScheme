@@ -11,7 +11,6 @@ import com.tajpure.scheme.compiler.ast.If
 import com.tajpure.scheme.compiler.ast.Let
 import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.ast.Node
-import com.tajpure.scheme.compiler.ast.PrimNode
 import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.exception.ParserException
@@ -51,7 +50,7 @@ object Parser extends App {
             case Constants.IF => parseIf(tuple)
             case Constants.LET => parseLet(tuple)
             case Constants.LAMBDA => parseLambda(tuple)
-            case Constants.SEQ => parseBlock(tuple)
+            case Constants.BEGIN => parseBlock(tuple)
             case default => parseCall(tuple)
           }
         }
@@ -102,9 +101,9 @@ object Parser extends App {
     }
     
     val test: Node = parseNode(elements(1))
-    val then: Node = parseNode(new Tuple(List(Name.genName(Constants.SEQ), elements(2)), elements(2)))
+    val then: Node = parseNode(elements(2))
     val _else: Node = if (elements.size == 4) {
-        parseNode(new Tuple(List(Name.genName(Constants.SEQ), elements(3)), elements(3)))
+        parseNode(elements(3))
       } else {
         null
       }
@@ -152,10 +151,12 @@ object Parser extends App {
       throw new ParserException("incorrect format of function", tuple)
     }
 
-    val preNode: Node = elements(1)
-    if (!preNode.isInstanceOf[Tuple]) {
-      throw new ParserException("incorrect format of parameters:" + preNode.toString(), preNode)
-    }
+    val preNode: Node = if (!elements(1).isInstanceOf[Tuple]) {
+        new Tuple(List(elements(1)), elements(1))
+      }
+      else {
+        elements(1)
+      }
 
     val params: List[Node] = preNode.asInstanceOf[Tuple].elements
     val paramsName: List[Name] = params.map { node =>

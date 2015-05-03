@@ -6,6 +6,7 @@ import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.exception.CompilerException
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.PairValue
+import com.tajpure.scheme.compiler.value.VoidList
 
 class ListFunc extends PrimFunc("list" , -1) {
 
@@ -14,7 +15,7 @@ class ListFunc extends PrimFunc("list" , -1) {
       new PairValue(null, null)
     }
     else {
-      args.slice(0, args.size - 1).foldRight(args(args.size - 1))(
+      args.foldRight(new VoidList().asInstanceOf[Value])(
           (arg, tail) => new PairValue(arg, tail)
           )
     }
