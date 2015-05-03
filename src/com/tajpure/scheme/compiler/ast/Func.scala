@@ -16,13 +16,13 @@ import com.tajpure.scheme.compiler.exception.CompilerException
 import org.jllvm.value.user.instruction.LoadInstruction
 import org.jllvm.value.user.instruction.StoreInstruction
 
-class Func(_params: List[Name], _propertyForm: Scope, _body: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
+class Func(_params: Node, _propertyForm: Scope, _body: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
   
-  def this(_params: List[Name], _propertyForm: Scope, _body: Node, node: Node) = 
+  def this(_params: Node, _propertyForm: Scope, _body: Node, node: Node) = 
     this(_params, _propertyForm, _body, node.file, node.start, node.end, node.row, node.col)
   
-  val params: List[Name] = _params
+  val params: Node = _params
   
   val propertyForm: Scope = _propertyForm
   
@@ -43,15 +43,19 @@ class Func(_params: List[Name], _propertyForm: Scope, _body: Node, _file: String
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    val _params: Array[Type] = params.map { param => s.codegen.any }.toArray
+    val paramList = if (params.isInstanceOf[Tuple]) {
+          params.asInstanceOf[Tuple].elements.map { node => node.asInstanceOf[Name] }
+        } else if (params.isInstanceOf[Name]) {
+          List(params.asInstanceOf[Name])
+        } else {
+          throw new CompilerException("incorrent argument", this)
+        }
+    val _params: Array[Type] = paramList.map { param => s.codegen.any }.toArray
     val function: Function = new Function(s.codegen.module, "anonymous", new FunctionType(s.codegen.any, _params, false))
     
     function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
-
-    params.zipWithIndex.foreach {
-      case (param, i) => s.putValue0(param.id, function.getParameter(i)) 
-    }
-      
+    paramList.zipWithIndex.foreach { case (param, i) => s.putValue0(param.id, function.getParameter(i))} 
+    
     val block: BasicBlock = function.appendBasicBlock("entry")
     s.codegen.builder.positionBuilderAtEnd(block)
     val last = body.codegen(s)
@@ -61,15 +65,20 @@ class Func(_params: List[Name], _propertyForm: Scope, _body: Node, _file: String
   
   override
   def codegen(node: Node, s: Scope): org.jllvm.value.Value = {
-    val _params: Array[Type] = params.map { param => s.codegen.any }.toArray
+    val paramList = if (params.isInstanceOf[Tuple]) {
+          params.asInstanceOf[Tuple].elements.map { node => node.asInstanceOf[Name] }
+        } else if (params.isInstanceOf[Name]) {
+          List(params.asInstanceOf[Name])
+        } else {
+          throw new CompilerException("incorrent argument", this)
+        }
+    val _params: Array[Type] = paramList.map { param => s.codegen.any }.toArray
     val function: Function = new Function(s.codegen.module, node.toString(), new FunctionType(s.codegen.any, _params, false))
       
     function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
     s.putValue0(node.toString(), function)
     
-    params.zipWithIndex.foreach {
-      case (param, i) => s.putValue0(param.id, function.getParameter(i)) 
-    }
+    paramList.zipWithIndex.foreach { case (param, i) => s.putValue0(param.id, function.getParameter(i))} 
       
     val block: BasicBlock = function.appendBasicBlock("entry")
     s.codegen.builder.positionBuilderAtEnd(block)

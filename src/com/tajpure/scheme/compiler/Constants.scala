@@ -32,6 +32,9 @@ object Constants {
   val COMMENTS_BLOCK_END = "|#"
   
   val CHAR_PREFIX = "#\\"
+  
+  // Pair
+  val DOT = "."
 
   // This keywords are all from R6RS(http://www.r6rs.org/final/html/r6rs/r6rs.html)
   val AND = "and"

@@ -151,19 +151,22 @@ object Parser extends App {
       throw new ParserException("incorrect format of function", tuple)
     }
 
-    val preNode: Node = if (!elements(1).isInstanceOf[Tuple]) {
-        new Tuple(List(elements(1)), elements(1))
-      }
-      else {
-        elements(1)
-      }
-
-    val params: List[Node] = preNode.asInstanceOf[Tuple].elements
-    val paramsName: List[Name] = params.map { node =>
+    val params: Node = elements(1)
+//    val params: List[Node] =  if (elements(1).isInstanceOf[Tuple]) {
+//        elements(1).asInstanceOf[Tuple].elements
+//      } else {
+//        List(elements(1))
+//      }
+    if (params.isInstanceOf[Tuple]) {
+      params.asInstanceOf[Tuple].elements.map { node =>
       if (!node.isInstanceOf[Name]) {
         throw new ParserException("can't pass as an argument:" + node.toString(), node)
       }
-      node.asInstanceOf[Name]
+      }
+    } else {
+      if (!params.isInstanceOf[Name]) {
+        throw new ParserException("can't pass as an argument:" + params.toString(), params)
+      }
     }
 
     val statements: List[Node] = parseList(elements.slice(2, elements.size))
@@ -172,7 +175,7 @@ object Parser extends App {
     val body: Block = new Block(statements, tuple.file, start, end, tuple.row, tuple.col)
 
     val properties: Scope = null
-    new Func(paramsName, properties, body, tuple)
+    new Func(params, properties, body, tuple)
   }
 
   @throws(classOf[ParserException])
