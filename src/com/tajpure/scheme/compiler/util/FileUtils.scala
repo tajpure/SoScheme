@@ -27,6 +27,10 @@ object FileUtils {
     path.substring(0, path.lastIndexOf(".")) + ".ll"
   }
   
+  def target0(path: String): String = {
+    path.substring(0, path.lastIndexOf(".")) + ".bc"
+  }
+  
   def main(args: Array[String]): Unit = {
     println(target("/d/c/s.ss"))
   }

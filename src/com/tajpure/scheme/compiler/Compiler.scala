@@ -21,11 +21,17 @@ class Compiler(_file: String) {
     scope.codegen.execute(scope)
   }
   
+  /**
+   * compile to LLVM IR
+   */
   def compile(): Unit = {
     val targetPath: String = FileUtils.target(file)
     compile(targetPath)
   }
   
+  /**
+   * compile to LLVM IR
+   */
   def compile(targetPath: String): Unit = {
     NativeLibrary.load()
     
@@ -34,6 +40,28 @@ class Compiler(_file: String) {
     
     root.codegen(scope)
     scope.save(targetPath)
+    scope.codegen.print()
+  }
+  
+  /**
+   * compile to LLVM Bit Code
+   */
+  def compile0(): Unit = {
+    val targetPath: String = FileUtils.target0(file)
+    compile0(targetPath)
+  }
+  
+  /**
+   * compile to LLVM Bit Code
+   */
+  def compile0(bcPath: String): Unit = {
+    NativeLibrary.load()
+    
+    val root = Parser.parse(file)
+    val scope: Scope = Scope.buildInitCompilerScope(new CodeGen(file))
+    
+    root.codegen(scope)
+    scope.codegen.saveBitCode(bcPath)
     scope.codegen.print()
   }
 }

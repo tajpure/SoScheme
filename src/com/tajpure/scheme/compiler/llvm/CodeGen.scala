@@ -62,6 +62,10 @@ class CodeGen(_source: String) {
     module.printToFile(_path)
   }
   
+  def saveBitCode(_path: String): Unit = {
+    module.writeBitcodeToFile(_path)
+  }
+  
   def execute(s: Scope): Unit = {
     val curScope = s.innerScope
     val func: Function = curScope.lookup0("main").asInstanceOf[Function]

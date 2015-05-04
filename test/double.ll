@@ -22,3 +22,9 @@ end:                                              ; preds = %else, %then
 }
 
 declare i32 @printf(i8*)
+
+define i32 @main() {
+entry:
+  %call = call i32 @fact(i32 %0)
+  ret i32 %call
+}
