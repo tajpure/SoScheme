@@ -18,6 +18,11 @@ object FileUtils {
     }
   }
   
+  def getAbsolutePath(path: String): String = {
+    val file = new File(path)
+    file.getAbsolutePath
+  }
+  
   def target(path: String): String = {
     path.substring(0, path.lastIndexOf(".")) + ".ll"
   }

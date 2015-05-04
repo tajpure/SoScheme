@@ -1,7 +1,13 @@
-; ModuleID = 'D:/workspaceII/SoScheme/test/double.scm'
+; ModuleID = './test/double.scm'
 
-define i32 @double(i32) {
+define i32 @fact(i32) {
 entry:
-  %mul = mul i32 %0, %0
-  ret i32 %mul
+  %eq = icmp eq i32 %0, 1
+  ret void
+
+test:                                             ; No predecessors!
+
+then:                                             ; No predecessors!
+
+else:                                             ; No predecessors!
 }

@@ -63,10 +63,10 @@ class CodeGen(_source: String) {
   }
   
   def execute(s: Scope): Unit = {
-    val func: Function = module.getNamedFunction("double")
+    val func: Function = s.lookup0("main").asInstanceOf[Function]
     val engine = new ExecutionEngine(module)
     val runFunction = engine.runFunction(func, new Array[GenericValue](0))
-    println(org.jllvm.bindings.ExecutionEngine.LLVMGenericValueToInt(runFunction.getInstance(), 1))
+    org.jllvm.bindings.ExecutionEngine.LLVMGenericValueToInt(runFunction.getInstance(), 1)
   }
 
 }

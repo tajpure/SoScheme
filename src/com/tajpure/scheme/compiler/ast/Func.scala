@@ -55,6 +55,7 @@ class Func(_params: Node, _propertyForm: Scope, _body: Node, _file: String, _sta
     
     function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
     paramList.zipWithIndex.foreach { case (param, i) => s.putValue0(param.id, function.getParameter(i))} 
+    s.putValue0("this", function)
     
     val block: BasicBlock = function.appendBasicBlock("entry")
     s.codegen.builder.positionBuilderAtEnd(block)
@@ -77,8 +78,8 @@ class Func(_params: Node, _propertyForm: Scope, _body: Node, _file: String, _sta
       
     function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
     s.putValue0(node.toString(), function)
-    
     paramList.zipWithIndex.foreach { case (param, i) => s.putValue0(param.id, function.getParameter(i))} 
+    s.putValue0("this", function)
       
     val block: BasicBlock = function.appendBasicBlock("entry")
     s.codegen.builder.positionBuilderAtEnd(block)

@@ -17,13 +17,13 @@ object Interpreter extends App {
   }
   
   def test() {
+    interp0("./test/hello.scm")
     interp0("./test/fact.scm")
     interp0("./test/fib.scm")
     interp0("./test/procedure.scm")
     interp0("./test/if.scm")
   }
   
-  // TODO to keep the scope during the "REPL"
   def repl(): Unit = {
     println("So Scheme version 0.1")
     print(">")
@@ -36,7 +36,7 @@ object Interpreter extends App {
   
   override 
   def main(args: Array[String]) {
-    test()
+    repl()
   }
   
 }
