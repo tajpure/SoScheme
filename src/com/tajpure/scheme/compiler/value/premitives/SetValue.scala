@@ -8,7 +8,7 @@ import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.util.Log
 
-class SetEM extends PrimFunc("set!" , 2) {
+class SetValue extends PrimFunc("set!" , 2) {
   
   def apply(args: List[Value], location: Node): Value = {
     // TODO

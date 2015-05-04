@@ -32,13 +32,13 @@ import com.tajpure.scheme.compiler.value.premitives.Newline
 import com.tajpure.scheme.compiler.value.premitives.Cons
 import com.tajpure.scheme.compiler.value.premitives.Cdr
 import com.tajpure.scheme.compiler.value.premitives.Car
-import com.tajpure.scheme.compiler.value.premitives.SetEM
 import com.tajpure.scheme.compiler.value.premitives.IsString
 import com.tajpure.scheme.compiler.value.premitives.IsNumber
 import com.tajpure.scheme.compiler.value.premitives.IsPair
 import com.tajpure.scheme.compiler.value.premitives.IsChar
 import com.tajpure.scheme.compiler.value.premitives.IsProcedure
 import com.tajpure.scheme.compiler.value.premitives.IsBoolean
+import com.tajpure.scheme.compiler.value.premitives.SetValue
 
 class Scope(_parent: Scope, _codegen: CodeGen) {
 
@@ -267,81 +267,61 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
 
 object Scope extends App {
   
+  def buildIn(s: Scope): Scope = {
+    s.putValue("+", new Add())
+    s.putValue("-", new Sub())
+    s.putValue("*", new Mult())
+    s.putValue("/", new Div())
+
+    s.putValue("<", new LT())
+    s.putValue("<=", new LTE())
+    s.putValue(">", new GT())
+    s.putValue(">=", new GTE())
+    s.putValue("=", new Eq())
+    s.putValue("and", new And())
+    s.putValue("or", new Or())
+    s.putValue("not", new Not())
+    s.putValue("display", new Display())
+    s.putValue("list", new ListFunc())
+    s.putValue("newline", new Newline())
+    s.putValue("cons", new Cons())
+    s.putValue("car", new Car())
+    s.putValue("cdr", new Cdr())
+    s.putValue("set!", new SetValue())
+    s.putValue("boolean?", new IsBoolean())
+    s.putValue("char?", new IsChar())
+    s.putValue("boolean?", new IsBoolean())
+    s.putValue("number?", new IsNumber())
+    s.putValue("pair?", new IsPair())
+    s.putValue("procedure?", new IsProcedure())
+    s.putValue("string?", new IsString())
+
+    s.putValue("Int", Type.INT)
+    s.putValue("Bool", Type.BOOL)
+    s.putValue("String", Type.STRING)
+    
+    s
+  }
+  
   def buildInitScope(): Scope = {
     val init: Scope = new Scope()
-    init.putValue("+", new Add())
-    init.putValue("-", new Sub())
-    init.putValue("*", new Mult())
-    init.putValue("/", new Div())
-
-    init.putValue("<", new LT())
-    init.putValue("<=", new LTE())
-    init.putValue(">", new GT())
-    init.putValue(">=", new GTE())
-    init.putValue("=", new Eq())
-    init.putValue("and", new And())
-    init.putValue("or", new Or())
-    init.putValue("not", new Not())
-    init.putValue("display", new Display())
-    init.putValue("list", new ListFunc())
-    init.putValue("newline", new Newline())
-    init.putValue("cons", new Cons())
-    init.putValue("car", new Car())
-    init.putValue("cdr", new Cdr())
-    init.putValue("set!", new SetEM())
-    init.putValue("boolean?", new IsBoolean())
-    init.putValue("char?", new IsChar())
-    init.putValue("boolean?", new IsBoolean())
-    init.putValue("number?", new IsNumber())
-    init.putValue("pair?", new IsPair())
-    init.putValue("procedure?", new IsProcedure())
-    init.putValue("string?", new IsString())
+    
+    buildIn(init)
 
     init.putValue("#t", new BoolValue(true))
     init.putValue("#f", new BoolValue(false))
-
-    init.putValue("Int", Type.INT)
-    init.putValue("Bool", Type.BOOL)
-    init.putValue("String", Type.STRING)
+    
     init
   }
   
   def buildInitCompilerScope(codegen: CodeGen): Scope = {
     val init: Scope = new Scope(null, codegen)
-    init.putValue("+", new Add())
-    init.putValue("-", new Sub())
-    init.putValue("*", new Mult())
-    init.putValue("/", new Div())
-
-    init.putValue("<", new LT())
-    init.putValue("<=", new LTE())
-    init.putValue(">", new GT())
-    init.putValue(">=", new GTE())
-    init.putValue("=", new Eq())
-    init.putValue("and", new And())
-    init.putValue("or", new Or())
-    init.putValue("not", new Not())
-    init.putValue("display", new Display())
-    init.putValue("list", new ListFunc())
-    init.putValue("newline", new Newline())
-    init.putValue("cons", new Cons())
-    init.putValue("car", new Car())
-    init.putValue("cdr", new Cdr())
-    init.putValue("set!", new SetEM())
-    init.putValue("boolean?", new IsBoolean())
-    init.putValue("char?", new IsChar())
-    init.putValue("boolean?", new IsBoolean())
-    init.putValue("number?", new IsNumber())
-    init.putValue("pair?", new IsPair())
-    init.putValue("procedure?", new IsProcedure())
-    init.putValue("string?", new IsString())
+    
+    buildIn(init)
 
     init.putValue0("#t", new ConstantBoolean(true))
     init.putValue0("#f", new ConstantBoolean(false))
 
-    init.putValue("Int", Type.INT)
-    init.putValue("Bool", Type.BOOL)
-    init.putValue("String", Type.STRING)
     init
   }
   
