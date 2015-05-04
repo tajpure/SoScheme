@@ -1,0 +1,255 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x6967acde, pid=6168, tid=6200
+#
+# JRE version: Java(TM) SE Runtime Environment (7.0_72-b14) (build 1.7.0_72-b14)
+# Java VM: Java HotSpot(TM) Client VM (24.72-b04 mixed mode windows-x86 )
+# Problematic frame:
+# C  [jllvm.dll+0x30acde]
+#
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0057cc00):  JavaThread "main" [_thread_in_native, id=6200, stack(0x02550000,0x025a0000)]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x00000000
+
+Registers:
+EAX=0x00000000, EBX=0x003f1344, ECX=0x003f1344, EDX=0x00000001
+ESP=0x0259f438, EBP=0x0259f4b8, ESI=0x003fa610, EDI=0x003f1338
+EIP=0x6967acde, EFLAGS=0x00010212
+
+Top of Stack: (sp=0x0259f438)
+0x0259f438:   0000001b 003f1338 00000001 00000000
+0x0259f448:   003f42a8 187a9068 0259f510 003f1338
+0x0259f458:   003f1344 0000003c 695d5376 003fa610
+0x0259f468:   00000000 00000000 00000000 0057cd30
+0x0259f478:   187a9068 187a9068 0057cc00 00000103
+0x0259f488:   6961b161 003fa610 187a9068 69386757
+0x0259f498:   003f42a8 003fa610 187a9068 0057cc00
+0x0259f4a8:   149ad290 149ad290 00000000 00000000 
+
+Instructions: (pc=0x6967acde)
+0x6967acbe:   10 00 83 ec 0c 53 56 8b 74 24 18 8b d9 57 ff 74
+0x6967acce:   24 28 8b 46 08 8d 7b f4 6a 01 57 6a 1b 8b 40 0c
+0x6967acde:   ff 30 e8 cb 59 00 00 56 8b cf c7 03 5c 16 d7 69
+0x6967acee:   e8 fd 2d dc ff 66 8b 43 06 33 c9 38 4c 24 24 ba 
+
+
+Register to memory mapping:
+
+EAX=0x00000000 is an unknown value
+EBX=0x003f1344 is an unknown value
+ECX=0x003f1344 is an unknown value
+EDX=0x00000001 is an unknown value
+ESP=0x0259f438 is pointing into the stack for thread: 0x0057cc00
+EBP=0x0259f4b8 is pointing into the stack for thread: 0x0057cc00
+ESI=0x003fa610 is an unknown value
+EDI=0x003f1338 is an unknown value
+
+
+Stack: [0x02550000,0x025a0000],  sp=0x0259f438,  free space=317k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [jllvm.dll+0x30acde]
+j  org.jllvm.bindings.CoreJNI.LLVMBuildLoad(JJLjava/lang/String;)J+0
+j  org.jllvm.bindings.Core.LLVMBuildLoad(Lorg/jllvm/bindings/LLVMOpaqueBuilder;Lorg/jllvm/bindings/LLVMOpaqueValue;Ljava/lang/String;)Lorg/jllvm/bindings/LLVMOpaqueValue;+9
+j  org.jllvm.value.user.instruction.LoadInstruction.<init>(Lorg/jllvm/InstructionBuilder;Lorg/jllvm/value/Value;Ljava/lang/String;)V+38
+j  org.jllvm.InstructionBuilder.buildLoad(Lorg/jllvm/value/Value;Ljava/lang/String;)Lorg/jllvm/value/user/instruction/LoadInstruction;+7
+j  com.tajpure.scheme.compiler.ast.If.codegen(Lcom/tajpure/scheme/compiler/Scope;)Lorg/jllvm/value/Value;+91
+j  com.tajpure.scheme.compiler.ast.Block$$anonfun$codegen$1.apply(Lcom/tajpure/scheme/compiler/ast/Node;)Lorg/jllvm/value/Value;+5
+j  com.tajpure.scheme.compiler.ast.Block$$anonfun$codegen$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+j  scala.collection.immutable.List.map(Lscala/Function1;Lscala/collection/generic/CanBuildFrom;)Ljava/lang/Object;+32
+j  com.tajpure.scheme.compiler.ast.Block.codegen(Lcom/tajpure/scheme/compiler/Scope;)Lorg/jllvm/value/Value;+33
+j  com.tajpure.scheme.compiler.ast.Func.codegen(Lcom/tajpure/scheme/compiler/ast/Node;Lcom/tajpure/scheme/compiler/Scope;)Lorg/jllvm/value/Value;+239
+j  com.tajpure.scheme.compiler.ast.Define.codegen(Lcom/tajpure/scheme/compiler/Scope;)Lorg/jllvm/value/Value;+37
+j  com.tajpure.scheme.compiler.ast.Block$$anonfun$codegen$1.apply(Lcom/tajpure/scheme/compiler/ast/Node;)Lorg/jllvm/value/Value;+5
+j  com.tajpure.scheme.compiler.ast.Block$$anonfun$codegen$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+j  scala.collection.immutable.List.map(Lscala/Function1;Lscala/collection/generic/CanBuildFrom;)Ljava/lang/Object;+32
+j  com.tajpure.scheme.compiler.ast.Block.codegen(Lcom/tajpure/scheme/compiler/Scope;)Lorg/jllvm/value/Value;+33
+j  com.tajpure.scheme.compiler.Compiler.compile(Ljava/lang/String;)V+34
+j  com.tajpure.scheme.compiler.Compiler.compile()V+13
+j  com.tajpure.scheme.compiler.Main$.main([Ljava/lang/String;)V+11
+j  com.tajpure.scheme.compiler.Main.main([Ljava/lang/String;)V+4
+v  ~StubRoutines::call_stub
+V  [jvm.dll+0x141c3a]
+V  [jvm.dll+0x20602e]
+V  [jvm.dll+0x141cbd]
+V  [jvm.dll+0xcb0c5]
+V  [jvm.dll+0xd5d87]
+C  [javaw.exe+0x2070]
+C  [javaw.exe+0xa601]
+C  [javaw.exe+0xa68b]
+C  [kernel32.dll+0x1336a]
+C  [ntdll.dll+0x392b2]
+C  [ntdll.dll+0x39285]
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  org.jllvm.bindings.CoreJNI.LLVMBuildLoad(JJLjava/lang/String;)J+0
+j  org.jllvm.bindings.Core.LLVMBuildLoad(Lorg/jllvm/bindings/LLVMOpaqueBuilder;Lorg/jllvm/bindings/LLVMOpaqueValue;Ljava/lang/String;)Lorg/jllvm/bindings/LLVMOpaqueValue;+9
+j  org.jllvm.value.user.instruction.LoadInstruction.<init>(Lorg/jllvm/InstructionBuilder;Lorg/jllvm/value/Value;Ljava/lang/String;)V+38
+j  org.jllvm.InstructionBuilder.buildLoad(Lorg/jllvm/value/Value;Ljava/lang/String;)Lorg/jllvm/value/user/instruction/LoadInstruction;+7
+j  com.tajpure.scheme.compiler.ast.If.codegen(Lcom/tajpure/scheme/compiler/Scope;)Lorg/jllvm/value/Value;+91
+j  com.tajpure.scheme.compiler.ast.Block$$anonfun$codegen$1.apply(Lcom/tajpure/scheme/compiler/ast/Node;)Lorg/jllvm/value/Value;+5
+j  com.tajpure.scheme.compiler.ast.Block$$anonfun$codegen$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+j  scala.collection.immutable.List.map(Lscala/Function1;Lscala/collection/generic/CanBuildFrom;)Ljava/lang/Object;+32
+j  com.tajpure.scheme.compiler.ast.Block.codegen(Lcom/tajpure/scheme/compiler/Scope;)Lorg/jllvm/value/Value;+33
+j  com.tajpure.scheme.compiler.ast.Func.codegen(Lcom/tajpure/scheme/compiler/ast/Node;Lcom/tajpure/scheme/compiler/Scope;)Lorg/jllvm/value/Value;+239
+j  com.tajpure.scheme.compiler.ast.Define.codegen(Lcom/tajpure/scheme/compiler/Scope;)Lorg/jllvm/value/Value;+37
+j  com.tajpure.scheme.compiler.ast.Block$$anonfun$codegen$1.apply(Lcom/tajpure/scheme/compiler/ast/Node;)Lorg/jllvm/value/Value;+5
+j  com.tajpure.scheme.compiler.ast.Block$$anonfun$codegen$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+j  scala.collection.immutable.List.map(Lscala/Function1;Lscala/collection/generic/CanBuildFrom;)Ljava/lang/Object;+32
+j  com.tajpure.scheme.compiler.ast.Block.codegen(Lcom/tajpure/scheme/compiler/Scope;)Lorg/jllvm/value/Value;+33
+j  com.tajpure.scheme.compiler.Compiler.compile(Ljava/lang/String;)V+34
+j  com.tajpure.scheme.compiler.Compiler.compile()V+13
+j  com.tajpure.scheme.compiler.Main$.main([Ljava/lang/String;)V+11
+j  com.tajpure.scheme.compiler.Main.main([Ljava/lang/String;)V+4
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x1867bc00 JavaThread "Service Thread" daemon [_thread_blocked, id=5860, stack(0x18f10000,0x18f60000)]
+  0x18676800 JavaThread "C1 CompilerThread0" daemon [_thread_blocked, id=6860, stack(0x18d90000,0x18de0000)]
+  0x18675000 JavaThread "Attach Listener" daemon [_thread_blocked, id=2124, stack(0x18b70000,0x18bc0000)]
+  0x18667c00 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=6328, stack(0x18ad0000,0x18b20000)]
+  0x18637400 JavaThread "Finalizer" daemon [_thread_blocked, id=3816, stack(0x18a50000,0x18aa0000)]
+  0x18632400 JavaThread "Reference Handler" daemon [_thread_blocked, id=6760, stack(0x18960000,0x189b0000)]
+=>0x0057cc00 JavaThread "main" [_thread_in_native, id=6200, stack(0x02550000,0x025a0000)]
+
+Other Threads:
+  0x18630000 VMThread [stack: 0x022d0000,0x02320000] [id=5744]
+  0x18695c00 WatcherThread [stack: 0x18fc0000,0x19010000] [id=5304]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ def new generation   total 4928K, used 2971K [0x04600000, 0x04b50000, 0x09b50000)
+  eden space 4416K,  67% used [0x04600000, 0x048e6e20, 0x04a50000)
+  from space 512K,   0% used [0x04a50000, 0x04a50000, 0x04ad0000)
+  to   space 512K,   0% used [0x04ad0000, 0x04ad0000, 0x04b50000)
+ tenured generation   total 10944K, used 0K [0x09b50000, 0x0a600000, 0x14600000)
+   the space 10944K,   0% used [0x09b50000, 0x09b50000, 0x09b50200, 0x0a600000)
+ compacting perm gen  total 12288K, used 3939K [0x14600000, 0x15200000, 0x18600000)
+   the space 12288K,  32% used [0x14600000, 0x149d8f68, 0x149d9000, 0x15200000)
+No shared spaces configured.
+
+Card table byte_map: [0x02470000,0x02520000] byte_map_base: 0x0244d000
+
+Polling page: 0x000c0000
+
+Code Cache  [0x025a0000, 0x02648000, 0x045a0000)
+ total_blobs=191 nmethods=42 adapters=86 free_code_cache=32098Kb largest_free_block=32868672
+
+Compilation events (10 events):
+Event: 0.194 Thread 0x18676800   38             sun.misc.URLClassPath::getResource (74 bytes)
+Event: 0.194 Thread 0x18676800 nmethod 38 0x02646208 code [0x02646320, 0x02646428]
+Event: 0.194 Thread 0x18676800   39             java.lang.String::indexOf (7 bytes)
+Event: 0.194 Thread 0x18676800 nmethod 39 0x02646508 code [0x02646600, 0x0264669c]
+Event: 0.196 Thread 0x18676800   40             java.util.Arrays::copyOf (19 bytes)
+Event: 0.197 Thread 0x18676800 nmethod 40 0x02646c08 code [0x02646d10, 0x02646e7c]
+Event: 0.197 Thread 0x18676800   41             java.net.URL::getHost (5 bytes)
+Event: 0.197 Thread 0x18676800 nmethod 41 0x02646f48 code [0x02647040, 0x026470c0]
+Event: 0.198 Thread 0x18676800   42             java.lang.String::substring (79 bytes)
+Event: 0.199 Thread 0x18676800 nmethod 42 0x02647108 code [0x02647250, 0x02647500]
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (10 events):
+Event: 0.196 Thread 0x0057cc00 Threw 0x048bed98 at C:\re\jdk7u72\1606\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.196 Thread 0x0057cc00 Threw 0x048c1650 at C:\re\jdk7u72\1606\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.197 Thread 0x0057cc00 Threw 0x048c4f00 at C:\re\jdk7u72\1606\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.197 Thread 0x0057cc00 Threw 0x048c7118 at C:\re\jdk7u72\1606\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.197 Thread 0x0057cc00 Threw 0x048c8eb0 at C:\re\jdk7u72\1606\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.198 Thread 0x0057cc00 Threw 0x048cadf0 at C:\re\jdk7u72\1606\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.198 Thread 0x0057cc00 Threw 0x048ccfd8 at C:\re\jdk7u72\1606\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.198 Thread 0x0057cc00 Threw 0x048cf990 at C:\re\jdk7u72\1606\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.199 Thread 0x0057cc00 Threw 0x048d2730 at C:\re\jdk7u72\1606\hotspot\src\share\vm\prims\jvm.cpp:1281
+Event: 0.199 Thread 0x0057cc00 Threw 0x048d5098 at C:\re\jdk7u72\1606\hotspot\src\share\vm\prims\jvm.cpp:1281
+
+Events (10 events):
+Event: 0.198 loading class 0x187841f8
+Event: 0.198 loading class 0x187841f8 done
+Event: 0.198 loading class 0x187adbb8
+Event: 0.198 loading class 0x187adbb8 done
+Event: 0.198 loading class 0x187858f8
+Event: 0.198 loading class 0x187858f8 done
+Event: 0.199 loading class 0x187aa660
+Event: 0.199 loading class 0x187aa660 done
+Event: 0.199 loading class 0x187cb780
+Event: 0.199 loading class 0x187cb780 done
+
+
+Dynamic libraries:
+0x002d0000 - 0x002ff000 	C:\Program Files (x86)\Java\jre7\bin\javaw.exe
+0x77520000 - 0x776a0000 	C:\Windows\SysWOW64\ntdll.dll
+0x74e30000 - 0x74f40000 	C:\Windows\syswow64\kernel32.dll
+0x75720000 - 0x75767000 	C:\Windows\syswow64\KERNELBASE.dll
+0x75090000 - 0x75130000 	C:\Windows\syswow64\ADVAPI32.dll
+0x75610000 - 0x756bc000 	C:\Windows\syswow64\msvcrt.dll
+0x76f80000 - 0x76f99000 	C:\Windows\SysWOW64\sechost.dll
+0x753a0000 - 0x75490000 	C:\Windows\syswow64\RPCRT4.dll
+0x74a20000 - 0x74a80000 	C:\Windows\syswow64\SspiCli.dll
+0x74a10000 - 0x74a1c000 	C:\Windows\syswow64\CRYPTBASE.dll
+0x75130000 - 0x75230000 	C:\Windows\syswow64\USER32.dll
+0x75230000 - 0x752c0000 	C:\Windows\syswow64\GDI32.dll
+0x75490000 - 0x7549a000 	C:\Windows\syswow64\LPK.dll
+0x75780000 - 0x7581d000 	C:\Windows\syswow64\USP10.dll
+0x71740000 - 0x718de000 	C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_41e6975e2bd6f2b2\COMCTL32.dll
+0x756c0000 - 0x75717000 	C:\Windows\syswow64\SHLWAPI.dll
+0x75b00000 - 0x75b60000 	C:\Windows\system32\IMM32.DLL
+0x76090000 - 0x7615c000 	C:\Windows\syswow64\MSCTF.dll
+0x6a5e0000 - 0x6a69f000 	C:\Program Files (x86)\Java\jre7\bin\msvcr100.dll
+0x6a250000 - 0x6a5d8000 	C:\Program Files (x86)\Java\jre7\bin\client\jvm.dll
+0x73b80000 - 0x73b87000 	C:\Windows\system32\WSOCK32.dll
+0x75b60000 - 0x75b95000 	C:\Windows\syswow64\WS2_32.dll
+0x75ba0000 - 0x75ba6000 	C:\Windows\syswow64\NSI.dll
+0x75360000 - 0x75392000 	C:\Windows\syswow64\WINMM.dll
+0x76f60000 - 0x76f65000 	C:\Windows\syswow64\PSAPI.DLL
+0x739d0000 - 0x739dc000 	C:\Program Files (x86)\Java\jre7\bin\verify.dll
+0x6cf60000 - 0x6cf80000 	C:\Program Files (x86)\Java\jre7\bin\java.dll
+0x739b0000 - 0x739c3000 	C:\Program Files (x86)\Java\jre7\bin\zip.dll
+0x69370000 - 0x6a246000 	D:\workspace\workspace6\jllvm\target\classes\org\jllvm\bindings\windows\x86\jllvm.dll
+0x713c0000 - 0x714ab000 	C:\Windows\system32\dbghelp.dll
+
+VM Arguments:
+jvm_args: -Dfile.encoding=UTF-8 -Xbootclasspath/p:D:\Application\eclipse.scala\plugins\org.scala-lang.scala-library_2.11.5.v20150101-184742-3fafbc204f.jar;D:\Application\eclipse.scala\plugins\org.scala-lang.scala-reflect_2.11.5.v20150101-184742-3fafbc204f.jar;D:\Application\eclipse.scala\plugins\org.scala-lang.scala-actors_2.11.5.v20150101-184742-3fafbc204f.jar 
+java_command: com.tajpure.scheme.compiler.Main D:\workspace\workspace11\SoScheme\test\double.scm
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files (x86)\Java\jdk1.7.0_72
+CLASSPATH=.;C:\Program Files (x86)\Java\jdk1.7.0_72\lib;C:\Program Files (x86)\Java\jdk1.7.0_72\lib\tools.jar
+PATH=C:\Program Files (x86)\Chez Scheme Version 8.4\bin\a6nt;C:\Program Files (x86)\Common Files\NetSarang;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows7Master;C:\Program Files (x86)\Java\jdk1.7.0_72\bin;C:\Program Files (x86)\Java\jdk1.7.0_72\jre\bin;D:\Program Files\maven-2.2.1\bin;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;D:\mingw32\bin;D:\swigwin;D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin;D:\MinGW\bin;D:\Python27;D:\Program Files (x86)\LLVM\bin;D:\Program Files\nodejs\;D:\Program Files (x86)\Racket;D:\Program Files (x86)\Git\bin;C:\Program Files (x86)\Chez Scheme Version 8.4\bin\a6nt;D:\Program Files\MySQL\MySQL Server 5.6\bin;D:\Program Files\apache-ant-1.9.4\bin;D:\Application\adt-bundle-windows-x86_64-20140702\sdk\tools;D:\Application\adt-bundle-windows-x86_64-20140702\sdk\platform-tools;D:\Program Files\TortoiseSVN\bin;D:\Program Files (x86)\scala\bin;C:\play-2.2.6;d:\Program Files (x86)\OpenSSH\bin;D:\Program Files\Mercurial\;d:\Program Files (x86)\JXcore;C:\Users\Administrator\AppData\Roaming\npm;C:\Program Files\MongoDB\Server\3.0\bin
+USERNAME=Administrator
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 42 Stepping 7, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 7 , 64 bit Build 7601 Service Pack 1
+
+CPU:total 4 (4 cores per cpu, 1 threads per core) family 6 model 42 stepping 7, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, aes, tsc, tscinvbit
+
+Memory: 4k page, physical 4177136k(1135852k free), swap 8352420k(2231800k free)
+
+vm_info: Java HotSpot(TM) Client VM (24.72-b04) for windows-x86 JRE (1.7.0_72-b14), built on Sep 26 2014 20:59:14 by "java_re" with unknown MS VC++:1600
+
+time: Mon May 04 16:28:10 2015
+elapsed time: 0 seconds
+

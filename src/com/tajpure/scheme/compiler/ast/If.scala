@@ -33,12 +33,7 @@ class If(_test: Node, _then: Node, _else: Node, _file: String, _start: Int, _end
       then.interp(s)
     }
     else {
-      if (else_ != null) {
-        else_.interp(s)
-      }
-      else {
-        null
-      }
+      else_.interp(s)
     }
   }
 
@@ -53,16 +48,26 @@ class If(_test: Node, _then: Node, _else: Node, _file: String, _start: Int, _end
       } else {
         throw new RunTimeException("redefined \"this\"", this)
       }
-    val testBlock: BasicBlock = function.appendBasicBlock("test")
     val thenBlock: BasicBlock = function.appendBasicBlock("then")
     val elseBlock: BasicBlock = function.appendBasicBlock("else")
-    val result = test.codegen(s)
-    val thenOrElse = if (!result.isInstanceOf[ConstantBoolean]) {
-        throw new CompilerException("error type", this)
-      } else {
-        result
-      }
-    null
+    val endBlock: BasicBlock = function.appendBasicBlock("end")
+    val testValue = test.codegen(s)
+    
+    s.codegen.builder.buildCondBr(testValue, thenBlock, elseBlock)
+
+    s.codegen.builder.positionBuilderAtEnd(thenBlock)
+    val thenValue = then.codegen(s)
+    s.codegen.builder.buildBr(endBlock)
+    
+    s.codegen.builder.positionBuilderAtEnd(elseBlock)
+    val elseValue = else_.codegen(s)
+    s.codegen.builder.buildBr(endBlock)
+    
+    s.codegen.builder.positionBuilderAtEnd(endBlock)
+    val result = s.codegen.builder.buildPhi(thenValue.typeOf(), "result")
+    result.addIncoming(Array(thenValue, elseValue), Array(thenBlock, elseBlock))
+    
+    result
   }
   
 }

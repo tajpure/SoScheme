@@ -17,6 +17,8 @@ import org.jllvm.value.user.constant.GlobalValue
 
 class Display extends PrimFunc("display" , -1) {
   
+  var printf: Function = null
+  
   def apply(args: List[Value], location: Node): Value = {
     args.foreach { arg => print(arg) }
     Value.VOID
@@ -28,8 +30,11 @@ class Display extends PrimFunc("display" , -1) {
   
   def codegen(args: List[org.jllvm.value.Value], location: Node, s: Scope): org.jllvm.value.Value = {
     val _params: Array[Type] = args.map { arg => new PointerType(IntegerType.i8, 0) }.toArray
-    val printf: Function = new Function(s.codegen.module, "printf", new FunctionType(s.codegen.any, _params, false))
     
+    if (printf == null) {
+      printf = new Function(s.codegen.module, "printf", new FunctionType(s.codegen.any, _params, false))
+    }
+
     val argsPtr = args.map { arg => {
       if (arg.isInstanceOf[GlobalVariable]) {
         val str = arg.asInstanceOf[GlobalVariable]
