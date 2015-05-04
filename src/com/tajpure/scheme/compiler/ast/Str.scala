@@ -20,7 +20,10 @@ class Str(_value: String, _file: String, _start: Int, _end: Int, _row: Int, _col
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    new ConstantString(value, true)
+    val str = new ConstantString(value, true)
+    val global = s.codegen.module.addGlobal(str.typeOf(), ".str")
+    global.setInitializer(str)
+    global
   }
   
   override

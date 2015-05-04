@@ -5,7 +5,11 @@ import com.tajpure.scheme.compiler.parser.Parser
 object Interpreter extends App {
   
   def interp(_source: String): Unit = {
-    Parser.parse(_source, "content").interp(Scope.buildInitScope())
+    Parser.parse(_source, "REPL").interp(Scope.buildInitScope())
+  }
+  
+  def interp(_source: String, s: Scope): Unit = {
+    Parser.parse(_source, "REPL").interp(s)
   }
   
   def interp0(_path: String): Unit = {
@@ -19,12 +23,20 @@ object Interpreter extends App {
     interp0("./test/if.scm")
   }
   
+  // TODO to keep the scope during the "REPL"
+  def repl(): Unit = {
+    println("So Scheme version 0.1")
+    print(">")
+    val scope = Scope.buildInitScope()
+    for (line <- io.Source.stdin.getLines) {
+      interp(line, scope)
+      print(">")
+    }
+  } 
+  
   override 
   def main(args: Array[String]) {
-    // test()
-    interp("""
-      (display (list 0 1 2 (cons 3 4)))
-      """)
+    test()
   }
   
 }

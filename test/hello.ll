@@ -1,10 +1,10 @@
-; ModuleID = 'D:/workspaceII/SoScheme/test/hello.scm'
+; ModuleID = './test/hello.scm'
 
-define i32 @addOne(i32) {
+@.str = global [13 x i8] c"hello world!\00"
+
+define i32 @main() {
 entry:
-  %x = alloca i32
-  store i32 1, i32* %x
-  %call = call i32 @printf(i32* %x)
+  %call = call i32 @printf(i8* getelementptr inbounds ([13 x i8]* @.str, i32 0, i32 0))
   ret i32 %call
 }
 

@@ -12,6 +12,8 @@ import org.jllvm._type.PointerType
 import org.jllvm.value.user.constant.ConstantString
 import org.jllvm.value.user.constant.ConstantInteger
 import org.jllvm.value.user.constant.ConstantPointer
+import org.jllvm.value.user.constant.GlobalVariable
+import org.jllvm.value.user.constant.GlobalValue
 
 class Display extends PrimFunc("display" , -1) {
   
@@ -29,11 +31,9 @@ class Display extends PrimFunc("display" , -1) {
     val printf: Function = new Function(s.codegen.module, "printf", new FunctionType(s.codegen.any, _params, false))
     
     val argsPtr = args.map { arg => {
-      if (arg.isInstanceOf[ConstantString]) {
-        val str = arg.asInstanceOf[ConstantString]
-        val strP = s.codegen.builder.buildLoad(str, "str")
-        strP.dump()
-        s.codegen.builder.buildGEP(strP, Array(0, 0), "strP")
+      if (arg.isInstanceOf[GlobalVariable]) {
+        val str = arg.asInstanceOf[GlobalVariable]
+        s.codegen.builder.buildGEP(str, Array(0, 0), "str")
       }
       else {
         arg
