@@ -44,7 +44,7 @@ class Compiler(_file: String) {
   }
   
   /**
-   * compile to LLVM Bit Code
+   * compile to LLVM Bitcode
    */
   def compile0(): Unit = {
     val targetPath: String = FileUtils.target0(file)
@@ -52,7 +52,7 @@ class Compiler(_file: String) {
   }
   
   /**
-   * compile to LLVM Bit Code
+   * compile to LLVM Bitcode
    */
   def compile0(bcPath: String): Unit = {
     NativeLibrary.load()
