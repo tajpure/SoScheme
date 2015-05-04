@@ -33,6 +33,12 @@ import com.tajpure.scheme.compiler.value.premitives.Cons
 import com.tajpure.scheme.compiler.value.premitives.Cdr
 import com.tajpure.scheme.compiler.value.premitives.Car
 import com.tajpure.scheme.compiler.value.premitives.SetEM
+import com.tajpure.scheme.compiler.value.premitives.IsString
+import com.tajpure.scheme.compiler.value.premitives.IsNumber
+import com.tajpure.scheme.compiler.value.premitives.IsPair
+import com.tajpure.scheme.compiler.value.premitives.IsChar
+import com.tajpure.scheme.compiler.value.premitives.IsProcedure
+import com.tajpure.scheme.compiler.value.premitives.IsBoolean
 
 class Scope(_parent: Scope, _codegen: CodeGen) {
 
@@ -283,6 +289,13 @@ object Scope extends App {
     init.putValue("car", new Car())
     init.putValue("cdr", new Cdr())
     init.putValue("set!", new SetEM())
+    init.putValue("boolean?", new IsBoolean())
+    init.putValue("char?", new IsChar())
+    init.putValue("boolean?", new IsBoolean())
+    init.putValue("number?", new IsNumber())
+    init.putValue("pair?", new IsPair())
+    init.putValue("procedure?", new IsProcedure())
+    init.putValue("string?", new IsString())
 
     init.putValue("#t", new BoolValue(true))
     init.putValue("#f", new BoolValue(false))
@@ -309,6 +322,19 @@ object Scope extends App {
     init.putValue("or", new Or())
     init.putValue("not", new Not())
     init.putValue("display", new Display())
+    init.putValue("list", new ListFunc())
+    init.putValue("newline", new Newline())
+    init.putValue("cons", new Cons())
+    init.putValue("car", new Car())
+    init.putValue("cdr", new Cdr())
+    init.putValue("set!", new SetEM())
+    init.putValue("boolean?", new IsBoolean())
+    init.putValue("char?", new IsChar())
+    init.putValue("boolean?", new IsBoolean())
+    init.putValue("number?", new IsNumber())
+    init.putValue("pair?", new IsPair())
+    init.putValue("procedure?", new IsProcedure())
+    init.putValue("string?", new IsString())
 
     init.putValue0("#t", new ConstantBoolean(true))
     init.putValue0("#f", new ConstantBoolean(false))
