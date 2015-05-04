@@ -69,8 +69,7 @@ object Compiler extends App {
   
   try {
     val path = "./test/hello.ll"
-    compileToBitCode(path)
-    executeBitCode(path)
+    compileToAssemblerCode(path)
   } catch {
     case e0 : IOException => Log.error(e0.getMessage)
     case e1 : Exception => Log.error(e1.getMessage)
