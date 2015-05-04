@@ -189,6 +189,6 @@ object Parser extends App {
     preNodes.map { node => parseNode(node) }
   }
 
-  parse("./test/helloworld.scm").interp(Scope.buildInitScope())
+  parse("./src/test/resources/scheme/helloworld.scm").interp(Scope.buildInitScope())
 
 }

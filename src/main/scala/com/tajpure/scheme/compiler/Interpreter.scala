@@ -17,11 +17,11 @@ object Interpreter extends App {
   }
   
   def test() {
-    interp0("./test/hello.scm")
-    interp0("./test/fact.scm")
-    interp0("./test/fib.scm")
-    interp0("./test/procedure.scm")
-    interp0("./test/if.scm")
+    interp0("./src/test/resources/scheme/hello.scm")
+    interp0("./src/test/resources/scheme/fact.scm")
+    interp0("./src/test/resources/scheme/fib.scm")
+    interp0("./src/test/resources/scheme/procedure.scm")
+    interp0("./src/test/resources/scheme/if.scm")
   }
   
   def repl(): Unit = {
@@ -40,7 +40,7 @@ object Interpreter extends App {
   } 
   
   override 
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit =  {
     repl()
   }
   

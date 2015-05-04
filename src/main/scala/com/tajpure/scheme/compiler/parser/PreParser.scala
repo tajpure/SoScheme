@@ -92,7 +92,7 @@ class PreParser(_source:String, _path: String) {
 
 object PreParser extends App {
   
-  val preParser: PreParser = new PreParser("D:/workspaceII/SoScheme/test/fib.scm")
+  val preParser: PreParser = new PreParser("./src/test/resources/scheme/fib.scm")
 //  val preParser: PreParser = new PreParser("/home/taojx/sworkspace/SoScheme/test/hello.scm")
   
   try {
