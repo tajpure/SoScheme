@@ -8,7 +8,7 @@ object Interpreter extends App {
     Parser.parse(_source, "REPL").interp(Scope.buildInitScope())
   }
   
-  def interp(_source: String, s: Scope): Unit = {
+  def interp(_source: String, s: Scope) = {
     Parser.parse(_source, "REPL").interp(s)
   }
   
@@ -27,9 +27,14 @@ object Interpreter extends App {
   def repl(): Unit = {
     println("So Scheme version 0.1")
     print(">")
-    val scope = Scope.buildInitScope()
+    var scope = Scope.buildInitScope()
     for (line <- io.Source.stdin.getLines) {
-      interp(line, scope)
+      try {
+        println(interp(line, scope))
+        scope = scope.innerScope
+      } catch {
+        case e: Exception => println(e.getMessage) 
+      }
       print(">")
     }
   } 

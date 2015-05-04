@@ -41,10 +41,19 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
   val parent: Scope = _parent
   
   val codegen: CodeGen = _codegen
+  
+  // save inner scope for "REPL" 
+  var innerScope: Scope = null
 
   def this() = this(null, null)
   
   def this(_parent: Scope) = this(_parent, _parent.codegen)
+  
+  def setInnerScope(s: Scope): Unit = {
+    if (innerScope == null) {
+      innerScope = s
+    }
+  }
 
   def copy(): Scope = {
     val ret: Scope = new Scope

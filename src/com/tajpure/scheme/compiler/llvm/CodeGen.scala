@@ -63,7 +63,8 @@ class CodeGen(_source: String) {
   }
   
   def execute(s: Scope): Unit = {
-    val func: Function = s.lookup0("main").asInstanceOf[Function]
+    val curScope = s.innerScope
+    val func: Function = curScope.lookup0("main").asInstanceOf[Function]
     val engine = new ExecutionEngine(module)
     val runFunction = engine.runFunction(func, new Array[GenericValue](0))
     org.jllvm.bindings.ExecutionEngine.LLVMGenericValueToInt(runFunction.getInstance(), 1)

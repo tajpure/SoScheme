@@ -35,26 +35,31 @@ class Compiler(_file: String) {
     root.codegen(scope)
     scope.save(targetPath)
     scope.codegen.print()
-    Compiler.compileToBitCode(targetPath)
+    try {
+      Compiler.compileToBitCode(targetPath)
+    } catch {
+    case e0 : IOException => Log.error(e0.getMessage)
+    case e1 : Exception => Log.error(e1.getMessage)
+    }
   }
 }
 
 object Compiler extends App {
   
   def compileToBitCode(source: String): String =  {
-    val output = executeCmd("d:/llvm/llvm-as", source)
+    val output = executeCmd("llvm-as", source)
     printf(output)
     output
   }
   
   def executeBitCode(source: String): String =  {
-    val output = executeCmd("d:/llvm/lli", source)
+    val output = executeCmd("lli", source)
     printf(output)
     output
   }
   
   def compileToAssemblerCode(source: String): String =  {
-    val output = executeCmd("d:/llvm/llc ", source)
+    val output = executeCmd("llc ", source)
     printf(output)
     output
   }
@@ -68,8 +73,7 @@ object Compiler extends App {
   }
   
   try {
-    val path = "./test/hello.ll"
-    compileToAssemblerCode(path)
+    compileToAssemblerCode("./test/hello.ll")
   } catch {
     case e0 : IOException => Log.error(e0.getMessage)
     case e1 : Exception => Log.error(e1.getMessage)
