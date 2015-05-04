@@ -9,6 +9,8 @@ import org.jllvm.value.BasicBlock
 import org.jllvm.value.user.constant.Function
 import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.exception.RunTimeException
+import org.jllvm._type.VoidType
+import org.jllvm.value.user.constant.ConstantInteger
 
 class If(_test: Node, _then: Node, _else: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -33,7 +35,12 @@ class If(_test: Node, _then: Node, _else: Node, _file: String, _start: Int, _end
       then.interp(s)
     }
     else {
-      else_.interp(s)
+      if (else_ != null) {
+        else_.interp(s)
+      }
+      else {
+        Value.VOID
+      }
     }
   }
 
@@ -54,20 +61,26 @@ class If(_test: Node, _then: Node, _else: Node, _file: String, _start: Int, _end
     val testValue = test.codegen(s)
     
     s.codegen.builder.buildCondBr(testValue, thenBlock, elseBlock)
-
     s.codegen.builder.positionBuilderAtEnd(thenBlock)
     val thenValue = then.codegen(s)
     s.codegen.builder.buildBr(endBlock)
     
     s.codegen.builder.positionBuilderAtEnd(elseBlock)
-    val elseValue = else_.codegen(s)
-    s.codegen.builder.buildBr(endBlock)
+    val elseValue = if (else_ != null) {
+        val elseValueTmp = else_.codegen(s)
+        s.codegen.builder.buildBr(endBlock)
+        elseValueTmp
+      } else {
+        s.codegen.builder.buildBr(endBlock)
+        ConstantInteger.constI32(0) // when else is null, the value of else will be 0
+      }
     
     s.codegen.builder.positionBuilderAtEnd(endBlock)
+    
     val result = s.codegen.builder.buildPhi(thenValue.typeOf(), "result")
     result.addIncoming(Array(thenValue, elseValue), Array(thenBlock, elseBlock))
-    
     result
+    
   }
   
 }

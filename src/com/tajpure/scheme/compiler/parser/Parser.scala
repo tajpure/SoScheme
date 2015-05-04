@@ -105,7 +105,7 @@ object Parser extends App {
     val _else: Node = if (elements.size == 4) {
         parseNode(elements(3))
       } else {
-        throw new ParserException("incorrect format of if", tuple)
+        null
       }
     
     new If(test, then, _else, tuple)
