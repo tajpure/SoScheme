@@ -158,9 +158,12 @@ class LexParser(_source:String, _path: String) {
     var isInt: Boolean = true
 
     def loop() {
-      if (offset >= source.length() || source.charAt(offset) == '\n') {
-        throw new ParserException("Exception: number format error:", startRow, startCol, offset);
-      } 
+      if (offset > source.length()) {
+        throw new ParserException("number format error", startRow, startCol, offset)
+      }
+      else if (offset == source.length()) {
+        // avoid string index out of range
+      }
       else if (isNumberOrChar(source.charAt(offset))) {
           if (source.charAt(offset) == '.') {
             isInt = false

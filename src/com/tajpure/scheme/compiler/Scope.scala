@@ -299,7 +299,6 @@ object Scope extends App {
     s.putValue("Int", Type.INT)
     s.putValue("Bool", Type.BOOL)
     s.putValue("String", Type.STRING)
-    
     s
   }
   
