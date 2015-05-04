@@ -4,12 +4,24 @@ import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.ast.Node
+import com.tajpure.scheme.compiler.value.IntValue
+import com.tajpure.scheme.compiler.value.BoolValue
+import com.tajpure.scheme.compiler.exception.CompilerException
 
 class IsBoolean extends PrimFunc("boolean?", 1) {
   
   def apply(args: List[Value], location: Node): Value = {
-    // TODO
-    null
+    if (args.size != arity) {
+      throw new CompilerException("args don't match the 'boolean?' function", location)
+    }
+    else {
+      if (args(0).isInstanceOf[BoolValue]) {
+        new BoolValue(true)
+      }
+      else {
+        new BoolValue(false)
+      }
+    }
   }
   
   def typecheck(args: List[Value], location: Node): Value= {
