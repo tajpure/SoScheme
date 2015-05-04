@@ -13,15 +13,18 @@ object Interpreter extends App {
   }
   
   def test() {
-    interp0("D:/workspaceII/SoScheme/test/fact.scm")
-    interp0("D:/workspaceII/SoScheme/test/fib.scm")
-    interp0("D:/workspaceII/SoScheme/test/procedure.scm")
-    interp0("D:/workspaceII/SoScheme/test/if.scm")
+    interp0("./test/fact.scm")
+    interp0("./test/fib.scm")
+    interp0("./test/procedure.scm")
+    interp0("./test/if.scm")
   }
   
   override 
   def main(args: Array[String]) {
-    test()
+    // test()
+    interp("""
+      (display (list 0 1 2 (cons 3 4)))
+      """)
   }
   
 }

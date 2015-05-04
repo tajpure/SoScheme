@@ -153,6 +153,7 @@ object Parser extends App {
 
     val params: Node = elements(1)
     
+    // the type of the parameters must be "Name" or "Tuple"
     if (params.isInstanceOf[Tuple]) {
       params.asInstanceOf[Tuple].elements.map { node =>
       if (!node.isInstanceOf[Name]) {
@@ -188,6 +189,6 @@ object Parser extends App {
     preNodes.map { node => parseNode(node) }
   }
 
-  parse("D:/workspace/workspace11/SoScheme/test/helloworld.scm").interp(Scope.buildInitScope())
+  parse("./test/helloworld.scm").interp(Scope.buildInitScope())
 
 }
