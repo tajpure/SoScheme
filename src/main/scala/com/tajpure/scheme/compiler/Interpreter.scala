@@ -30,7 +30,10 @@ object Interpreter extends App {
     var scope = Scope.buildInitScope()
     for (line <- io.Source.stdin.getLines) {
       try {
-        println(interp(line, scope))
+        val result = interp(line, scope)
+        if (result != null) {
+          println(result)
+        }
         scope = scope.innerScope
       } catch {
         case e: Exception => println(e.getMessage) 
@@ -39,7 +42,7 @@ object Interpreter extends App {
     }
   } 
   
-  override 
+  override
   def main(args: Array[String]): Unit =  {
     test()
   }

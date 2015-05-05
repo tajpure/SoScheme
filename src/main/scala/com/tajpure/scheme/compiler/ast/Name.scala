@@ -2,11 +2,15 @@ package com.tajpure.scheme.compiler.ast
 
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
+
 import org.jllvm._type.PointerType
+
 import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.value.FloatValue
+
 import org.jllvm.value.user.constant.ConstantReal
 import org.jllvm._type.DoubleType
+
 import com.tajpure.scheme.compiler.value.Closure
 import com.tajpure.scheme.compiler.exception.RunTimeException
 

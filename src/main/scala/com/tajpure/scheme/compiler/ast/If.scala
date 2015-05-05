@@ -1,14 +1,16 @@
 package com.tajpure.scheme.compiler.ast
 
 import org.jllvm.value.user.constant.ConstantBoolean
+
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.exception.CompilerException
 import com.tajpure.scheme.compiler.value.BoolValue
 import com.tajpure.scheme.compiler.value.Value
-import org.jllvm.value.BasicBlock
-import org.jllvm.value.user.constant.Function
 import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.exception.RunTimeException
+
+import org.jllvm.value.BasicBlock
+import org.jllvm.value.user.constant.Function
 import org.jllvm._type.VoidType
 import org.jllvm.value.user.constant.ConstantInteger
 
@@ -67,13 +69,11 @@ class If(_test: Node, _then: Node, _else: Node, _file: String, _start: Int, _end
     
     s.codegen.builder.positionBuilderAtEnd(elseBlock)
     val elseValue = if (else_ != null) {
-        val elseValueTmp = else_.codegen(s)
-        s.codegen.builder.buildBr(endBlock)
-        elseValueTmp
+        else_.codegen(s)
       } else {
-        s.codegen.builder.buildBr(endBlock)
         ConstantInteger.constI32(0) // when else is null, the value of else will be 0
       }
+    s.codegen.builder.buildBr(endBlock)
     
     s.codegen.builder.positionBuilderAtEnd(endBlock)
     

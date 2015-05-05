@@ -13,6 +13,7 @@ import org.jllvm.value.user.instruction.GetElementPointerInstruction
 import com.tajpure.scheme.compiler.value.premitives.ListFunc
 import com.tajpure.scheme.compiler.Constants
 import com.tajpure.scheme.compiler.exception.RunTimeException
+import com.tajpure.scheme.compiler.value.premitives.Import
 
 class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -71,7 +72,12 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
     else if (opValue.isInstanceOf[PrimFunc]) {
       val primFunc = opValue.asInstanceOf[PrimFunc]
       val args: List[Value] = Node.interpList(this.args.positional, s)
-      primFunc.apply(args, this)
+      if (!opValue.isInstanceOf[Import]) {
+        primFunc.apply(args, this)
+      }
+      else {
+        primFunc.apply(args, this, s)
+      }
     } 
     else {
       throw new CompilerException("It's not a function", this.op)
