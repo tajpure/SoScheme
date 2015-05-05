@@ -41,7 +41,7 @@ object Interpreter extends App {
   
   override
   def main(args: Array[String]): Unit =  {
-    test()
+    repl()
   }
   
 }
