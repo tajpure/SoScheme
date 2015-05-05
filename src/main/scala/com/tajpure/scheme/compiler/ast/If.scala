@@ -3,17 +3,14 @@ package com.tajpure.scheme.compiler.ast
 import org.jllvm.value.user.constant.ConstantBoolean
 
 import com.tajpure.scheme.compiler.Scope
-import com.tajpure.scheme.compiler.ast.Node;
 import com.tajpure.scheme.compiler.exception.CompilerException
 import com.tajpure.scheme.compiler.value.BoolValue
 import com.tajpure.scheme.compiler.value.Value
-
-import org.jllvm.value.BasicBlock
-import org.jllvm.value.user.constant.Function
-
 import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.exception.RunTimeException
 
+import org.jllvm.value.BasicBlock
+import org.jllvm.value.user.constant.Function
 import org.jllvm._type.VoidType
 import org.jllvm.value.user.constant.ConstantInteger
 

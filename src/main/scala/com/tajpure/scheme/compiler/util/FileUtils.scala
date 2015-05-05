@@ -3,8 +3,6 @@ package com.tajpure.scheme.compiler.util
 import java.io.File
 import java.io.FileNotFoundException
 
-import main.scala.com.tajpure.scheme.compiler.util.Log;
-
 object FileUtils {
   
   def unifyPath(path: String): String = {

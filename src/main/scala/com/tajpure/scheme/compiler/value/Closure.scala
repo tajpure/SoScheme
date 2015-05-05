@@ -1,7 +1,5 @@
 package com.tajpure.scheme.compiler.value
 
-import main.scala.com.tajpure.scheme.compiler.value.Value;
-
 import com.tajpure.scheme.compiler.ast.Func
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.ast.Node

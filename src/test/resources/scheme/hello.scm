@@ -1,0 +1,1 @@
+(define main (lambda () (display "hello world!")))

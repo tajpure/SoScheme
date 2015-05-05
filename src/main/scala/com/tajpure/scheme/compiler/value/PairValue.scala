@@ -1,7 +1,5 @@
 package com.tajpure.scheme.compiler.value
 
-import main.scala.com.tajpure.scheme.compiler.value.Value;
-
 class PairValue(_head: Value, _tail: Value) extends Value {
 
   val head = _head

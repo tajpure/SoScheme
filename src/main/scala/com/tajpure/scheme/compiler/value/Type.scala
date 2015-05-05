@@ -1,11 +1,5 @@
 package com.tajpure.scheme.compiler.value
 
-import main.scala.com.tajpure.scheme.compiler.value.BoolType;
-import main.scala.com.tajpure.scheme.compiler.value.FloatType;
-import main.scala.com.tajpure.scheme.compiler.value.IntType;
-import main.scala.com.tajpure.scheme.compiler.value.StringType;
-import main.scala.com.tajpure.scheme.compiler.value.Type;
-
 class Type {
   
   val BOOL: Value = Type.BOOL

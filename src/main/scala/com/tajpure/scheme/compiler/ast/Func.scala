@@ -5,6 +5,7 @@ import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.value.FloatValue
 import com.tajpure.scheme.compiler.value.Closure
+import com.tajpure.scheme.compiler.exception.CompilerException
 
 import org.jllvm._type.FunctionType
 import org.jllvm.bindings.LLVMLinkage
@@ -13,10 +14,6 @@ import org.jllvm._type.Type
 import org.jllvm.value.BasicBlock
 import org.jllvm._type.PointerType
 import org.jllvm.value.user.constant.Function
-
-import com.tajpure.scheme.compiler.ast.Node;
-import com.tajpure.scheme.compiler.exception.CompilerException
-
 import org.jllvm.value.user.instruction.LoadInstruction
 import org.jllvm.value.user.instruction.StoreInstruction
 

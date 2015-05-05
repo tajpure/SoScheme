@@ -1,7 +1,5 @@
 package com.tajpure.scheme.compiler.parser
 
-import main.scala.com.tajpure.scheme.compiler.parser.LexParser;
-
 import com.tajpure.scheme.compiler.Constants
 import com.tajpure.scheme.compiler.ast.Bool
 import com.tajpure.scheme.compiler.ast.Delimeter

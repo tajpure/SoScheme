@@ -5,7 +5,6 @@ import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.BoolValue
 import com.tajpure.scheme.compiler.value.Type
-import com.tajpure.scheme.compiler.ast.Node;
 import com.tajpure.scheme.compiler.exception.CompilerException
 
 import org.jllvm.value.user.constant.ConstantInteger

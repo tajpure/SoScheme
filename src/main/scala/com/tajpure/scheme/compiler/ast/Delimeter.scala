@@ -5,7 +5,6 @@ import java.util.HashMap
 import scala.collection.mutable.HashSet
 
 import com.tajpure.scheme.compiler.Scope
-import com.tajpure.scheme.compiler.ast.Node;
 import com.tajpure.scheme.compiler.value.Value
 
 class Delimeter(_shape: String, _file: String, _start: Int, _end: Int,

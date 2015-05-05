@@ -1,8 +1,5 @@
 package com.tajpure.scheme.compiler.llvm
 
-import main.scala.com.tajpure.scheme.compiler.llvm.CodeGen;
-import main.scala.com.tajpure.scheme.compiler.llvm.LLVMTypes;
-
 import org.jllvm.InstructionBuilder
 import org.jllvm.Module
 import org.jllvm.NativeLibrary

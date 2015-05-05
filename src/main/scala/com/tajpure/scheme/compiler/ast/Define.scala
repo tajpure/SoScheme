@@ -3,7 +3,6 @@ package com.tajpure.scheme.compiler.ast
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.util.Log
-import com.tajpure.scheme.compiler.ast.Node;
 import com.tajpure.scheme.compiler.exception.CompilerException
 
 class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int,

@@ -5,7 +5,6 @@ import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.Closure
 import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.util.Log
-import com.tajpure.scheme.compiler.ast.Node;
 import com.tajpure.scheme.compiler.exception.CompilerException
 
 import org.jllvm.value.user.instruction.StackAllocation

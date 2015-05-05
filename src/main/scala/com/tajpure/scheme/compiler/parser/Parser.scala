@@ -1,7 +1,5 @@
 package com.tajpure.scheme.compiler.parser
 
-import main.scala.com.tajpure.scheme.compiler.parser.PreParser;
-
 import com.tajpure.scheme.compiler.Constants
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.ast.Argument

@@ -1,8 +1,6 @@
 package com.tajpure.scheme.compiler.ast
 
 import com.tajpure.scheme.compiler.Scope
-import com.tajpure.scheme.compiler.ast.Name;
-import com.tajpure.scheme.compiler.ast.Node;
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.Constants
 
