@@ -2,6 +2,7 @@ package com.tajpure.scheme.compiler.util
 
 import java.io.File
 import java.io.FileNotFoundException
+import com.tajpure.scheme.compiler.exception.ParserException
 
 object FileUtils {
   
@@ -11,10 +12,13 @@ object FileUtils {
   
   def read(path: String): String = {
     try {
+      if (path == null || path.size == 0) {
+        throw new ParserException("incorrect path")
+      }
       scala.io.Source.fromFile(path).mkString
     } catch {
-      case e0 : FileNotFoundException => Log.error(e0.getMessage); null
-      case e1 : Exception => Log.error(e1.getMessage); null
+      case e0 : FileNotFoundException => throw e0
+      case e1 : Exception => throw e1
     }
   }
   
