@@ -41,7 +41,8 @@ object Interpreter extends App {
   
   override 
   def main(args: Array[String]) {
-    repl()
+//    repl()
+    interp0("./test/closure.scm")
   }
   
 }

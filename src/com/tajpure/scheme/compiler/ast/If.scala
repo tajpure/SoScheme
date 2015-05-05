@@ -67,13 +67,11 @@ class If(_test: Node, _then: Node, _else: Node, _file: String, _start: Int, _end
     
     s.codegen.builder.positionBuilderAtEnd(elseBlock)
     val elseValue = if (else_ != null) {
-        val elseValueTmp = else_.codegen(s)
-        s.codegen.builder.buildBr(endBlock)
-        elseValueTmp
+        else_.codegen(s)
       } else {
-        s.codegen.builder.buildBr(endBlock)
         ConstantInteger.constI32(0) // when else is null, the value of else will be 0
       }
+    s.codegen.builder.buildBr(endBlock)
     
     s.codegen.builder.positionBuilderAtEnd(endBlock)
     
