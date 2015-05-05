@@ -2,9 +2,9 @@ package com.tajpure.scheme.compiler.value
 
 import com.tajpure.scheme.compiler.ast.Node
 
-class ConstValue(_value: Object) extends Value {
+class ConstValue(_value: Value) extends Value {
 
-  val value: Object = _value
+  val value: Value = _value
   
   override
   def toString(): String = {

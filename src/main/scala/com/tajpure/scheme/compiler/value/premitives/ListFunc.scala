@@ -12,7 +12,7 @@ class ListFunc extends PrimFunc("list" , -1) {
 
   def apply(args: List[Value], location: Node): Value = {
     if (args.size == 0) {
-      new PairValue(null, null)
+      new VoidList()
     }
     else {
       args.foldRight(new VoidList().asInstanceOf[Value])(
