@@ -1,3 +1,7 @@
+(newline)
+(newline)
+(display "Test Case for quicksort:")
+(newline)
 (define (quicksort l gt?)
   (if (null? l)
       '()

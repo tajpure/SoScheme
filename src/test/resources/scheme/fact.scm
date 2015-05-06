@@ -1,6 +1,4 @@
 ; factorial function
-(newline)
-(newline)
 (display "Test Case for fact:")
 (newline)
 (define (fact n) 

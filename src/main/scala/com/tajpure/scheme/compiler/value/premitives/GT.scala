@@ -10,6 +10,7 @@ import com.tajpure.scheme.compiler.Scope
 import org.jllvm.bindings.LLVMIntPredicate
 import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.exception.RunTimeException
+import com.tajpure.scheme.compiler.value.ConstValue
 
 class GT extends PrimFunc(">" , 2) {
   

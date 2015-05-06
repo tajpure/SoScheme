@@ -6,7 +6,7 @@ object Interpreter extends App {
   
   def interp(_source: String): Unit = {
     if (_source == null || _source.size == 0) {
-      println("empty can't be interpret")
+      println("input can't be empty")
     }
     else {
       Parser.parse(_source, "REPL").interp(Scope.buildInitScope())
@@ -15,7 +15,7 @@ object Interpreter extends App {
   
   def interp(_source: String, s: Scope) = {
     if (_source == null || _source.size == 0) {
-      "empty source can't be interpret"
+      "input can't be empty"
     }
     else {
       Parser.parse(_source, "REPL").interp(s)
@@ -32,6 +32,8 @@ object Interpreter extends App {
     interp0("./src/test/resources/scheme/fib.scm")
     interp0("./src/test/resources/scheme/procedure.scm")
     interp0("./src/test/resources/scheme/if.scm")
+    interp0("./src/test/resources/scheme/insertsort.scm")
+    interp0("./src/test/resources/scheme/quicksort.scm")
   }
   
   def repl(): Unit = {
@@ -39,6 +41,7 @@ object Interpreter extends App {
     print(">")
     var scope = Scope.buildInitScope()
     for (line <- io.Source.stdin.getLines) {
+      isExit(line)
       try {
         val result = interp(line, scope)
         if (result != null) {
@@ -52,10 +55,15 @@ object Interpreter extends App {
     }
   } 
   
+  def isExit(cmd: String): Unit = {
+    if ("(exit)".equals(cmd)) {
+      System.exit(0)
+    }
+  }
+  
   override
   def main(args: Array[String]): Unit =  {
-    interp0("./src/test/resources/scheme/insertsort.scm")
-//    repl
+    repl()
   }
   
 }

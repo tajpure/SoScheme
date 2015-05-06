@@ -1,3 +1,7 @@
+(newline)
+(newline)
+(display "Test Case for insertion-sort:")
+(newline)
 (define (insert x lst)
   (if (null? lst)
       (list x)
@@ -13,4 +17,4 @@
       (insert (car lst)
               (insertion-sort (cdr lst)))))
  
-(insertion-sort '(6 8 5 9 3 2 1 4 7))
+(display (insertion-sort '(6 8 5 9 3 2 1 4 7)))

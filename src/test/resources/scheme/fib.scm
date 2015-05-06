@@ -9,7 +9,7 @@
 
 (define (func start end) 
 				(if (>= end start) 
-					(begin (display (fib start)) 
+					(begin (display (fib start) " ") 
 					(func (+ start 1) end))))
 
 (func 0 20)

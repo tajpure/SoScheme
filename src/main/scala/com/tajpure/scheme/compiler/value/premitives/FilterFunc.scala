@@ -47,36 +47,40 @@ class FilterFunc extends PrimFunc("filter" , 2) {
           throw new RunTimeException(args(1) + " is not a proper list", location)
         }
       
-      val funcScope: Scope = new Scope(closure.env)
-      val funcParams: Node = closure.func.params
-      
-      if (closure.properties != null) {
-        Scope.mergeDefault(closure.properties, funcScope)
+      if (argList.size == 1 && argList(0).isInstanceOf[VoidList]) {
+        argList(0)
       }
-      
-      val list = argList.filter { arg => {
-            if (funcParams.isInstanceOf[Tuple]) {
-              val elements = funcParams.asInstanceOf[Tuple].elements
-              if (elements.size != 1) {
-                throw new RunTimeException("incorrect arguments count", location)
-              }
-              else {
-                if (elements(0).isInstanceOf[Name]) {
-                  funcScope.putValue(elements(0).asInstanceOf[Name].id, arg)
+      else {
+        val funcScope: Scope = new Scope(closure.env)
+        val funcParams: Node = closure.func.params
+        
+        if (closure.properties != null) {
+          Scope.mergeDefault(closure.properties, funcScope)
+        }
+        
+        val list = argList.filter { arg => {
+              if (funcParams.isInstanceOf[Tuple]) {
+                val elements = funcParams.asInstanceOf[Tuple].elements
+                if (elements.size != 1) {
+                  throw new RunTimeException("incorrect arguments count", location)
+                }
+                else {
+                  if (elements(0).isInstanceOf[Name]) {
+                    funcScope.putValue(elements(0).asInstanceOf[Name].id, arg)
+                  }
                 }
               }
-            }
-            val result = closure.func.body.interp(funcScope)
-            if (result.isInstanceOf[BoolValue]) {
-              val s = result.asInstanceOf[BoolValue].value
-              s
-            }
-            else {
-              true
-            }
-          }}
-      
-      new ListFunc().apply(list, location)
+              val result = closure.func.body.interp(funcScope)
+              if (result.isInstanceOf[BoolValue]) {
+                result.asInstanceOf[BoolValue].value
+              }
+              else {
+                true
+              }
+            }}
+        
+        new ListFunc().apply(list, location)
+      }
     }
   }
   

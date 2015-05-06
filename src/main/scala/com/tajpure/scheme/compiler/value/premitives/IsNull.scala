@@ -8,6 +8,7 @@ import com.tajpure.scheme.compiler.value.VoidValue
 import com.tajpure.scheme.compiler.value.VoidList
 import com.tajpure.scheme.compiler.value.BoolValue
 import com.tajpure.scheme.compiler.exception.CompilerException
+import com.tajpure.scheme.compiler.value.ConstValue
 
 class IsNull extends PrimFunc("null?", 1) {
   
@@ -18,6 +19,15 @@ class IsNull extends PrimFunc("null?", 1) {
     else {
       if (args(0) == null || args(0).isInstanceOf[VoidList] || args(0).isInstanceOf[VoidValue]) {
         new BoolValue(true)
+      }
+      else if (args(0).isInstanceOf[ConstValue]) {
+        val constValue = args(0).asInstanceOf[ConstValue].value
+        if (constValue == null || constValue.isInstanceOf[VoidList] || constValue.isInstanceOf[VoidValue]) {
+          new BoolValue(true)
+        }
+        else {
+          new BoolValue(false)
+        }
       }
       else {
         new BoolValue(false)

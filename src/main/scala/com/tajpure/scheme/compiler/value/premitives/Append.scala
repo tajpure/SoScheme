@@ -34,8 +34,8 @@ class Append extends PrimFunc("append" , -1) {
               }        
             }
             )
-      
-      new ListFunc().apply(list, location)
+      val _list = list.filter { value => !value.isInstanceOf[VoidList] }
+      new ListFunc().apply(_list, location)
     }
   }
   
