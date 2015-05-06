@@ -71,7 +71,7 @@ object Parser extends App {
   @throws(classOf[ParserException])
   def parseDefine(tuple: Tuple): Node = {
     val elements: List[Node] = tuple.elements
-    if (elements.size != 3) {
+    if (elements.size < 3) {
       throw new ParserException("incorrect format of definition", tuple)
     } 
     else {
@@ -80,7 +80,7 @@ object Parser extends App {
           val funcElements = funcTuple.elements
           val pattern: Node = parseNode(funcElements(0))
           val paramsTuple = new Tuple(funcElements.slice(1, funcElements.size), funcTuple)
-          val lambdaElements = List(Name.genName(Constants.LAMBDA), paramsTuple, elements(2))
+          val lambdaElements = elements.slice(2, elements.size).:::(List(Name.genName(Constants.LAMBDA), paramsTuple))
           val lambdaTuple = new Tuple(lambdaElements, funcTuple)
           val value: Node = parseNode(lambdaTuple)
           new Define(pattern, value, tuple)

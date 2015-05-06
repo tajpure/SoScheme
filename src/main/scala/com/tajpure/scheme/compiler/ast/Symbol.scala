@@ -31,12 +31,14 @@ class Symbol (_value: String, _file: String, _start: Int, _end: Int, _row: Int, 
   }
   
   def interp(s: Scope): Value = {
-    val valValue = if (!quoteNode.isInstanceOf[Tuple]) {
-        quoteNode
-      } else {
+    val valValue = if (quoteNode.isInstanceOf[Tuple]) {
         val tuple = quoteNode.asInstanceOf[Tuple]
         val args = interpList(tuple.elements, s)
         new ListFunc().apply(args, this)
+      } else if (quoteNode.isInstanceOf[Name]) {
+        new StringValue(quoteNode.toString())
+      } else {
+        quoteNode.interp(s)
       }
     new ConstValue(valValue)
   }

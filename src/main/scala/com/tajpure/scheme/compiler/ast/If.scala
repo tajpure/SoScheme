@@ -80,7 +80,6 @@ class If(_test: Node, _then: Node, _else: Node, _file: String, _start: Int, _end
     val result = s.codegen.builder.buildPhi(thenValue.typeOf(), "result")
     result.addIncoming(Array(thenValue, elseValue), Array(thenBlock, elseBlock))
     result
-    
   }
   
 }

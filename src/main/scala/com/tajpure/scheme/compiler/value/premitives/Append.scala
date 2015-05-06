@@ -6,6 +6,7 @@ import com.tajpure.scheme.compiler.value.VoidList
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.Value
+import com.tajpure.scheme.compiler.value.ConstValue
 
 class Append extends PrimFunc("append" , -1) {
 
@@ -14,25 +15,28 @@ class Append extends PrimFunc("append" , -1) {
       new VoidList()
     }
     else {
-      args.foldRight(new VoidList().asInstanceOf[Value])(
-          (arg, tail) => {
-            null            
-          }
-          )
+      val list: List[Value] = args.foldRight(List[Value]())(
+            (arg, list) => {
+              if (arg.isInstanceOf[PairValue]) {
+                list.:::(arg.asInstanceOf[PairValue].toList()) 
+              }
+              else if (arg.isInstanceOf[ConstValue]) {
+                val constValue = arg.asInstanceOf[ConstValue].value
+                if (constValue.isInstanceOf[PairValue]) {
+                  list.:::(constValue.asInstanceOf[PairValue].toList()) 
+                }
+                else {
+                  list.::(constValue)
+                }
+              }
+              else {
+                list.::(arg)
+              }        
+            }
+            )
+      val _list = list.filter { value => !value.isInstanceOf[VoidList] }
+      new ListFunc().apply(_list, location)
     }
-  }
-  
-  def pair2list(list: PairValue): List[Value] = {
-    def rest(tail: Value): List[Value] = {
-       if (tail.isInstanceOf[PairValue]) {
-        val pair = tail.asInstanceOf[PairValue]
-        List(pair.head).++(rest(pair.tail))
-      }
-      else {
-        List(tail)
-      }
-    }
-    List(list.head).+:(list.tail)
   }
   
   def typecheck(args: List[Value], location: Node): Value= {

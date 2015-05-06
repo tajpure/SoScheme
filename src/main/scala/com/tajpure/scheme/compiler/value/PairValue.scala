@@ -1,10 +1,27 @@
 package com.tajpure.scheme.compiler.value
 
+import com.tajpure.scheme.compiler.value.premitives.ListFunc
+import com.tajpure.scheme.compiler.ast.Node
+
 class PairValue(_head: Value, _tail: Value) extends Value {
 
   val head = _head
   
   val tail = _tail
+
+  def toList(): List[Value] = {
+    def rest(tail: Value): List[Value] = {
+       if (tail.isInstanceOf[PairValue]) {
+        val pair = tail.asInstanceOf[PairValue]
+         List(pair.head).++(rest(pair.tail))
+      }
+      else {
+        List(tail)
+      }
+    }
+    val list = rest(tail).+:(head)
+    list.filter { value => !value.isInstanceOf[VoidList] }
+  }
   
   override
   def toString(): String = {
