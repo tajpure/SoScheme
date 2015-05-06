@@ -9,14 +9,14 @@ import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.Closure
 
-class Filter extends PrimFunc("filter" , 2) {
+class FilterFunc extends PrimFunc("filter" , 2) {
 
   def apply(args: List[Value], location: Node): Value = {
     if (args.size != arity) {
       throw new CompilerException("args don't match the 'filter' function", location)
     }
     
-    if (!args(0).isInstanceOf[Closure] || !args(1).isInstanceOf[PairValue]) {
+    if (!args(0).isInstanceOf[Closure]) {
       throw new RunTimeException("args type error in function 'filter'", location)
     }
     else {

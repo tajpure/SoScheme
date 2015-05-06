@@ -7,7 +7,7 @@ import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.Value
 import org.jllvm._type.Type
 
-class Map extends PrimFunc("map" , 2) {
+class MapFunc extends PrimFunc("map" , 2) {
 
   def apply(args: List[Value], location: Node): Value = {
     args.foreach { arg => println(arg) }

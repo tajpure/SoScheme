@@ -5,11 +5,21 @@ import com.tajpure.scheme.compiler.parser.Parser
 object Interpreter extends App {
   
   def interp(_source: String): Unit = {
-    Parser.parse(_source, "REPL").interp(Scope.buildInitScope())
+    if (_source == null || _source.size == 0) {
+      println("empty can't be interpret")
+    }
+    else {
+      Parser.parse(_source, "REPL").interp(Scope.buildInitScope())
+    }
   }
   
   def interp(_source: String, s: Scope) = {
-    Parser.parse(_source, "REPL").interp(s)
+    if (_source == null || _source.size == 0) {
+      "empty source can't be interpret"
+    }
+    else {
+      Parser.parse(_source, "REPL").interp(s)
+    }
   }
   
   def interp0(_path: String): Unit = {
@@ -44,16 +54,7 @@ object Interpreter extends App {
   
   override
   def main(args: Array[String]): Unit =  {
-    interp("""
-      (define (factorial n)
-  (define (iter product counter)
-    (if (> counter n)
-        product
-        (iter (* counter product)
-              (+ counter 1))))
-  (iter 1 1))
-  (display (factorial 10))
-      """)
+    repl()
   }
   
 }
