@@ -40,23 +40,47 @@ object Interpreter extends App {
     println("So Scheme version 0.1")
     print(">")
     var scope = Scope.buildInitScope()
+    var buffer: StringBuffer = new StringBuffer
     for (line <- io.Source.stdin.getLines) {
       isExitd(line)
-      try {
-        val result = interp(line, scope)
-        if (result != null) {
-          println(result)
+      buffer.append(line)
+      if (isInputFinished(buffer.toString())) {
+          try {
+            val result = interp(buffer.toString(), scope)
+            if (result != null) {
+              println(result)
+            }
+            scope = scope.innerScope
+        } catch {
+          case e: Exception => println(e.getMessage) 
         }
-        scope = scope.innerScope
-      } catch {
-        case e: Exception => println(e.getMessage) 
+        print(">")
       }
-      print(">")
     }
   } 
   
-  def isExitd(cmd: String): Unit = {
-    if ("(exit)".equals(cmd)) {
+  def isInputFinished(input: String): Boolean = {
+    var openCounter: Int = 0
+    var closeCounter: Int = 0
+    input.foreach { ch => {
+      if (ch == '(') {
+        openCounter = openCounter + 1
+      }
+      else if (ch ==')') {
+        closeCounter = closeCounter + 1
+      }
+    } }
+    if (openCounter == closeCounter) {
+      true
+    }
+    else {
+      false
+    }
+  }
+  
+  
+  def isExitd(input: String): Unit = {
+    if ("(exit)".equals(input)) {
       System.exit(0)
     }
   }
