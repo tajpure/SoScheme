@@ -41,7 +41,7 @@ object Interpreter extends App {
     print(">")
     var scope = Scope.buildInitScope()
     for (line <- io.Source.stdin.getLines) {
-      isExit(line)
+      isExitd(line)
       try {
         val result = interp(line, scope)
         if (result != null) {
@@ -55,7 +55,7 @@ object Interpreter extends App {
     }
   } 
   
-  def isExit(cmd: String): Unit = {
+  def isExitd(cmd: String): Unit = {
     if ("(exit)".equals(cmd)) {
       System.exit(0)
     }
