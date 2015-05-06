@@ -42,6 +42,7 @@ import com.tajpure.scheme.compiler.value.premitives.SetValue
 import com.tajpure.scheme.compiler.value.premitives.IsEqv
 import com.tajpure.scheme.compiler.value.premitives.IsNull
 import com.tajpure.scheme.compiler.value.premitives.Import
+import com.tajpure.scheme.compiler.value.premitives.Append
 
 class Scope(_parent: Scope, _codegen: CodeGen) {
 
@@ -301,6 +302,7 @@ object Scope extends App {
     s.putValue("null?", new IsNull())
     s.putValue("eqv?", new IsEqv())
     s.putValue("import", new Import())
+    s.putValue("append", new Append())
 
     s.putValue("Int", Type.INT)
     s.putValue("Bool", Type.BOOL)
