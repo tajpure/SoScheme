@@ -8,6 +8,13 @@ import com.tajpure.scheme.compiler.exception.CompilerException
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.Closure
+import com.tajpure.scheme.compiler.ast.Call
+import com.tajpure.scheme.compiler.ast.Argument
+import com.tajpure.scheme.compiler.value.VoidList
+import com.tajpure.scheme.compiler.value.ConstValue
+import com.tajpure.scheme.compiler.ast.Tuple
+import com.tajpure.scheme.compiler.ast.Name
+import com.tajpure.scheme.compiler.value.BoolValue
 
 class FilterFunc extends PrimFunc("filter" , 2) {
 
@@ -20,7 +27,56 @@ class FilterFunc extends PrimFunc("filter" , 2) {
       throw new RunTimeException("args type error in function 'filter'", location)
     }
     else {
-      args(0).asInstanceOf[PairValue].head
+      val closure = args(0).asInstanceOf[Closure]
+      val argList = if (args(1).isInstanceOf[PairValue]) {
+          args(1).asInstanceOf[PairValue].toList()
+        } else if (args(1).isInstanceOf[ConstValue]) {
+          val constVal = args(1).asInstanceOf[ConstValue].value
+          if (constVal.isInstanceOf[PairValue]) {
+            constVal.asInstanceOf[PairValue].toList()
+          }
+          else if (constVal.isInstanceOf[VoidList]) {
+            List(constVal)
+          }
+          else {
+            throw new RunTimeException(constVal + " is not a proper list", location)
+          }
+        } else if (args(1).isInstanceOf[VoidList]) {
+            List(args(1))
+        } else {
+          throw new RunTimeException(args(1) + " is not a proper list", location)
+        }
+      
+      val funcScope: Scope = new Scope(closure.env)
+      val funcParams: Node = closure.func.params
+      
+      if (closure.properties != null) {
+        Scope.mergeDefault(closure.properties, funcScope)
+      }
+      
+      val list = argList.filter { arg => {
+            if (funcParams.isInstanceOf[Tuple]) {
+              val elements = funcParams.asInstanceOf[Tuple].elements
+              if (elements.size != 1) {
+                throw new RunTimeException("incorrect arguments count", location)
+              }
+              else {
+                if (elements(0).isInstanceOf[Name]) {
+                  funcScope.putValue(elements(0).asInstanceOf[Name].id, arg)
+                }
+              }
+            }
+            val result = closure.func.body.interp(funcScope)
+            if (result.isInstanceOf[BoolValue]) {
+              val s = result.asInstanceOf[BoolValue].value
+              s
+            }
+            else {
+              true
+            }
+          }}
+      
+      new ListFunc().apply(list, location)
     }
   }
   

@@ -54,7 +54,8 @@ object Interpreter extends App {
   
   override
   def main(args: Array[String]): Unit =  {
-    repl()
+    interp0("./src/test/resources/scheme/insertsort.scm")
+//    repl
   }
   
 }

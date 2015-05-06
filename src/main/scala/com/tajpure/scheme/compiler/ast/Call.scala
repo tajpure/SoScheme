@@ -14,6 +14,7 @@ import com.tajpure.scheme.compiler.value.premitives.ListFunc
 import com.tajpure.scheme.compiler.Constants
 import com.tajpure.scheme.compiler.exception.RunTimeException
 import com.tajpure.scheme.compiler.value.premitives.Import
+import com.tajpure.scheme.compiler.value.premitives.FilterFunc
 
 class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -26,7 +27,9 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
   val args: Argument = _args
   
   def interp(s: Scope): Value = {
+    
     val opValue: Value = this.op.interp(s)
+    
     if (opValue.isInstanceOf[Closure]) {
       val closure: Closure = opValue.asInstanceOf[Closure]
       val funcScope: Scope = new Scope(closure.env)
