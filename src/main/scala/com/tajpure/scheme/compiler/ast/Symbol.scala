@@ -5,6 +5,8 @@ import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.ConstValue
 import com.tajpure.scheme.compiler.value.premitives.ListFunc
 import com.tajpure.scheme.compiler.value.StringValue
+import com.tajpure.scheme.compiler.value.IntValue
+import com.tajpure.scheme.compiler.value.FloatValue
 
 class Symbol (_value: String, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -19,7 +21,7 @@ class Symbol (_value: String, _file: String, _start: Int, _end: Int, _row: Int, 
   
   def interpList(nodes: List[Node], s: Scope): List[Value] = {
     nodes.map { node => {
-      if (!node.isInstanceOf[Name]) {
+      if (node.isInstanceOf[Number]) {
         node.interp(s)
       }
       else {
@@ -30,7 +32,7 @@ class Symbol (_value: String, _file: String, _start: Int, _end: Int, _row: Int, 
   
   def interp(s: Scope): Value = {
     val valValue = if (!quoteNode.isInstanceOf[Tuple]) {
-        quoteNode.interp(s)
+        quoteNode
       } else {
         val tuple = quoteNode.asInstanceOf[Tuple]
         val args = interpList(tuple.elements, s)
