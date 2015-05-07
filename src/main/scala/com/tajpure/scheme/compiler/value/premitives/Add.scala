@@ -41,7 +41,7 @@ class Add extends PrimFunc("+", -1) {
         } 
         else if (result.isInstanceOf[FractionValue] && arg.isInstanceOf[IntValue]) {
           val fraction: FractionValue = result.asInstanceOf[FractionValue]
-          val value: Int =  arg.asInstanceOf[IntValue].value
+          val value: Long =  arg.asInstanceOf[IntValue].value
           new FractionValue(fraction.numerator + value * fraction.denominator, fraction.denominator)
         }
         else if (result.isInstanceOf[FractionValue] && arg.isInstanceOf[FloatValue]) {

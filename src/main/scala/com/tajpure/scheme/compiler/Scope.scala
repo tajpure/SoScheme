@@ -241,7 +241,7 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
     codegen.save(path)
   }
   
-  def lookup0(name: String): org.jllvm.value.Value = {
+  def lookupLLVM(name: String): org.jllvm.value.Value = {
     val v: Object = lookupProperty(name, "llvm.value")
     if (v == null) {
       null
@@ -254,7 +254,7 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
     }
   }
 
-  def putValue0(name: String, value: org.jllvm.value.Value): Unit = {
+  def putValueLLVM(name: String, value: org.jllvm.value.Value): Unit = {
     put(name, "llvm.value", value)
   }
   
@@ -330,8 +330,8 @@ object Scope extends App {
     
     buildIn(init)
 
-    init.putValue0("#t", new ConstantBoolean(true))
-    init.putValue0("#f", new ConstantBoolean(false))
+    init.putValueLLVM("#t", new ConstantBoolean(true))
+    init.putValueLLVM("#f", new ConstantBoolean(false))
 
     init
   }

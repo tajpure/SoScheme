@@ -2,9 +2,9 @@ package com.tajpure.scheme.compiler.value
 
 import com.tajpure.scheme.compiler.ast.Node
 
-class IntValue(_value: Int) extends Value {
+class IntValue(_value: Long) extends Value {
   
-  val value: Int = _value
+  val value: Long = _value
   
   override
   def toString(): String = {
@@ -15,5 +15,4 @@ class IntValue(_value: Int) extends Value {
 
 object IntValue extends App {
 //  val intVal = new IntValue(10)
-  println("ssssss")
 }

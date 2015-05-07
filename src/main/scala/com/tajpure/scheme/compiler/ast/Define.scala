@@ -36,7 +36,7 @@ class Define(_pattern: Node, _value: Node, _file: String, _start: Int, _end: Int
     else {
       val _value = value.codegen(s)
       val pointer = s.codegen.builder.buildAlloca(_value.typeOf(), pattern.toString())
-      s.putValue0(pattern.toString(), pointer)
+      s.putValueLLVM(pattern.toString(), pointer)
       s.codegen.builder.buildStore(_value, pointer)
     }
   }

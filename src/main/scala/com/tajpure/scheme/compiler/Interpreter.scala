@@ -51,9 +51,9 @@ object Interpreter extends App {
               println(result)
             }
             scope = scope.innerScope
-        } catch {
-          case e: Exception => println(e.getMessage) 
-        }
+          } catch {
+            case e: Exception => println(e.getMessage) 
+          }
         print(">")
       }
     }
@@ -77,7 +77,6 @@ object Interpreter extends App {
       false
     }
   }
-  
   
   def isExitd(input: String): Unit = {
     if ("(exit)".equals(input)) {

@@ -9,4 +9,4 @@
               (list (car l))
               (quicksort (filter (lambda (x) (not (gt? (car l) x))) (cdr l)) gt?))))
  
-(display (quicksort '(1 3 5 7 9 8 6 4 2) >))
+(display (quicksort '(1 3 5 7 9 8 6 4 2 3 123 3123  4234 3452 2) >))

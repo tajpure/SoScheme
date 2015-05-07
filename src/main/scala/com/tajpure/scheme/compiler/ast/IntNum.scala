@@ -11,15 +11,15 @@ class IntNum(_content: String, _file: String, _start: Int, _end: Int, _row: Int,
 
   val content: String = _content
 
-  val value: Int = 
+  val value: Long = 
     if (content.startsWith("+")) {
-      content.substring(1).toInt
+      content.substring(1).toLong
     } 
     else if (content.startsWith("-")) {
-      - (content.substring(1).toInt)
+      - (content.substring(1).toLong)
     }
     else {
-      content.toInt
+      content.toLong
     }
   
   def interp(s: Scope): Value = {

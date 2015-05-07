@@ -15,6 +15,8 @@ import com.tajpure.scheme.compiler.Constants
 import com.tajpure.scheme.compiler.exception.RunTimeException
 import com.tajpure.scheme.compiler.value.premitives.Import
 import com.tajpure.scheme.compiler.value.premitives.FilterFunc
+import scala.collection.mutable.HashMap
+import com.tajpure.scheme.compiler.util.LRUCache
 
 class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -27,64 +29,71 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
   val args: Argument = _args
   
   def interp(s: Scope): Value = {
-    
-    val opValue: Value = this.op.interp(s)
-    
-    if (opValue.isInstanceOf[Closure]) {
-      val closure: Closure = opValue.asInstanceOf[Closure]
-      val funcScope: Scope = new Scope(closure.env)
-      val funcParams: Node = closure.func.params
-      
-      if (closure.properties != null) {
-        Scope.mergeDefault(closure.properties, funcScope)
+    val value = Call.loopup(sign(s))
+    val result = if (value != null) {
+        value
       }
-      
-      if (funcParams.isInstanceOf[Tuple]) {
-        val params = funcParams.asInstanceOf[Tuple].elements.map { node => node.asInstanceOf[Name] }
-        params.zipWithIndex.foreach {
-          case (param, i) => {
-            if (params.size - 2 == i && Constants.DOT.equals(param.id)) {
-              val restArgsVal = Node.interpList(args.positional.slice(i, args.elements.size), s)
-              val value = new ListFunc().apply(restArgsVal, this)
-              funcScope.putValue(params(i + 1).id, value)
-            }
-            else if (i > 0 && params.size - 1 == i && Constants.DOT.equals(params(i - 1).id)) {
-              // When the arguments like "(x y . z)", we need to avoid "z" being reset.
-            }
-            else if (i < params.size && params.size <= args.elements.size) {
-                val value = args.positional(i).interp(s)
-                funcScope.putValue(params(i).id, value)
-            }  
-            else {
-              throw new RunTimeException("incorrent argument count in call", this)
+      else {
+        val opValue: Value = this.op.interp(s)
+        
+        if (opValue.isInstanceOf[Closure]) {
+          val closure: Closure = opValue.asInstanceOf[Closure]
+          val funcScope: Scope = new Scope(closure.env)
+          val funcParams: Node = closure.func.params
+          
+          if (closure.properties != null) {
+            Scope.mergeDefault(closure.properties, funcScope)
+          }
+          
+          if (funcParams.isInstanceOf[Tuple]) {
+            val params = funcParams.asInstanceOf[Tuple].elements.map { node => node.asInstanceOf[Name] }
+            params.zipWithIndex.foreach {
+              case (param, i) => {
+                if (params.size - 2 == i && Constants.DOT.equals(param.id)) {
+                  val restArgsVal = Node.interpList(args.positional.slice(i, args.elements.size), s)
+                  val value = new ListFunc().apply(restArgsVal, this)
+                  funcScope.putValue(params(i + 1).id, value)
+                }
+                else if (i > 0 && params.size - 1 == i && Constants.DOT.equals(params(i - 1).id)) {
+                  // When the arguments like "(x y . z)", we need to avoid "z" being reset.
+                }
+                else if (i < params.size && params.size <= args.elements.size) {
+                    val value = args.positional(i).interp(s)
+                    funcScope.putValue(params(i).id, value)
+                }  
+                else {
+                  throw new RunTimeException("incorrent argument count in call", this)
+                }
+              }
             }
           }
+          else if (funcParams.isInstanceOf[Name]) {
+            val restArgsVal = Node.interpList(args.positional, s)
+            val value = new ListFunc().apply(restArgsVal, this)
+            funcScope.putValue(funcParams.asInstanceOf[Name].id, value)
+          }
+          else {
+            throw new RunTimeException("incorrent argument", this)
+          }
+          
+          closure.func.body.interp(funcScope)
+        } 
+        else if (opValue.isInstanceOf[PrimFunc]) {
+          val primFunc = opValue.asInstanceOf[PrimFunc]
+          val args: List[Value] = Node.interpList(this.args.positional, s)
+          if (!opValue.isInstanceOf[Import]) {
+            primFunc.apply(args, this)
+          }
+          else {
+            primFunc.apply(args, this, s)
+          }
+        } 
+        else {
+          throw new CompilerException("It's not a function", this.op)
         }
       }
-      else if (funcParams.isInstanceOf[Name]) {
-        val restArgsVal = Node.interpList(args.positional, s)
-        val value = new ListFunc().apply(restArgsVal, this)
-        funcScope.putValue(funcParams.asInstanceOf[Name].id, value)
-      }
-      else {
-        throw new RunTimeException("incorrent argument", this)
-      }
-      
-      closure.func.body.interp(funcScope)
-    } 
-    else if (opValue.isInstanceOf[PrimFunc]) {
-      val primFunc = opValue.asInstanceOf[PrimFunc]
-      val args: List[Value] = Node.interpList(this.args.positional, s)
-      if (!opValue.isInstanceOf[Import]) {
-        primFunc.apply(args, this)
-      }
-      else {
-        primFunc.apply(args, this, s)
-      }
-    } 
-    else {
-      throw new CompilerException("It's not a function", this.op)
-    }
+    Call.save(sign(s), result)
+    result
   }
 
   def typecheck(s: Scope): Value = {
@@ -134,9 +143,31 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
    } }
   }
   
+  def sign(s: Scope):String = {
+    val argValues = Node.interpList(args.positional, s)
+    op + argValues.toString()
+  }
+  
   override
   def toString(): String = {
     op + args.toString()
+  }
+  
+}
+
+// memorize the value of the call for faster speed
+object Call {
+  
+  private val maxSize = 100
+  
+  private val memory = new LRUCache[String, Value](maxSize)
+  
+  def save(sign: String, value: Value): Unit = {
+    memory.put(sign, value)
+  }
+  
+  def loopup(sign: String): Value = {
+    memory.get(sign)
   }
   
 }

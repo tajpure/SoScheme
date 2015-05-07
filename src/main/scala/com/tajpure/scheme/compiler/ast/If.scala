@@ -51,7 +51,7 @@ class If(_test: Node, _then: Node, _else: Node, _file: String, _start: Int, _end
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    val thisFunc = s.lookup0("this")
+    val thisFunc = s.lookupLLVM("this")
     val function: Function = if (thisFunc.isInstanceOf[Function]) {
         thisFunc.asInstanceOf[Function]
       } else {

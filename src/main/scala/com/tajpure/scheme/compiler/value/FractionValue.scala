@@ -2,20 +2,20 @@ package com.tajpure.scheme.compiler.value
 
 import com.tajpure.scheme.compiler.ast.Node
 
-class FractionValue (_numerator: Int, _denominator: Int) extends Value {
+class FractionValue (_numerator: Long, _denominator: Long) extends Value {
   
   // greatest common divisor
-  val gcd: Int = gcd(_numerator, _denominator) 
+  val gcd: Long = gcd(_numerator, _denominator) 
   
-  val numerator: Int = _numerator / gcd
+  val numerator: Long = _numerator / gcd
   
-  val denominator: Int = _denominator / gcd
+  val denominator: Long = _denominator / gcd
 
   def apply(args: List[Value], location: Node): Value = {
     null
   }
   
-  def gcd(numerator: Int, denominator: Int): Int = {
+  def gcd(numerator: Long, denominator: Long): Long = {
     if (denominator == 0) {
       numerator
     } else {

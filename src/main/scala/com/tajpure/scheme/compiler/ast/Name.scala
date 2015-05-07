@@ -32,7 +32,7 @@ class Name(_id: String, _file: String, _start: Int, _end: Int,
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    s.lookup0(id)
+    s.lookupLLVM(id)
   }
   
   override
