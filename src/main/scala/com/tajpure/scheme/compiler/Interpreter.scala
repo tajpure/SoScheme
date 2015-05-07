@@ -1,6 +1,7 @@
 package com.tajpure.scheme.compiler
 
 import com.tajpure.scheme.compiler.parser.Parser
+import com.tajpure.scheme.compiler.value.VoidValue
 
 object Interpreter extends App {
   
@@ -40,20 +41,19 @@ object Interpreter extends App {
     println("So Scheme version 0.1")
     print(">")
     var scope = Scope.buildInitScope()
-    var buffer: StringBuffer = new StringBuffer
+    val buffer: StringBuffer = new StringBuffer
     for (line <- io.Source.stdin.getLines) {
       isExitd(line)
       buffer.append(line)
       if (isInputFinished(buffer.toString())) {
           try {
             val result = interp(buffer.toString(), scope)
-            if (result != null) {
-              println(result)
-            }
+            println(result)
             scope = scope.innerScope
           } catch {
             case e: Exception => println(e.getMessage) 
           }
+        buffer.delete(0, buffer.length())
         print(">")
       }
     }

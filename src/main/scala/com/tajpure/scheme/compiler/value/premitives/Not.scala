@@ -13,14 +13,14 @@ class Not extends PrimFunc("not", 1) {
 
   def apply(args: List[Value], location: Node): Value = {
     if (args.size != arity) {
-      throw new CompilerException("Args don't match the 'not' function", location)
+      throw new CompilerException("args don't match the 'not' function", location)
     }
 
     if (args(0).isInstanceOf[BoolValue]) {
       new BoolValue(!args(0).asInstanceOf[BoolValue].value)
     }
     else {
-      Log.error(location, "Args type error in function 'not'")
+      Log.error(location, "args type error in function 'not'")
       Value.VOID
     }
   }

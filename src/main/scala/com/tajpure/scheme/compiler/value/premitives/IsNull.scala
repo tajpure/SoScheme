@@ -20,7 +20,7 @@ class IsNull extends PrimFunc("null?", 1) {
       if (args(0) == null || args(0).isInstanceOf[VoidList] || args(0).isInstanceOf[VoidValue]) {
         new BoolValue(true)
       }
-      else if (args(0).isInstanceOf[ConstValue]) {
+      /*else if (args(0).isInstanceOf[ConstValue]) {
         val constValue = args(0).asInstanceOf[ConstValue].value
         if (constValue == null || constValue.isInstanceOf[VoidList] || constValue.isInstanceOf[VoidValue]) {
           new BoolValue(true)
@@ -28,7 +28,7 @@ class IsNull extends PrimFunc("null?", 1) {
         else {
           new BoolValue(false)
         }
-      }
+      }*/
       else {
         new BoolValue(false)
       }

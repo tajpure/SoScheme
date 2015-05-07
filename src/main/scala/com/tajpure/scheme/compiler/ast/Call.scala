@@ -29,7 +29,7 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
   val args: Argument = _args
   
   def interp(s: Scope): Value = {
-    val value = Call.loopup(sign(s))
+    val value = Memory.loopup(sign(s))
     val result = if (value != null) {
         value
       }
@@ -92,7 +92,7 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
           throw new CompilerException("It's not a function", this.op)
         }
       }
-    Call.save(sign(s), result)
+    Memory.save(sign(s), result)
     result
   }
 
@@ -156,7 +156,7 @@ class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _r
 }
 
 // memorize the value of the call for faster speed
-object Call {
+object Memory {
   
   private val maxSize = 100
   

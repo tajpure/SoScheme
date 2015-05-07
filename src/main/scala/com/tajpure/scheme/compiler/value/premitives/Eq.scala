@@ -15,13 +15,13 @@ class Eq extends PrimFunc("=" , 2) {
   
   def apply(args: List[Value], location: Node): Value = {
      if (args.size < arity) {
-      throw new CompilerException("Args don't match the '=' function", location)
+      throw new CompilerException("args don't match the '=' function", location)
     }
     if (args(0).isInstanceOf[IntValue] && args(1).isInstanceOf[IntValue]) {
       new BoolValue(args(0).asInstanceOf[IntValue].value == args(1).asInstanceOf[IntValue].value)
     }
     else {
-      Log.error(location, "Args type error in function '='")
+      Log.error(location, "args type error in function '='")
       Value.VOID
     }
   }

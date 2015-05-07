@@ -14,13 +14,13 @@ class And extends PrimFunc("and" , 2) {
   
   def apply(args: List[Value], location: Node): Value = {
    if (args.size < arity) {
-      throw new CompilerException("Args don't match the 'and' function", location)
+      throw new CompilerException("args don't match the 'and' function", location)
     }
     if (args(0).isInstanceOf[BoolValue] && args(1).isInstanceOf[BoolValue]) {
       new BoolValue(args(0).asInstanceOf[BoolValue].value && args(1).asInstanceOf[BoolValue].value)
     }
     else {
-      Log.error(location, "Args type error in function 'and'")
+      Log.error(location, "args type error in function 'and'")
       Value.VOID
     }
   }

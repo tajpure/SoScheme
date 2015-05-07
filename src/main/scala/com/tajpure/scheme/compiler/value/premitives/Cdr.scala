@@ -7,7 +7,6 @@ import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.PairValue
 import com.tajpure.scheme.compiler.exception.RunTimeException
 import com.tajpure.scheme.compiler.exception.CompilerException
-import com.tajpure.scheme.compiler.value.ConstValue
 
 class Cdr extends PrimFunc("cdr" , 1) {
 
@@ -18,15 +17,6 @@ class Cdr extends PrimFunc("cdr" , 1) {
     
     if (args(0).isInstanceOf[PairValue]) {
       args(0).asInstanceOf[PairValue].tail
-    }
-    else if (args(0).isInstanceOf[ConstValue]) {
-      val constVal = args(0).asInstanceOf[ConstValue].value
-      if (constVal.isInstanceOf[PairValue]) {
-        constVal.asInstanceOf[PairValue].tail
-      }
-      else {
-        throw new RunTimeException("args type error in function 'cdr'", location)
-      }
     }
     else {
       throw new RunTimeException("args type error in function 'cdr'", location)

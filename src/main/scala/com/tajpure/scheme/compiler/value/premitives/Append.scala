@@ -6,7 +6,6 @@ import com.tajpure.scheme.compiler.value.VoidList
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.Value
-import com.tajpure.scheme.compiler.value.ConstValue
 
 class Append extends PrimFunc("append" , -1) {
 
@@ -19,15 +18,6 @@ class Append extends PrimFunc("append" , -1) {
             (arg, list) => {
               if (arg.isInstanceOf[PairValue]) {
                 list.:::(arg.asInstanceOf[PairValue].toList()) 
-              }
-              else if (arg.isInstanceOf[ConstValue]) {
-                val constValue = arg.asInstanceOf[ConstValue].value
-                if (constValue.isInstanceOf[PairValue]) {
-                  list.:::(constValue.asInstanceOf[PairValue].toList()) 
-                }
-                else {
-                  list.::(constValue)
-                }
               }
               else {
                 list.::(arg)

@@ -13,7 +13,7 @@ class Sub extends PrimFunc("-", -1) {
 
   def apply(args: List[Value], location: Node): Value = {
     if (args.size == 0) {
-      throw new CompilerException("Exception: incorrect arguments count in call '-'", location)
+      throw new CompilerException("incorrect arguments count in call '-'", location)
     } 
     else if (args.size == 1) {
       if (args(0).isInstanceOf[IntValue]) {
@@ -23,7 +23,7 @@ class Sub extends PrimFunc("-", -1) {
          new FloatValue( - args(0).asInstanceOf[FloatValue].value)
       }
       else {
-         Log.error(location, "Exception: incorrect arguments count in call '-'")
+         Log.error(location, "incorrect arguments count in call '-'")
          Value.VOID
       }
     } 

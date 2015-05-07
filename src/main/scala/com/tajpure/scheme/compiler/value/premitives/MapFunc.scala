@@ -8,7 +8,6 @@ import com.tajpure.scheme.compiler.value.Value
 import org.jllvm._type.Type
 import com.tajpure.scheme.compiler.value.PairValue
 import com.tajpure.scheme.compiler.exception.RunTimeException
-import com.tajpure.scheme.compiler.value.ConstValue
 import com.tajpure.scheme.compiler.value.VoidList
 import com.tajpure.scheme.compiler.exception.CompilerException
 import com.tajpure.scheme.compiler.value.Closure
@@ -30,17 +29,6 @@ class MapFunc extends PrimFunc("map" , 2) {
       val closure = args(0).asInstanceOf[Closure]
       val argList = if (args(1).isInstanceOf[PairValue]) {
           args(1).asInstanceOf[PairValue].toList()
-        } else if (args(1).isInstanceOf[ConstValue]) {
-          val constVal = args(1).asInstanceOf[ConstValue].value
-          if (constVal.isInstanceOf[PairValue]) {
-            constVal.asInstanceOf[PairValue].toList()
-          }
-          else if (constVal.isInstanceOf[VoidList]) {
-            List(constVal)
-          }
-          else {
-            throw new RunTimeException(constVal + " is not a proper list", location)
-          }
         } else if (args(1).isInstanceOf[VoidList]) {
             List(args(1))
         } else {

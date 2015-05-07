@@ -40,7 +40,7 @@ class Symbol (_value: String, _file: String, _start: Int, _end: Int, _row: Int, 
       } else {
         quoteNode.interp(s)
       }
-    new ConstValue(valValue)
+    valValue
   }
 
   def typecheck(s: Scope): Value = {

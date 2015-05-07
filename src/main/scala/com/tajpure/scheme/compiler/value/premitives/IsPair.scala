@@ -19,9 +19,9 @@ class IsPair extends PrimFunc("pair?", 1) {
       if (args(0).isInstanceOf[PairValue]) {
         new BoolValue(true)
       } 
-      else if (args(0).isInstanceOf[ConstValue] && args(0).asInstanceOf[ConstValue].value.isInstanceOf[PairValue]) {
+      /*else if (args(0).isInstanceOf[ConstValue] && args(0).asInstanceOf[ConstValue].value.isInstanceOf[PairValue]) {
           new BoolValue(true)
-      }
+      }*/
       else {
         new BoolValue(false)
       }
