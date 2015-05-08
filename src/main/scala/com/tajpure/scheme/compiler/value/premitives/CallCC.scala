@@ -2,7 +2,6 @@ package com.tajpure.scheme.compiler.value.premitives
 
 import com.tajpure.scheme.compiler.value.PairValue
 import com.tajpure.scheme.compiler.value.PrimFunc
-import com.tajpure.scheme.compiler.value.ConstValue
 import com.tajpure.scheme.compiler.value.VoidList
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.ast.Node

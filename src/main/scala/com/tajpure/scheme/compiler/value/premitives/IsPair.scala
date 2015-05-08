@@ -7,7 +7,6 @@ import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.value.PairValue
 import com.tajpure.scheme.compiler.value.BoolValue
 import com.tajpure.scheme.compiler.exception.CompilerException
-import com.tajpure.scheme.compiler.value.ConstValue
 
 class IsPair extends PrimFunc("pair?", 1) {
   
