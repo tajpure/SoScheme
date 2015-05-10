@@ -21,8 +21,7 @@ class Eq extends PrimFunc("=" , 2) {
       new BoolValue(args(0).asInstanceOf[IntValue].value == args(1).asInstanceOf[IntValue].value)
     }
     else {
-      Log.error(location, "args type error in function '='")
-      Value.VOID
+      throw new CompilerException("args don't match the '=' function", location)
     }
   }
   

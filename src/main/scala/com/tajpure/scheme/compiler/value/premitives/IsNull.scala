@@ -8,7 +8,6 @@ import com.tajpure.scheme.compiler.value.VoidValue
 import com.tajpure.scheme.compiler.value.VoidList
 import com.tajpure.scheme.compiler.value.BoolValue
 import com.tajpure.scheme.compiler.exception.CompilerException
-import com.tajpure.scheme.compiler.value.ConstValue
 
 class IsNull extends PrimFunc("null?", 1) {
   
