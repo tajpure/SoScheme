@@ -29,7 +29,22 @@ class Sub extends PrimFunc("-", -1) {
     } 
     else {
       args.slice(1, args.size).foldLeft(args(0))((result, arg) => {
-        result - arg
+        if (result.isInstanceOf[IntValue] && arg.isInstanceOf[IntValue]) {
+          new IntValue(result.asInstanceOf[IntValue].value - arg.asInstanceOf[IntValue].value)
+        } 
+        else if (result.isInstanceOf[IntValue] && arg.isInstanceOf[FloatValue]) {
+          new FloatValue(result.asInstanceOf[IntValue].value - arg.asInstanceOf[FloatValue].value)
+        } 
+        else if (result.isInstanceOf[FloatValue] && arg.isInstanceOf[IntValue]) {
+          new FloatValue(result.asInstanceOf[FloatValue].value - arg.asInstanceOf[IntValue].value)
+        } 
+        else if (result.isInstanceOf[FloatValue] && arg.isInstanceOf[FloatValue]) {
+          new FloatValue(result.asInstanceOf[FloatValue].value - arg.asInstanceOf[FloatValue].value)
+        } 
+        else {
+          Log.error(location, "Exception: incorrect arguments in call '-'")
+          Value.VOID
+        }
       })
     }
   }
