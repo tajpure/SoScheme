@@ -27,48 +27,7 @@ class Add extends PrimFunc("+", -1) {
     }
     else {
       args.foldLeft(new IntValue(0).asInstanceOf[Value])((result, arg) => {
-        if (result.isInstanceOf[IntValue] && arg.isInstanceOf[IntValue]) {
-          new IntValue(result.asInstanceOf[IntValue].value + arg.asInstanceOf[IntValue].value)
-        } 
-        else if (result.isInstanceOf[IntValue] && arg.isInstanceOf[FloatValue]) {
-          new FloatValue(result.asInstanceOf[IntValue].value + arg.asInstanceOf[FloatValue].value)
-        } 
-        else if (result.isInstanceOf[FloatValue] && arg.isInstanceOf[IntValue]) {
-          new FloatValue(result.asInstanceOf[FloatValue].value + arg.asInstanceOf[IntValue].value)
-        } 
-        else if (result.isInstanceOf[FloatValue] && arg.isInstanceOf[FloatValue]) {
-          new FloatValue(result.asInstanceOf[FloatValue].value + arg.asInstanceOf[FloatValue].value)
-        } 
-        else if (result.isInstanceOf[FractionValue] && arg.isInstanceOf[IntValue]) {
-          val fraction: FractionValue = result.asInstanceOf[FractionValue]
-          val value: Long =  arg.asInstanceOf[IntValue].value
-          new FractionValue(fraction.numerator + value * fraction.denominator, fraction.denominator)
-        }
-        else if (result.isInstanceOf[FractionValue] && arg.isInstanceOf[FloatValue]) {
-          val fraction: FractionValue = result.asInstanceOf[FractionValue]
-          new FloatValue((fraction.numerator / fraction.denominator.toFloat) + arg.asInstanceOf[FloatValue].value)
-        }
-        else if (arg.isInstanceOf[FractionValue]) {
-          val fraction: FractionValue = arg.asInstanceOf[FractionValue]
-          if (result.isInstanceOf[IntValue]) {
-            new FractionValue(fraction.numerator + result.asInstanceOf[IntValue].value * fraction.denominator, fraction.denominator)
-          } 
-          else if (result.isInstanceOf[FloatValue]) {
-            new FloatValue((fraction.numerator / fraction.denominator.toFloat) + result.asInstanceOf[FloatValue].value)
-          }
-          else if (result.isInstanceOf[FractionValue]) {
-            val fraction0: FractionValue = result.asInstanceOf[FractionValue]
-            new FractionValue(fraction.numerator * fraction0.denominator + fraction.denominator * fraction0.numerator, fraction.denominator * fraction0.denominator)
-          } 
-          else {
-            throw new CompilerException("incorrect arguments", location)
-            Value.VOID
-          }
-        }
-        else {
-          throw new CompilerException("incorrect arguments", location)
-          Value.VOID
-        }
+          result + arg
       })
     }
   }

@@ -24,22 +24,7 @@ class Mult extends PrimFunc("*", -1) {
     } 
     else {
       args.foldLeft(new IntValue(1).asInstanceOf[Value])((result, arg) => {
-        if (result.isInstanceOf[IntValue] && arg.isInstanceOf[IntValue]) {
-          new IntValue(result.asInstanceOf[IntValue].value * arg.asInstanceOf[IntValue].value)
-        } 
-        else if (result.isInstanceOf[IntValue] && arg.isInstanceOf[FloatValue]) {
-          new FloatValue(result.asInstanceOf[IntValue].value * arg.asInstanceOf[FloatValue].value)
-        } 
-        else if (result.isInstanceOf[FloatValue] && arg.isInstanceOf[IntValue]) {
-          new FloatValue(result.asInstanceOf[FloatValue].value * arg.asInstanceOf[IntValue].value)
-        } 
-        else if (result.isInstanceOf[FloatValue] && arg.isInstanceOf[FloatValue]) {
-          new FloatValue(result.asInstanceOf[FloatValue].value * arg.asInstanceOf[FloatValue].value)
-        } 
-        else {
-          throw new CompilerException("incorrect arguments in call '*' : " + arg, location)
-          Value.VOID
-        }
+        result * arg
       })
     }
   }
