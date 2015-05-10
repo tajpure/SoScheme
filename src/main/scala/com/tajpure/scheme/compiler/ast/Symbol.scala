@@ -2,6 +2,7 @@ package com.tajpure.scheme.compiler.ast
 
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
+import com.tajpure.scheme.compiler.value.ConstValue
 import com.tajpure.scheme.compiler.value.premitives.ListFunc
 import com.tajpure.scheme.compiler.value.StringValue
 import com.tajpure.scheme.compiler.value.IntValue
