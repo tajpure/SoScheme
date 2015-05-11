@@ -17,13 +17,7 @@ class Eq extends PrimFunc("=" , 2) {
      if (args.size < arity) {
       throw new CompilerException("args don't match the '=' function", location)
     }
-    if (args(0).isInstanceOf[IntValue] && args(1).isInstanceOf[IntValue]) {
-      new BoolValue(args(0).asInstanceOf[IntValue].value == args(1).asInstanceOf[IntValue].value)
-    }
-    else {
-      Log.error(location, "args type error in function '='")
-      Value.VOID
-    }
+    args(0) == args(1)
   }
   
   def typecheck(args: List[Value], location: Node): Value= {

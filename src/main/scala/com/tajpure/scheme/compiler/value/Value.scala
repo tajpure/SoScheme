@@ -39,6 +39,10 @@ abstract class Value {
     throw new RunTimeException(error)
   }
   
+  def ==(that: Value): Value = {
+    throw new RunTimeException(error)
+  }
+  
 }
 
 object Value {

@@ -128,6 +128,22 @@ class IntValue(val value: Long) extends Value {
   }
   
   override
+  def ==(that: Value): Value = {
+    if (that.isInstanceOf[IntValue]) {
+      new BoolValue(value == that.asInstanceOf[IntValue].value)
+    }
+    else if (that.isInstanceOf[FloatValue]) {
+     new BoolValue(value == that.asInstanceOf[FloatValue].value)
+    }
+    else if (that.isInstanceOf[CharValue]) {
+      new BoolValue(value == that.asInstanceOf[CharValue].value.charAt(0))
+    }
+    else {
+      throw new RunTimeException("type error")
+    }
+  }
+  
+  override
   def toString(): String = {
     value.toString()
   }

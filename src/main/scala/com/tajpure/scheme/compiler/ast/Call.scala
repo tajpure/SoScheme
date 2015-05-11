@@ -25,9 +25,9 @@ class Call(val op: Node, val args: Argument, _file: String, _start: Int, _end: I
     this(_op, _args, node.file, node.start, node.end, node.row, node.col)
     
   def interp(s: Scope): Value = {
-    val value = Memory.loopup(sign(s))
-    val result = if (value != null) {
-        value
+    val value = CallMemory.loopup(getSign(s))
+    val result = if (!value.isEmpty) {
+        value.get
       }
       else {
         val opValue: Value = this.op.interp(s)
@@ -88,7 +88,7 @@ class Call(val op: Node, val args: Argument, _file: String, _start: Int, _end: I
           throw new CompilerException("It's not a function", this.op)
         }
       }
-    Memory.save(sign(s), result)
+    CallMemory.save(getSign(s), result)
     result
   }
 
@@ -139,9 +139,14 @@ class Call(val op: Node, val args: Argument, _file: String, _start: Int, _end: I
    } }
   }
   
-  def sign(s: Scope):String = {
-    val argValues = Node.interpList(args.positional, s)
-    op + argValues.toString()
+  def getSign(s: Scope):String = {
+    if ("display".equals(op.toString()) || "newline".equals(op.toString())) {
+      "noCache"
+    }
+    else {
+      val argValues = Node.interpList(args.positional, s)
+      op + argValues.toString()
+    }
   }
   
   override
@@ -152,18 +157,20 @@ class Call(val op: Node, val args: Argument, _file: String, _start: Int, _end: I
 }
 
 // memorize the value of the call for faster speed
-object Memory {
+object CallMemory {
   
   private val maxSize = 100
   
   private val memory = new LRUCache[String, Value](maxSize)
   
   def save(sign: String, value: Value): Unit = {
-    memory.put(sign, value)
+    if (!"noCache".equals(sign)) {
+      memory.put(sign, value)
+    }
   }
   
-  def loopup(sign: String): Value = {
-    memory.get(sign)
+  def loopup(sign: String): Option[Value] = {
+      memory.get(sign)
   }
   
 }

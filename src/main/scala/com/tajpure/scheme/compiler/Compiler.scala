@@ -7,9 +7,7 @@ import org.jllvm.NativeLibrary
 import com.tajpure.scheme.compiler.util.Log
 import java.io.IOException
 
-class Compiler(_file: String) {
-  
-  val file: String  = _file
+class Compiler(val file: String) {
   
   def execute(): Unit = {
     NativeLibrary.load()
