@@ -3,17 +3,7 @@ package com.tajpure.scheme.compiler.ast
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 
-abstract class Node(_file: String, _start: Int, _end: Int, _row: Int, _col: Int) {
-
-  val file: String = _file
-
-  val start: Int = _start
-
-  val end: Int = _end
-
-  val row: Int = _row
-
-  val col: Int = _col
+abstract class Node(val file: String, val start: Int, val end: Int, val row: Int, val col: Int) {
 
   def interp(s: Scope): Value
 

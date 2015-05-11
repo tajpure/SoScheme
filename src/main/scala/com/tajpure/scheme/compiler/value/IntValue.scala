@@ -1,25 +1,130 @@
 package com.tajpure.scheme.compiler.value
 
 import com.tajpure.scheme.compiler.ast.Node
+import com.tajpure.scheme.compiler.exception.RunTimeException
 
-class IntValue(_value: Long) extends Value {
+class IntValue(val value: Long) extends Value {
   
-  val value: Long = _value
-  
-  def +(that: IntValue): IntValue = {
-    new IntValue(value + that.value)
+  override
+  def +(that: Value): Value = {
+    if (that.isInstanceOf[IntValue]) {
+      new IntValue(value + that.asInstanceOf[IntValue].value)
+    }
+    else if (that.isInstanceOf[FloatValue]) {
+      new FloatValue(value + that.asInstanceOf[FloatValue].value)
+    }
+    else if (that.isInstanceOf[CharValue]) {
+      new CharValue(value + that.asInstanceOf[CharValue].value)
+    }
+    else if (that.isInstanceOf[StringValue]) {
+      new StringValue(value + that.asInstanceOf[StringValue].value)
+    }
+    else {
+      throw new RunTimeException("type error")
+    }
   }
   
-  def +(that: FloatValue): FloatValue = {
-    new FloatValue(value + that.value)
+  override
+  def -(that: Value): Value = {
+    if (that.isInstanceOf[IntValue]) {
+      new IntValue(value - that.asInstanceOf[IntValue].value)
+    }
+    else if (that.isInstanceOf[FloatValue]) {
+      new FloatValue(value - that.asInstanceOf[FloatValue].value)
+    }
+    else {
+      throw new RunTimeException("type error")
+    }
   }
   
-  def +(that: CharValue): IntValue = {
-    new IntValue(value + that.value.toInt)
+  override
+  def *(that: Value): Value = {
+    if (that.isInstanceOf[IntValue]) {
+      new IntValue(value * that.asInstanceOf[IntValue].value)
+    }
+    else if (that.isInstanceOf[FloatValue]) {
+      new FloatValue(value * that.asInstanceOf[FloatValue].value)
+    }
+    else {
+      throw new RunTimeException("type error")
+    }
   }
   
-  def +(that: StringValue): StringValue = {
-    new StringValue(value + that.value)
+  override
+  def /(that: Value): Value = {
+    if (that.isInstanceOf[IntValue]) {
+      new IntValue(value / that.asInstanceOf[IntValue].value)
+    }
+    else if (that.isInstanceOf[FloatValue]) {
+      new FloatValue(value / that.asInstanceOf[FloatValue].value)
+    }
+    else {
+      throw new RunTimeException("type error")
+    }
+  }
+  
+  override
+  def >(that: Value): Value = {
+    if (that.isInstanceOf[IntValue]) {
+      new BoolValue(value > that.asInstanceOf[IntValue].value)
+    }
+    else if (that.isInstanceOf[FloatValue]) {
+     new BoolValue(value > that.asInstanceOf[FloatValue].value)
+    }
+    else if (that.isInstanceOf[CharValue]) {
+      new BoolValue(value > that.asInstanceOf[CharValue].value.charAt(0))
+    }
+    else {
+      throw new RunTimeException("type error")
+    }
+  }
+  
+  override
+  def <(that: Value): Value = {
+    if (that.isInstanceOf[IntValue]) {
+      new BoolValue(value < that.asInstanceOf[IntValue].value)
+    }
+    else if (that.isInstanceOf[FloatValue]) {
+     new BoolValue(value < that.asInstanceOf[FloatValue].value)
+    }
+    else if (that.isInstanceOf[CharValue]) {
+      new BoolValue(value < that.asInstanceOf[CharValue].value.charAt(0))
+    }
+    else {
+      throw new RunTimeException("type error")
+    }
+  }
+  
+  override
+  def <=(that: Value): Value = {
+    if (that.isInstanceOf[IntValue]) {
+      new BoolValue(value <= that.asInstanceOf[IntValue].value)
+    }
+    else if (that.isInstanceOf[FloatValue]) {
+     new BoolValue(value <= that.asInstanceOf[FloatValue].value)
+    }
+    else if (that.isInstanceOf[CharValue]) {
+      new BoolValue(value <= that.asInstanceOf[CharValue].value.charAt(0))
+    }
+    else {
+      throw new RunTimeException("type error")
+    }
+  }
+  
+  override
+  def >=(that: Value): Value = {
+    if (that.isInstanceOf[IntValue]) {
+      new BoolValue(value >= that.asInstanceOf[IntValue].value)
+    }
+    else if (that.isInstanceOf[FloatValue]) {
+     new BoolValue(value >= that.asInstanceOf[FloatValue].value)
+    }
+    else if (that.isInstanceOf[CharValue]) {
+      new BoolValue(value >= that.asInstanceOf[CharValue].value.charAt(0))
+    }
+    else {
+      throw new RunTimeException("type error")
+    }
   }
   
   override

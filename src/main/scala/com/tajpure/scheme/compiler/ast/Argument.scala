@@ -1,8 +1,6 @@
 package com.tajpure.scheme.compiler.ast
 
-class Argument(_elements: List[Node]) {
-
-  val elements: List[Node] = _elements
+class Argument(val elements: List[Node]) {
 
   val positional: List[Node] = elements.map {
     node => {

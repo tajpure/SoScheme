@@ -5,14 +5,12 @@ import com.tajpure.scheme.compiler.value.Value
 
 import org.jllvm.value.user.instruction.ReturnInstruction
 
-class Block(_statements: List[Node], _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
+class Block(val statements: List[Node], _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file: String, _start: Int, _end: Int, _row: Int, _col: Int) {
   
   def this(_statements: List[Node], node: Node) = 
     this(_statements, node.file, node.start, node.end, node.row, node.col)
 
-  val statements: List[Node] = _statements
-  
   def interp(s: Scope): Value = {
     val curScope: Scope = new Scope(s)
     s.setInnerScope(curScope)

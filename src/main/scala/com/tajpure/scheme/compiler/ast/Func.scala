@@ -17,17 +17,11 @@ import org.jllvm.value.user.constant.Function
 import org.jllvm.value.user.instruction.LoadInstruction
 import org.jllvm.value.user.instruction.StoreInstruction
 
-class Func(_params: Node, _propertyForm: Scope, _body: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
+class Func(val params: Node, val propertyForm: Scope, val body: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
   
   def this(_params: Node, _propertyForm: Scope, _body: Node, node: Node) = 
     this(_params, _propertyForm, _body, node.file, node.start, node.end, node.row, node.col)
-  
-  val params: Node = _params
-  
-  val propertyForm: Scope = _propertyForm
-  
-  val body: Node = _body
   
   def interp(s: Scope): Value = {
     val properties: Scope = 

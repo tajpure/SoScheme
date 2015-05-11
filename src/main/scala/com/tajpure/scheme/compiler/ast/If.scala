@@ -14,17 +14,11 @@ import org.jllvm.value.user.constant.Function
 import org.jllvm._type.VoidType
 import org.jllvm.value.user.constant.ConstantInteger
 
-class If(_test: Node, _then: Node, _else: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
+class If(val test: Node, val then: Node, val _else: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
   
   def this(_test: Node, _then: Node, _else: Node, node: Node) = 
     this(_test, _then, _else, node.file, node.start, node.end, node.row, node.col)
-  
-  val test = _test
-  
-  val then = _then
-  
-  val else_ = _else
   
   def interp(s: Scope): Value = {
     val result = test.interp(s)
@@ -37,8 +31,8 @@ class If(_test: Node, _then: Node, _else: Node, _file: String, _start: Int, _end
       then.interp(s)
     }
     else {
-      if (else_ != null) {
-        else_.interp(s)
+      if (_else != null) {
+        _else.interp(s)
       }
       else {
         Value.VOID
@@ -68,8 +62,8 @@ class If(_test: Node, _then: Node, _else: Node, _file: String, _start: Int, _end
     s.codegen.builder.buildBr(endBlock)
     
     s.codegen.builder.positionBuilderAtEnd(elseBlock)
-    val elseValue = if (else_ != null) {
-        else_.codegen(s)
+    val elseValue = if (_else != null) {
+        _else.codegen(s)
       } else {
         ConstantInteger.constI32(0) // when else is null, the value of else will be 0
       }

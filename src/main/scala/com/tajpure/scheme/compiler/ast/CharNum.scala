@@ -7,11 +7,9 @@ import com.tajpure.scheme.compiler.exception.CompilerException
 import org.jllvm.value.user.constant.ConstantInteger
 
 
-class CharNum (_value: String, _file: String, _start: Int, _end: Int,
+class CharNum ( val value: String, _file: String, _start: Int, _end: Int,
              _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
   
-  val value: String = _value
-
   def interp(s: Scope): Value = {
     new CharValue(value.substring(2))
   }

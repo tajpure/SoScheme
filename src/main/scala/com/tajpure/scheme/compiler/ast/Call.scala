@@ -18,16 +18,12 @@ import com.tajpure.scheme.compiler.value.premitives.FilterFunc
 import scala.collection.mutable.HashMap
 import com.tajpure.scheme.compiler.util.LRUCache
 
-class Call(_op: Node, _args: Argument, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
+class Call(val op: Node, val args: Argument, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
   
   def this(_op: Node, _args: Argument, node: Node) = 
     this(_op, _args, node.file, node.start, node.end, node.row, node.col)
     
-  val op: Node = _op
-  
-  val args: Argument = _args
-  
   def interp(s: Scope): Value = {
     val value = Memory.loopup(sign(s))
     val result = if (value != null) {
