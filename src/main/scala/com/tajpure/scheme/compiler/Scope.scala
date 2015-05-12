@@ -234,7 +234,7 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
   }
 
   def assign(_pattern: Node, _value: Value): Unit = {
-
+    // TODO
   }
   
   def save(path: String): Unit = {

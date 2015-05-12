@@ -1,8 +1,6 @@
 package com.tajpure.scheme.compiler.value
 
-class CharValue(_value: String) extends Value {
-  
-  val value: String = _value
+class CharValue(val value: String) extends Value {
   
   override
   def toString(): String = {

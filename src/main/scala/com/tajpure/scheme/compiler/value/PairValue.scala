@@ -3,11 +3,7 @@ package com.tajpure.scheme.compiler.value
 import com.tajpure.scheme.compiler.value.premitives.ListFunc
 import com.tajpure.scheme.compiler.ast.Node
 
-class PairValue(_head: Value, _tail: Value) extends Value {
-
-  val head = _head
-  
-  val tail = _tail
+class PairValue(val head: Value, val tail: Value) extends Value {
 
   def toList(): List[Value] = {
     def rest(tail: Value): List[Value] = {

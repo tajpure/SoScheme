@@ -7,10 +7,8 @@ import scala.collection.mutable.HashSet
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
 
-class Delimeter(_shape: String, _file: String, _start: Int, _end: Int,
+class Delimeter(val shape: String, _file: String, _start: Int, _end: Int,
                 _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
-
-  val shape = _shape
 
   def interp(s: Scope): Value = {
     null

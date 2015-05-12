@@ -16,7 +16,7 @@ class IsNull extends PrimFunc("null?", 1) {
       throw new CompilerException("args don't match the 'null?' function", location)
     }
     else {
-      if (args(0) == null || args(0).isInstanceOf[VoidList] || args(0).isInstanceOf[VoidValue]) {
+      if (args(0).isInstanceOf[VoidList] || args(0).isInstanceOf[VoidValue]) {
         new BoolValue(true)
       }
       /*else if (args(0).isInstanceOf[ConstValue]) {

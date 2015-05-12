@@ -10,15 +10,15 @@ import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.exception.ParserException
 
-class PreParser(_source:String, _path: String) {
+class PreParser(source:String, path: String) {
   
   def this(_path: String) {
     this(null, _path)
   }
 
-  val file: String = FileUtils.unifyPath(_path)
+  val file: String = FileUtils.unifyPath(path)
   
-  val lexer = new LexParser(_source, _path)
+  val lexer = new LexParser(source, path)
 
   @throws(classOf[ParserException])
   def nextNode(): Node = {

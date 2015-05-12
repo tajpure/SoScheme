@@ -15,6 +15,6 @@
   		(iter (* counter product)
         (+ counter 1))))
   (iter 1 1))
-(display (factorial 10))
+(display (factorial 10.0))
 
 ; 3628800

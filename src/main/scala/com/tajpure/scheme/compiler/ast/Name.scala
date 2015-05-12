@@ -14,11 +14,9 @@ import org.jllvm._type.DoubleType
 import com.tajpure.scheme.compiler.value.Closure
 import com.tajpure.scheme.compiler.exception.RunTimeException
 
-class Name(_id: String, _file: String, _start: Int, _end: Int,
+class Name(val id: String, _file: String, _start: Int, _end: Int,
            _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
   
-  val id: String = _id
-
   def interp(s: Scope): Value = {
     val value = s.lookup(id) 
     value match {
