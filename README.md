@@ -1,5 +1,6 @@
 SoScheme
 ========
+![](https://travis-ci.org/tajpure/SoScheme.svg)
 
 + A scheme interpreter
 + A compiler compiling scheme to LLVM IR
