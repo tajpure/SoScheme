@@ -96,7 +96,7 @@ object Parser extends App {
   def parseIf(tuple: Tuple): If = {
     val elements: List[Node] = tuple.elements
 
-    if (elements.size < 3) {
+    if (elements.size < 3 || elements.size > 4) {
       throw new ParserException("incorrect format of if", tuple)
     }
     
@@ -114,6 +114,11 @@ object Parser extends App {
   @throws(classOf[ParserException])
   def parseLet(tuple: Tuple): Node = {
     val elements = tuple.elements
+    
+    if (elements.size < 3) {
+      throw new ParserException("incorrect format of let", tuple)
+    }
+    
     val bindings = 
       if (elements(1).isInstanceOf[Tuple]) {
         parseBindings(elements(1).asInstanceOf[Tuple])
