@@ -58,7 +58,7 @@ class Call(val op: Node, val args: Argument, _file: String, _start: Int, _end: I
                     funcScope.putValue(params(i).id, value)
                 }  
                 else {
-                  throw new RunTimeException("incorrent argument count in call", this)
+                  throw new RunTimeException("incorrect argument count in call", this)
                 }
               }
             }
@@ -69,7 +69,7 @@ class Call(val op: Node, val args: Argument, _file: String, _start: Int, _end: I
             funcScope.putValue(funcParams.asInstanceOf[Name].id, value)
           }
           else {
-            throw new RunTimeException("incorrent argument", this)
+            throw new RunTimeException("incorrect argument", this)
           }
           
           closure.func.body.interp(funcScope)
@@ -106,7 +106,7 @@ class Call(val op: Node, val args: Argument, _file: String, _start: Int, _end: I
         } else if (funcParams.isInstanceOf[Name]) {
           List(funcParams.asInstanceOf[Name])
         } else {
-          throw new CompilerException("incorrent argument", this)
+          throw new CompilerException("incorrect argument", this)
         }
       
       val func = this.op.codegen(s)
