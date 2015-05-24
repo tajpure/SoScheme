@@ -16,7 +16,7 @@ class Symbol (val value: String, _file: String, _start: Int, _end: Int, _row: In
     this.quoteNode = node  
   }
   
-  def interpList(nodes: List[Node], s: Scope): List[Value] = {
+  def interpSymbolList(nodes: List[Node], s: Scope): List[Value] = {
     nodes.map { node => {
       if (node.isInstanceOf[Number]) {
         node.interp(s)
@@ -30,7 +30,7 @@ class Symbol (val value: String, _file: String, _start: Int, _end: Int, _row: In
   def interp(s: Scope): Value = {
     val valValue = if (quoteNode.isInstanceOf[Tuple]) {
         val tuple = quoteNode.asInstanceOf[Tuple]
-        val args = interpList(tuple.elements, s)
+        val args = interpSymbolList(tuple.elements, s)
         new ListFunc().apply(args, this)
       } else if (quoteNode.isInstanceOf[Name]) {
         new StringValue(quoteNode.toString())

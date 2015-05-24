@@ -270,29 +270,28 @@ class LexParser(_source:String, _path: String) {
 
 object LexParser extends App {
   
-  val lexer: LexParser = new LexParser("./src/test/resources/scheme/hello.scm")
-//  val lexer: LexParser = new LexParser("/home/taojx/sworkspace/SoScheme/test/location.scm")
-  
-  var tokens: List[Node] = List[Node]()
-  
-  var n: Node = lexer.nextToken()
-  
-  def loop() {
-    if (n != null) {
-      tokens  = tokens :+ n
-      try {
-        n = lexer.nextToken()
-        loop()
-      } 
-      catch {
-        case pe: ParserException => Log.error(pe.toString())
-        case e: Exception => Log.error(e.toString())
-      }
-    }
+  def lex(source: String): String = {
+     val lexer: LexParser = new LexParser(source, "/visual")
+     var tokens: List[Node] = List[Node]()
+     var n: Node = lexer.nextToken()
+    
+     def loop() {
+       if (n != null) {
+         tokens  = tokens :+ n
+         try {
+           n = lexer.nextToken()
+           loop()
+         } 
+         catch {
+           case pe: ParserException => Log.error(pe.toString())
+           case e: Exception => Log.error(e.toString())
+         }
+       }
+     }
+     loop()
+     tokens.toString()
   }
-  loop()
   
-  Log.info("LexParser result:")
-  tokens.foreach { node => print(node.toString() + "") }
+  println(lex("(define x 1)"))
   
 }

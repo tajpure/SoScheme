@@ -195,5 +195,9 @@ object Parser extends App {
   }
 
   parse("./src/test/resources/scheme/helloworld.scm").interp(Scope.buildInitScope())
+  
+  def parseSource(source: String): String = {
+    parse(source, "/visual").toString()
+  }
 
 }
