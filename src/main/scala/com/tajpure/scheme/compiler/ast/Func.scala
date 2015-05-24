@@ -43,7 +43,7 @@ class Func(val params: Node, val propertyForm: Scope, val body: Node, _file: Str
         } else if (params.isInstanceOf[Name]) {
           List(params.asInstanceOf[Name])
         } else {
-          throw new CompilerException("incorrent argument", this)
+          throw new CompilerException("incorrect argument", this)
         }
     val _params: Array[Type] = paramList.map { param => s.codegen.any }.toArray
     val function: Function = new Function(s.codegen.module, "anonymous", new FunctionType(s.codegen.any, _params, false))
@@ -66,7 +66,7 @@ class Func(val params: Node, val propertyForm: Scope, val body: Node, _file: Str
         } else if (params.isInstanceOf[Name]) {
           List(params.asInstanceOf[Name])
         } else {
-          throw new CompilerException("incorrent argument", this)
+          throw new CompilerException("incorrect argument", this)
         }
     val _params: Array[Type] = paramList.map { param => s.codegen.any }.toArray
     val function: Function = new Function(s.codegen.module, node.toString(), new FunctionType(s.codegen.any, _params, false))
