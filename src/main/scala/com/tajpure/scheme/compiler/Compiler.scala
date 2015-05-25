@@ -93,7 +93,7 @@ object Compiler extends App {
   }
   
   try {
-    compileToAssemblerCode("./test/hello.ll")
+    compileToAssemblerCode("./src/test/resources/scheme/print.ll")
   } catch {
     case e0 : IOException => Log.error(e0.getMessage)
     case e1 : Exception => Log.error(e1.getMessage)

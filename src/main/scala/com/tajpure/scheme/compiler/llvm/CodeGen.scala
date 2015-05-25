@@ -50,8 +50,7 @@ class CodeGen(_source: String) {
 //      new org.jllvm._type.FloatType()),
 //      false)
 
-//  val any: IntegerType = IntegerType.i32
-  val any = new org.jllvm._type.DoubleType
+  val any: IntegerType = IntegerType.i32
   
   def valueOf(alloc: StackAllocation, s: Scope): org.jllvm.value.Value = {
      null
