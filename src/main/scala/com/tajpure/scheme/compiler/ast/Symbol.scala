@@ -2,55 +2,48 @@ package com.tajpure.scheme.compiler.ast
 
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.value.Value
-import com.tajpure.scheme.compiler.value.premitives.ListFunc
-import com.tajpure.scheme.compiler.value.StringValue
+
+import org.jllvm._type.PointerType
+
 import com.tajpure.scheme.compiler.value.IntValue
 import com.tajpure.scheme.compiler.value.FloatValue
 
-class Symbol (val value: String, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
-  extends Node(_file, _start, _end, _row, _col) {
+import org.jllvm.value.user.constant.ConstantReal
+import org.jllvm._type.DoubleType
 
-  var quoteNode: Node = null 
+import com.tajpure.scheme.compiler.value.Closure
+import com.tajpure.scheme.compiler.exception.RunTimeException
 
-  def setQuoteNode(node: Node): Unit = {
-    this.quoteNode = node  
-  }
-  
-  def interpSymbolList(nodes: List[Node], s: Scope): List[Value] = {
-    nodes.map { node => {
-      if (node.isInstanceOf[Number]) {
-        node.interp(s)
-      }
-      else {
-        new StringValue(node.toString())
-      }
-    }}
-  }
+class Symbol(val id: String, _file: String, _start: Int, _end: Int,
+           _row: Int, _col: Int) extends Node(_file, _start, _end, _row, _col) {
   
   def interp(s: Scope): Value = {
-    val valValue = if (quoteNode.isInstanceOf[Tuple]) {
-        val tuple = quoteNode.asInstanceOf[Tuple]
-        val args = interpSymbolList(tuple.elements, s)
-        new ListFunc().apply(args, this)
-      } else if (quoteNode.isInstanceOf[Name]) {
-        new StringValue(quoteNode.toString())
-      } else {
-        quoteNode.interp(s)
-      }
-    valValue
+    val value = s.lookup(id) 
+    value match {
+      case null => throw new RunTimeException("undefined", this)
+      case _ => value
+    }
   }
 
   def typecheck(s: Scope): Value = {
-    null
+    s.lookup(id)
   }
   
   def codegen(s: Scope): org.jllvm.value.Value = {
-    null
+    s.lookupLLVM(id)
   }
   
   override
   def toString(): String = {
-    value + quoteNode
+    id
+  }
+  
+}
+
+object Symbol {
+  
+  def genSymbol(id: String): Node = {
+    new Symbol(id, null, 0, 0, 0, 0)
   }
   
 }

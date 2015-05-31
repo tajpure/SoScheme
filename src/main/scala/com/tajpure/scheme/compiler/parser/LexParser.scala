@@ -5,7 +5,6 @@ import com.tajpure.scheme.compiler.ast.Bool
 import com.tajpure.scheme.compiler.ast.Delimeter
 import com.tajpure.scheme.compiler.ast.FloatNum
 import com.tajpure.scheme.compiler.ast.IntNum
-import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.Str
 import com.tajpure.scheme.compiler.ast.Symbol
@@ -13,6 +12,7 @@ import com.tajpure.scheme.compiler.exception.ParserException
 import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
 import com.tajpure.scheme.compiler.ast.CharNum
+import com.tajpure.scheme.compiler.ast.Quote
 
 class LexParser(_source:String, _path: String) {
 
@@ -106,7 +106,7 @@ class LexParser(_source:String, _path: String) {
         throw new ParserException("string format error:", startRow, startCol, offset);
       } 
       else if (source.startsWith(Constants.STRING_END, offset)) {
-        skip(Constants.STRING_END.length());
+        skip(Constants.STRING_END.length())
       } 
       else {
         forward()
@@ -184,7 +184,7 @@ class LexParser(_source:String, _path: String) {
     }
   }
   
-  def scanSymbol(): Node = {
+  def scanQuote(): Node = {
     val start: Int = offset
     val startRow: Int = row
     val startCol: Int = col
@@ -203,14 +203,14 @@ class LexParser(_source:String, _path: String) {
     
     val end: Int = offset
     val content: String = source.substring(start, end)
-    new Symbol(content, file, start, end, row, col)
+    new Quote(content, file, start, end, row, col)
   }
   
   def isIdentifierChar(ch: Char): Boolean = {
     Character.isLetterOrDigit(ch) || Constants.IDENT_CHARS.contains(ch)
   }
 
-  def scanName(): Node = {
+  def scanSymbol(): Node = {
     val start: Int = offset
     val startRow: Int = row
     val startCol: Int = col
@@ -224,7 +224,7 @@ class LexParser(_source:String, _path: String) {
     loop()
 
     val content = source.substring(start, offset)
-    new Name(content, file, start, offset, startRow, startCol)
+    new Symbol(content, file, start, offset, startRow, startCol)
   }
 
   @throws(classOf[ParserException])
@@ -246,7 +246,7 @@ class LexParser(_source:String, _path: String) {
         scanString()
       } 
       else if (source.charAt(offset) == Constants.QUOTE || source.startsWith(Constants._QUOTE, offset)) {
-        scanSymbol()
+        scanQuote()
       }
       else if (Character.isDigit(source.charAt(offset)) ||
         ((source.charAt(offset) == '+' || source.charAt(offset) == '-') 
@@ -257,7 +257,7 @@ class LexParser(_source:String, _path: String) {
         scanChar()
       }
       else if (isIdentifierChar(source.charAt(offset))) {
-        scanName()
+        scanSymbol()
       }
       else {
         throw new ParserException("unrecognized syntax: " + source.substring(offset, offset + 1),

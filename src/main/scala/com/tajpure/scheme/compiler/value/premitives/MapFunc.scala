@@ -1,19 +1,17 @@
 package com.tajpure.scheme.compiler.value.premitives
 
-import org.jllvm._type.FunctionType
-import com.tajpure.scheme.compiler.value.PrimFunc
 import com.tajpure.scheme.compiler.Scope
 import com.tajpure.scheme.compiler.ast.Node
-import com.tajpure.scheme.compiler.value.Value
-import org.jllvm._type.Type
-import com.tajpure.scheme.compiler.value.PairValue
-import com.tajpure.scheme.compiler.exception.RunTimeException
-import com.tajpure.scheme.compiler.value.VoidList
-import com.tajpure.scheme.compiler.exception.CompilerException
-import com.tajpure.scheme.compiler.value.Closure
+import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
+import com.tajpure.scheme.compiler.exception.CompilerException
+import com.tajpure.scheme.compiler.exception.RunTimeException
 import com.tajpure.scheme.compiler.value.BoolValue
-import com.tajpure.scheme.compiler.ast.Name
+import com.tajpure.scheme.compiler.value.Closure
+import com.tajpure.scheme.compiler.value.PairValue
+import com.tajpure.scheme.compiler.value.PrimFunc
+import com.tajpure.scheme.compiler.value.Value
+import com.tajpure.scheme.compiler.value.VoidList
 
 class MapFunc extends PrimFunc("map" , 2) {
 
@@ -53,8 +51,8 @@ class MapFunc extends PrimFunc("map" , 2) {
                   throw new RunTimeException("incorrect arguments count", location)
                 }
                 else {
-                  if (elements(0).isInstanceOf[Name]) {
-                    funcScope.putValue(elements(0).asInstanceOf[Name].id, arg)
+                  if (elements(0).isInstanceOf[Symbol]) {
+                    funcScope.putValue(elements(0).asInstanceOf[Symbol].id, arg)
                   }
                 }
               }
