@@ -22,24 +22,24 @@ class PreParser(source:String, path: String) {
 
   @throws(classOf[ParserException])
   def nextNode(): Node = {
-    nextNode1(0)
+    nextNode(0)
   }
   
   @throws(classOf[ParserException])
-  def nextNode1(depth: Int): Node = {
+  def nextNode(depth: Int): Node = {
     val first: Node = lexer.nextToken()
     if (first == null) {
       null
     } 
     else if (first.isInstanceOf[Quote]) {
       val quote: Quote = first.asInstanceOf[Quote]
-      quote.setQuoteNode(nextNode1(depth + 1))
+      quote.setQuoteNode(nextNode(depth + 1))
       quote
     }
     else {
       if (Delimeter.isOpen(first)) {
         var elements: List[Node] = List[Node]()
-        var next: Node = nextNode1(depth + 1)
+        var next: Node = nextNode(depth + 1)
         def loop() {
           if (!Delimeter._match(first, next)) {
             if (next == null) {
@@ -50,7 +50,7 @@ class PreParser(source:String, path: String) {
             }
             else {
               elements = elements :+ next
-              next = nextNode1(depth + 1)
+              next = nextNode(depth + 1)
               loop()
             }
           }
