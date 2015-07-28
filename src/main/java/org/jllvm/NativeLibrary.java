@@ -74,9 +74,9 @@ public class NativeLibrary {
     }
     
     public static synchronized void load(String libName) {
-//        Runtime.getRuntime().load(NativeLibrary.class.getResource("bindings/" + os + "/" + arch + "/" + libName).getPath());
-    	String path = System.getProperty("user.dir");
-        Runtime.getRuntime().load(path + "/lib/" + libName);
+        Runtime.getRuntime().load(NativeLibrary.class.getResource("bindings/" + os + "/" + arch + "/" + libName).getPath());
+//    	String path = System.getProperty("user.dir");
+//        Runtime.getRuntime().load(path + "/lib/" + libName);
     }
     
     public static synchronized void load() {
