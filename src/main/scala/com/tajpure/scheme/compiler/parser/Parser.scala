@@ -9,7 +9,6 @@ import com.tajpure.scheme.compiler.ast.Define
 import com.tajpure.scheme.compiler.ast.Func
 import com.tajpure.scheme.compiler.ast.If
 import com.tajpure.scheme.compiler.ast.Let
-import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
@@ -44,8 +43,8 @@ object Parser {
       } 
       else {
         val curNode: Node = elements(0)
-        if (curNode.isInstanceOf[Name]) {
-          curNode.asInstanceOf[Name].id match {
+        if (curNode.isInstanceOf[Symbol]) {
+          curNode.asInstanceOf[Symbol].id match {
             case Constants.DEFINE => parseDefine(tuple)
             case Constants.IF => parseIf(tuple)
             case Constants.LET => parseLet(tuple)
@@ -80,7 +79,7 @@ object Parser {
           val funcElements = funcTuple.elements
           val pattern: Node = parseNode(funcElements(0))
           val paramsTuple = new Tuple(funcElements.slice(1, funcElements.size), funcTuple)
-          val lambdaElements = elements.slice(2, elements.size).:::(List(Name.genName(Constants.LAMBDA), paramsTuple))
+          val lambdaElements = elements.slice(2, elements.size).:::(List(Symbol.genSymbol(Constants.LAMBDA), paramsTuple))
           val lambdaTuple = new Tuple(lambdaElements, funcTuple)
           val value: Node = parseNode(lambdaTuple)
           new Define(pattern, value, tuple)
@@ -139,7 +138,7 @@ object Parser {
     elements.map { element => {
       if (element.isInstanceOf[Tuple]) {
         val origin = element.asInstanceOf[Tuple]
-        val define = new Tuple(Name.genName(Constants.DEFINE)::origin.elements, origin.open, origin.close, origin)
+        val define = new Tuple(Symbol.genSymbol(Constants.DEFINE)::origin.elements, origin.open, origin.close, origin)
         parseDefine(define)
       }
       else {
@@ -161,12 +160,12 @@ object Parser {
     // the type of the parameters must be "Name" or "Tuple"
     if (params.isInstanceOf[Tuple]) {
       params.asInstanceOf[Tuple].elements.map { node =>
-      if (!node.isInstanceOf[Name]) {
+      if (!node.isInstanceOf[Symbol]) {
         throw new ParserException("can't pass as an argument:" + node.toString(), node)
       }
       }
     } else {
-      if (!params.isInstanceOf[Name]) {
+      if (!params.isInstanceOf[Symbol]) {
         throw new ParserException("can't pass as an argument:" + params.toString(), params)
       }
     }

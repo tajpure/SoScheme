@@ -1,21 +1,19 @@
 package com.tajpure.scheme.compiler.ast
 
-import com.tajpure.scheme.compiler.Scope
-import com.tajpure.scheme.compiler.value.Value
-import com.tajpure.scheme.compiler.value.IntValue
-import com.tajpure.scheme.compiler.value.FloatValue
-import com.tajpure.scheme.compiler.value.Closure
-import com.tajpure.scheme.compiler.exception.CompilerException
-
 import org.jllvm._type.FunctionType
-import org.jllvm.bindings.LLVMLinkage
 import org.jllvm._type.IntegerType
 import org.jllvm._type.Type
+import org.jllvm.bindings.LLVMLinkage
 import org.jllvm.value.BasicBlock
-import org.jllvm._type.PointerType
 import org.jllvm.value.user.constant.Function
 import org.jllvm.value.user.instruction.LoadInstruction
 import org.jllvm.value.user.instruction.StoreInstruction
+
+import com.tajpure.scheme.compiler.Scope
+import com.tajpure.scheme.compiler.exception.CompilerException
+import com.tajpure.scheme.compiler.value.Closure
+import com.tajpure.scheme.compiler.value.FloatValue
+import com.tajpure.scheme.compiler.value.Value
 
 class Func(val params: Node, val propertyForm: Scope, val body: Node, _file: String, _start: Int, _end: Int, _row: Int, _col: Int)
   extends Node(_file, _start, _end, _row, _col) {
@@ -39,9 +37,9 @@ class Func(val params: Node, val propertyForm: Scope, val body: Node, _file: Str
   
   def codegen(s: Scope): org.jllvm.value.Value = {
     val paramList = if (params.isInstanceOf[Tuple]) {
-          params.asInstanceOf[Tuple].elements.map { node => node.asInstanceOf[Name] }
-        } else if (params.isInstanceOf[Name]) {
-          List(params.asInstanceOf[Name])
+          params.asInstanceOf[Tuple].elements.map { node => node.asInstanceOf[Symbol] }
+        } else if (params.isInstanceOf[Symbol]) {
+          List(params.asInstanceOf[Symbol])
         } else {
           throw new CompilerException("incorrect argument", this)
         }
@@ -62,9 +60,9 @@ class Func(val params: Node, val propertyForm: Scope, val body: Node, _file: Str
   override
   def codegen(node: Node, s: Scope): org.jllvm.value.Value = {
     val paramList = if (params.isInstanceOf[Tuple]) {
-          params.asInstanceOf[Tuple].elements.map { node => node.asInstanceOf[Name] }
-        } else if (params.isInstanceOf[Name]) {
-          List(params.asInstanceOf[Name])
+          params.asInstanceOf[Tuple].elements.map { node => node.asInstanceOf[Symbol] }
+        } else if (params.isInstanceOf[Symbol]) {
+          List(params.asInstanceOf[Symbol])
         } else {
           throw new CompilerException("incorrect argument", this)
         }

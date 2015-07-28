@@ -1,50 +1,51 @@
 package com.tajpure.scheme.compiler
 
 import java.util.NoSuchElementException
+
 import scala.collection.Set
 import scala.collection.mutable.HashMap
-import com.tajpure.scheme.compiler.ast.Name
+
+import org.jllvm.value.user.constant.ConstantBoolean
+
 import com.tajpure.scheme.compiler.ast.Node
 import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.llvm.CodeGen
 import com.tajpure.scheme.compiler.util.Log
+import com.tajpure.scheme.compiler.value.BoolValue
 import com.tajpure.scheme.compiler.value.Type
 import com.tajpure.scheme.compiler.value.Value
 import com.tajpure.scheme.compiler.value.premitives.Add
 import com.tajpure.scheme.compiler.value.premitives.And
+import com.tajpure.scheme.compiler.value.premitives.Append
+import com.tajpure.scheme.compiler.value.premitives.Car
+import com.tajpure.scheme.compiler.value.premitives.Cdr
+import com.tajpure.scheme.compiler.value.premitives.Cons
 import com.tajpure.scheme.compiler.value.premitives.Display
 import com.tajpure.scheme.compiler.value.premitives.Div
 import com.tajpure.scheme.compiler.value.premitives.Eq
+import com.tajpure.scheme.compiler.value.premitives.FilterFunc
 import com.tajpure.scheme.compiler.value.premitives.GT
 import com.tajpure.scheme.compiler.value.premitives.GTE
-import com.tajpure.scheme.compiler.value.premitives.LT
-import com.tajpure.scheme.compiler.value.premitives.LTE
-import com.tajpure.scheme.compiler.value.premitives.Mult
-import com.tajpure.scheme.compiler.value.premitives.Not
-import com.tajpure.scheme.compiler.value.premitives.Or
-import com.tajpure.scheme.compiler.value.premitives.Sub
-import org.jllvm.value.user.constant.ConstantBoolean
-import com.tajpure.scheme.compiler.value.BoolValue
-import com.tajpure.scheme.compiler.value.premitives.ListFunc
-import com.tajpure.scheme.compiler.exception.RunTimeException
-import com.tajpure.scheme.compiler.value.premitives.Newline
-import com.tajpure.scheme.compiler.value.premitives.Cons
-import com.tajpure.scheme.compiler.value.premitives.Cdr
-import com.tajpure.scheme.compiler.value.premitives.Car
-import com.tajpure.scheme.compiler.value.premitives.IsString
-import com.tajpure.scheme.compiler.value.premitives.IsNumber
-import com.tajpure.scheme.compiler.value.premitives.IsPair
-import com.tajpure.scheme.compiler.value.premitives.IsChar
-import com.tajpure.scheme.compiler.value.premitives.IsProcedure
+import com.tajpure.scheme.compiler.value.premitives.Import
 import com.tajpure.scheme.compiler.value.premitives.IsBoolean
-import com.tajpure.scheme.compiler.value.premitives.SetValue
+import com.tajpure.scheme.compiler.value.premitives.IsChar
 import com.tajpure.scheme.compiler.value.premitives.IsEqv
 import com.tajpure.scheme.compiler.value.premitives.IsNull
-import com.tajpure.scheme.compiler.value.premitives.Import
-import com.tajpure.scheme.compiler.value.premitives.Append
-import com.tajpure.scheme.compiler.value.premitives.FilterFunc
+import com.tajpure.scheme.compiler.value.premitives.IsNumber
+import com.tajpure.scheme.compiler.value.premitives.IsPair
+import com.tajpure.scheme.compiler.value.premitives.IsProcedure
+import com.tajpure.scheme.compiler.value.premitives.IsString
+import com.tajpure.scheme.compiler.value.premitives.LT
+import com.tajpure.scheme.compiler.value.premitives.LTE
+import com.tajpure.scheme.compiler.value.premitives.ListFunc
 import com.tajpure.scheme.compiler.value.premitives.MapFunc
+import com.tajpure.scheme.compiler.value.premitives.Mult
+import com.tajpure.scheme.compiler.value.premitives.Newline
+import com.tajpure.scheme.compiler.value.premitives.Not
+import com.tajpure.scheme.compiler.value.premitives.Or
+import com.tajpure.scheme.compiler.value.premitives.SetValue
+import com.tajpure.scheme.compiler.value.premitives.Sub
 
 class Scope(_parent: Scope, _codegen: CodeGen) {
 
@@ -221,8 +222,8 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
   }
 
   def define(_pattern: Node, _value: Value): Unit = {
-    if (_pattern.isInstanceOf[Name]) {
-      val id: String = _pattern.asInstanceOf[Name].id
+    if (_pattern.isInstanceOf[Symbol]) {
+      val id: String = _pattern.asInstanceOf[Symbol].id
       putValue(id, _value)
     } 
     else if (_pattern.isInstanceOf[Tuple]) {

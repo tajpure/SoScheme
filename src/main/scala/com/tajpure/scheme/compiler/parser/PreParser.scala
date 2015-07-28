@@ -7,8 +7,8 @@ import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.util.FileUtils
 import com.tajpure.scheme.compiler.util.Log
-import com.tajpure.scheme.compiler.ast.Name
 import com.tajpure.scheme.compiler.exception.ParserException
+import com.tajpure.scheme.compiler.ast.Quote
 
 class PreParser(source:String, path: String) {
   
@@ -22,24 +22,24 @@ class PreParser(source:String, path: String) {
 
   @throws(classOf[ParserException])
   def nextNode(): Node = {
-    nextNode1(0)
+    nextNode(0)
   }
   
   @throws(classOf[ParserException])
-  def nextNode1(depth: Int): Node = {
+  def nextNode(depth: Int): Node = {
     val first: Node = lexer.nextToken()
     if (first == null) {
       null
     } 
-    else if (first.isInstanceOf[Symbol]) {
-      val symbol: Symbol = first.asInstanceOf[Symbol]
-      symbol.setQuoteNode(nextNode1(depth + 1))
-      symbol
+    else if (first.isInstanceOf[Quote]) {
+      val quote: Quote = first.asInstanceOf[Quote]
+      quote.setQuoteNode(nextNode(depth + 1))
+      quote
     }
     else {
       if (Delimeter.isOpen(first)) {
         var elements: List[Node] = List[Node]()
-        var next: Node = nextNode1(depth + 1)
+        var next: Node = nextNode(depth + 1)
         def loop() {
           if (!Delimeter._match(first, next)) {
             if (next == null) {
@@ -50,7 +50,7 @@ class PreParser(source:String, path: String) {
             }
             else {
               elements = elements :+ next
-              next = nextNode1(depth + 1)
+              next = nextNode(depth + 1)
               loop()
             }
           }
@@ -73,7 +73,7 @@ class PreParser(source:String, path: String) {
     var s: Node = nextNode()
     val first: Node = s
     var last: Node = null
-    elements = elements :+ Name.genName(Constants.BEGIN)
+    elements = elements :+ Symbol.genSymbol(Constants.BEGIN)
     
     def loop() {
       if (s != null) {
@@ -85,7 +85,7 @@ class PreParser(source:String, path: String) {
     }
     loop()
     
-    new Tuple(elements, Name.genName(Constants.PAREN_BEGIN), Name.genName(Constants.PAREN_END), file, first.start, last.end, 0, 0)
+    new Tuple(elements, Symbol.genSymbol(Constants.PAREN_BEGIN), Symbol.genSymbol(Constants.PAREN_END), file, first.start, last.end, 0, 0)
   }
   
 }

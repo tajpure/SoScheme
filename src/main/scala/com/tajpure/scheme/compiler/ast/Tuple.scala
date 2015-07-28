@@ -14,7 +14,7 @@ class Tuple(val elements: List[Node], val open: Node, val close: Node, _file: St
     this(_elements, tuple.open, tuple.close, tuple.file, tuple.start, tuple.end, tuple.row, tuple.col)
     
   def this(_elements: List[Node], node: Node) = 
-    this(_elements, Name.genName(Constants.PAREN_BEGIN), Name.genName(Constants.PAREN_END), 
+    this(_elements, Symbol.genSymbol(Constants.PAREN_BEGIN), Symbol.genSymbol(Constants.PAREN_END), 
         node.file, node.start, node.end, node.row, node.col)
   
   def interp(s: Scope): Value = {

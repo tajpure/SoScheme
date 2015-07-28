@@ -42,7 +42,7 @@ class Call(val op: Node, val args: Argument, _file: String, _start: Int, _end: I
           }
           
           if (funcParams.isInstanceOf[Tuple]) {
-            val params = funcParams.asInstanceOf[Tuple].elements.map { node => node.asInstanceOf[Name] }
+            val params = funcParams.asInstanceOf[Tuple].elements.map { node => node.asInstanceOf[Symbol] }
             params.zipWithIndex.foreach {
               case (param, i) => {
                 if (params.size - 2 == i && Constants.DOT.equals(param.id)) {
@@ -63,10 +63,10 @@ class Call(val op: Node, val args: Argument, _file: String, _start: Int, _end: I
               }
             }
           }
-          else if (funcParams.isInstanceOf[Name]) {
+          else if (funcParams.isInstanceOf[Symbol]) {
             val restArgsVal = Node.interpList(args.positional, s)
             val value = new ListFunc().apply(restArgsVal, this)
-            funcScope.putValue(funcParams.asInstanceOf[Name].id, value)
+            funcScope.putValue(funcParams.asInstanceOf[Symbol].id, value)
           }
           else {
             throw new RunTimeException("incorrect argument", this)
@@ -102,9 +102,9 @@ class Call(val op: Node, val args: Argument, _file: String, _start: Int, _end: I
       val closure: Closure = opValue.asInstanceOf[Closure]
       val funcParams: Node = closure.func.params
       val params = if (funcParams.isInstanceOf[Tuple]) {
-          funcParams.asInstanceOf[Tuple].elements.map { node => node.asInstanceOf[Name] }
-        } else if (funcParams.isInstanceOf[Name]) {
-          List(funcParams.asInstanceOf[Name])
+          funcParams.asInstanceOf[Tuple].elements.map { node => node.asInstanceOf[Symbol] }
+        } else if (funcParams.isInstanceOf[Symbol]) {
+          List(funcParams.asInstanceOf[Symbol])
         } else {
           throw new CompilerException("incorrect argument", this)
         }
