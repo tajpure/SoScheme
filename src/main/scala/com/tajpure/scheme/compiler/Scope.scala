@@ -271,7 +271,7 @@ class Scope(_parent: Scope, _codegen: CodeGen) {
 
 }
 
-object Scope extends App {
+object Scope {
   
   def buildIn(s: Scope): Scope = {
     s.putValue("+", new Add())

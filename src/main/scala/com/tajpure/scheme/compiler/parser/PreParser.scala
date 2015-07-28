@@ -90,17 +90,17 @@ class PreParser(source:String, path: String) {
   
 }
 
-object PreParser extends App {
-  
-  val preParser: PreParser = new PreParser("./src/test/resources/scheme/fib.scm")
-//  val preParser: PreParser = new PreParser("/home/taojx/sworkspace/SoScheme/test/hello.scm")
-  
-  try {
-    Log.info(preParser.parse().toString())
-  } 
-  catch {
-    case e0: ParserException => Log.error(e0.toString())
-    case e1: Exception => Log.error(e1.toString())
-  }
-  
-}
+//object PreParser extends App {
+//  
+//  val preParser: PreParser = new PreParser("./src/test/resources/scheme/fib.scm")
+////  val preParser: PreParser = new PreParser("/home/taojx/sworkspace/SoScheme/test/hello.scm")
+//  
+//  try {
+//    Log.info(preParser.parse().toString())
+//  } 
+//  catch {
+//    case e0: ParserException => Log.error(e0.toString())
+//    case e1: Exception => Log.error(e1.toString())
+//  }
+//  
+//}

@@ -38,7 +38,7 @@ class Compiler(val file: String) {
     
     root.codegen(scope)
     scope.save(targetPath)
-    scope.codegen.print()
+//    scope.codegen.print()
   }
   
   /**
@@ -60,11 +60,11 @@ class Compiler(val file: String) {
     
     root.codegen(scope)
     scope.codegen.saveBitCode(bcPath)
-    scope.codegen.print()
+//    scope.codegen.print()
   }
 }
 
-object Compiler extends App {
+object Compiler {
   
   def compileToBitCode(source: String): String =  {
     val output = execute("llvm-as", source)

@@ -150,6 +150,6 @@ class IntValue(val value: Long) extends Value {
   
 }
 
-object IntValue extends App {
+object IntValue {
 //  val intVal = new IntValue(10)
 }

@@ -78,23 +78,23 @@ class CodeGen(_source: String) {
 
 }
 
-object CodeGen extends App {
-
-  NativeLibrary.load()
-  
-  val codegen: CodeGen = new CodeGen("test")
-  
-  val _type: IntegerType = new IntegerType(32)
-  val Doubles:  Array[Type] = new Array[Type](0)
-  val function: org.jllvm.value.user.constant.Function = 
-    new org.jllvm.value.user.constant.Function(codegen.module, "test", new FunctionType(_type, Doubles, false))
-  
-  function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
-  
-  val block: BasicBlock = function.appendBasicBlock("entry");
-  codegen.builder.positionBuilderAtEnd(block)
-  
-  new ReturnInstruction(codegen.builder, ConstantInteger.constI32(0));
-  codegen.print()
-
-}
+//object CodeGen extends App {
+//
+//  NativeLibrary.load()
+//  
+//  val codegen: CodeGen = new CodeGen("test")
+//  
+//  val _type: IntegerType = new IntegerType(32)
+//  val Doubles:  Array[Type] = new Array[Type](0)
+//  val function: org.jllvm.value.user.constant.Function = 
+//    new org.jllvm.value.user.constant.Function(codegen.module, "test", new FunctionType(_type, Doubles, false))
+//  
+//  function.setLinkage(LLVMLinkage.LLVMExternalLinkage)
+//  
+//  val block: BasicBlock = function.appendBasicBlock("entry");
+//  codegen.builder.positionBuilderAtEnd(block)
+//  
+//  new ReturnInstruction(codegen.builder, ConstantInteger.constI32(0));
+//  codegen.print()
+//
+//}

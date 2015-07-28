@@ -33,7 +33,7 @@ class FractionValue (_numerator: Long, _denominator: Long) extends Value {
   
 }
 
-object FractionValue extends App {
-  val fraction = new FractionValue(12, 4)
-  println(fraction.gcd(12, 4))
-}
+//object FractionValue {
+//  val fraction = new FractionValue(12, 4)
+//  println(fraction.gcd(12, 4))
+//}

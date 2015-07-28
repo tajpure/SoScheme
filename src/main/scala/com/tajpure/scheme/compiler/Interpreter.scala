@@ -3,7 +3,7 @@ package com.tajpure.scheme.compiler
 import com.tajpure.scheme.compiler.parser.Parser
 import com.tajpure.scheme.compiler.value.VoidValue
 
-object Interpreter extends App {
+object Interpreter {
   
   def interp(_source: String): Unit = {
     if (_source == null || _source.size == 0) {
@@ -84,9 +84,9 @@ object Interpreter extends App {
     }
   }
   
-  override
-  def main(args: Array[String]): Unit =  {
-    repl()
-  }
+//  override
+//  def main(args: Array[String]): Unit =  {
+//    repl()
+//  }
   
 }

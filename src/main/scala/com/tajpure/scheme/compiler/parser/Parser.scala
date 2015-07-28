@@ -15,7 +15,7 @@ import com.tajpure.scheme.compiler.ast.Symbol
 import com.tajpure.scheme.compiler.ast.Tuple
 import com.tajpure.scheme.compiler.exception.ParserException
 
-object Parser extends App {
+object Parser {
 
   @throws(classOf[ParserException])
   def parse(_path: String): Node = {
@@ -194,7 +194,7 @@ object Parser extends App {
     preNodes.map { node => parseNode(node) }
   }
 
-  parse("./src/test/resources/scheme/helloworld.scm").interp(Scope.buildInitScope())
+//  parse("./src/test/resources/scheme/helloworld.scm").interp(Scope.buildInitScope())
   
   def parseSource(source: String): String = {
     parse(source, "/visual").toString()
