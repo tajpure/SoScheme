@@ -2,14 +2,14 @@ package com.tajpure.scheme.compiler
 
 object Main extends App {
   
+  def printHelpInfo() {
+    println("SoScheme v 0.0.1\n-i A Scheme Interpreter\n-ll Compiling scheme to llvm ir\n-bc Compiling scheme to llvm bitcode\n-v Version")
+  }
+  
   override 
   def main(args: Array[String]): Unit = {
     if (args.length == 0) {
-      println("""SoScheme v 0.0.1
--i A Scheme Interpreter
--c A Scheme Compiler
--v Version
-""")
+      printHelpInfo()
     }
     else {
       if ("-i".equals(args(0))) {
@@ -37,12 +37,7 @@ object Main extends App {
         println("SoScheme v 0.0.1")
       } 
       else {
-        println("""SoScheme v 0.0.1
--i A Scheme Interpreter
--ll Compiling scheme to llvm ir
--bc Compiling scheme to llvm bitcode
--v Version
-""")
+        printHelpInfo()
       }
     }
   }
