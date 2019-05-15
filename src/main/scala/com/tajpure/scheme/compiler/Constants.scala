@@ -36,7 +36,7 @@ object Constants {
   // Pair
   val DOT = "."
 
-  // This keywords are all from R6RS(http://www.r6rs.org/final/html/r6rs/r6rs.html)
+  // These keywords are all from R6RS(http://www.r6rs.org/final/html/r6rs/r6rs.html)
   val AND = "and"
   
   val BEGIN = "begin"
